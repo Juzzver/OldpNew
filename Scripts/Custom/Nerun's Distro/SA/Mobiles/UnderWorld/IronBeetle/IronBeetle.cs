@@ -304,27 +304,27 @@ namespace Server.Mobiles
                     }
                 }
 
-                DullCopperIngot dull1 = (DullCopperIngot)backpack.FindItemByType(typeof(DullCopperIngot));
-                if( dull1 is BaseIngot )
-                {
-                    BaseIngot m_Ore2 = dull1 as BaseIngot;
+                //DullCopperIngot dull1 = (DullCopperIngot)backpack.FindItemByType(typeof(DullCopperIngot));
+                //if( dull1 is BaseIngot )
+                //{
+                //    BaseIngot m_Ore2 = dull1 as BaseIngot;
                 
-                    if (m_Ore2.Amount > 1000)
-                    {
-                        SendDullCopperIngot( this );
-                    }
-                }
+                //    if (m_Ore2.Amount > 1000)
+                //    {
+                //        SendDullCopperIngot( this );
+                //    }
+                //}
 
-                ShadowIronIngot shad1 = (ShadowIronIngot)backpack.FindItemByType(typeof(ShadowIronIngot));
-                if( shad1 is BaseIngot )
-                {
-                    BaseIngot m_Ore3 = shad1 as BaseIngot;
+                //ShadowIronIngot shad1 = (ShadowIronIngot)backpack.FindItemByType(typeof(ShadowIronIngot));
+                //if( shad1 is BaseIngot )
+                //{
+                //    BaseIngot m_Ore3 = shad1 as BaseIngot;
                 
-                    if (m_Ore3.Amount > 1000)
-                    {
-                        SendShadowIronIngot( this );
-                    }
-                }
+                //    if (m_Ore3.Amount > 1000)
+                //    {
+                //        SendShadowIronIngot( this );
+                //    }
+                //}
 
                 BronzeIngot bron1 = (BronzeIngot)backpack.FindItemByType(typeof(BronzeIngot));
                 if( bron1 is BaseIngot )

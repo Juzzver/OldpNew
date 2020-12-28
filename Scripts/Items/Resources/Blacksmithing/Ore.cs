@@ -124,8 +124,8 @@ namespace Server.Items
 		{
 			get
 			{
-				if ( m_Resource >= CraftResource.DullCopper && m_Resource <= CraftResource.Valorite )
-					return 1042845 + (int)(m_Resource - CraftResource.DullCopper);
+				//if ( m_Resource >= CraftResource.DullCopper && m_Resource <= CraftResource.Valorite )
+				//	return 1042845 + (int)(m_Resource - CraftResource.DullCopper);
 
 				return 1042853; // iron ore;
 			}
@@ -282,12 +282,12 @@ namespace Server.Items
 					switch ( m_Ore.Resource )
 					{
 						default: difficulty = 50.0; break;
-						case CraftResource.DullCopper: difficulty = 65.0; break;
-						case CraftResource.ShadowIron: difficulty = 70.0; break;
+						case CraftResource.Bronze: difficulty = 65.0; break;
+						case CraftResource.Silver: difficulty = 70.0; break;
 						case CraftResource.Copper: difficulty = 75.0; break;
-						case CraftResource.Bronze: difficulty = 80.0; break;
+						case CraftResource.Gypsum: difficulty = 80.0; break;
 						case CraftResource.Gold: difficulty = 85.0; break;
-						case CraftResource.Agapite: difficulty = 90.0; break;
+						case CraftResource.Titan: difficulty = 90.0; break;
 						case CraftResource.Verite: difficulty = 95.0; break;
 						case CraftResource.Valorite: difficulty = 99.0; break;
 					}
@@ -411,78 +411,6 @@ namespace Server.Items
 		}
 	}
 
-	public class DullCopperOre : BaseOre
-	{
-		[Constructable]
-		public DullCopperOre() : this( 1 )
-		{
-		}
-
-		[Constructable]
-		public DullCopperOre( int amount ) : base( CraftResource.DullCopper, amount )
-		{
-		}
-
-		public DullCopperOre( Serial serial ) : base( serial )
-		{
-		}
-
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
-
-			writer.Write( (int) 0 ); // version
-		}
-
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
-
-			int version = reader.ReadInt();
-		}
-
-		public override BaseIngot GetIngot()
-		{
-			return new DullCopperIngot();
-		}
-	}
-
-	public class ShadowIronOre : BaseOre
-	{
-		[Constructable]
-		public ShadowIronOre() : this( 1 )
-		{
-		}
-
-		[Constructable]
-		public ShadowIronOre( int amount ) : base( CraftResource.ShadowIron, amount )
-		{
-		}
-
-		public ShadowIronOre( Serial serial ) : base( serial )
-		{
-		}
-
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
-
-			writer.Write( (int) 0 ); // version
-		}
-
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
-
-			int version = reader.ReadInt();
-		}
-
-		public override BaseIngot GetIngot()
-		{
-			return new ShadowIronIngot();
-		}
-	}
-
 	public class CopperOre : BaseOre
 	{
 		[Constructable]
@@ -591,42 +519,6 @@ namespace Server.Items
 		}
 	}
 
-	public class AgapiteOre : BaseOre
-	{
-		[Constructable]
-		public AgapiteOre() : this( 1 )
-		{
-		}
-
-		[Constructable]
-		public AgapiteOre( int amount ) : base( CraftResource.Agapite, amount )
-		{
-		}
-
-		public AgapiteOre( Serial serial ) : base( serial )
-		{
-		}
-
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
-
-			writer.Write( (int) 0 ); // version
-		}
-
-		public override void Deserialize( GenericReader reader )
-		{
-			base.Deserialize( reader );
-
-			int version = reader.ReadInt();
-		}
-
-		public override BaseIngot GetIngot()
-		{
-			return new AgapiteIngot();
-		}
-	}
-
 	public class VeriteOre : BaseOre
 	{
 		[Constructable]
@@ -696,6 +588,776 @@ namespace Server.Items
 		public override BaseIngot GetIngot()
 		{
 			return new ValoriteIngot();
+		}
+	}
+	public class SilverOre : BaseOre
+	{
+		[Constructable]
+		public SilverOre() : this(1)
+		{
+		}
+
+		[Constructable]
+		public SilverOre(int amount) : base(CraftResource.Silver, amount)
+		{
+		}
+
+		public SilverOre(Serial serial) : base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+
+		public override BaseIngot GetIngot()
+		{
+			return new SilverIngot();
+		}
+	}
+	public class StoneOre : BaseOre
+	{
+		[Constructable]
+		public StoneOre() : this(1)
+		{
+		}
+
+		[Constructable]
+		public StoneOre(int amount) : base(CraftResource.Stone, amount)
+		{
+		}
+
+		public StoneOre(Serial serial) : base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+
+		public override BaseIngot GetIngot()
+		{
+			return new StoneIngot();
+		}
+	}
+	public class GypsumOre : BaseOre
+	{
+		[Constructable]
+		public GypsumOre() : this(1)
+		{
+		}
+
+		[Constructable]
+		public GypsumOre(int amount) : base(CraftResource.Gypsum, amount)
+		{
+		}
+
+		public GypsumOre(Serial serial) : base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+
+		public override BaseIngot GetIngot()
+		{
+			return new GypsumIngot();
+		}
+	}
+	public class TitanOre : BaseOre
+	{
+		[Constructable]
+		public TitanOre() : this(1)
+		{
+		}
+
+		[Constructable]
+		public TitanOre(int amount) : base(CraftResource.Titan, amount)
+		{
+		}
+
+		public TitanOre(Serial serial) : base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+
+		public override BaseIngot GetIngot()
+		{
+			return new TitanIngot();
+		}
+	}
+	public class BlueRockOre : BaseOre
+	{
+		[Constructable]
+		public BlueRockOre() : this(1)
+		{
+		}
+
+		[Constructable]
+		public BlueRockOre(int amount) : base(CraftResource.BlueRock, amount)
+		{
+		}
+
+		public BlueRockOre(Serial serial) : base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+
+		public override BaseIngot GetIngot()
+		{
+			return new BlueRockIngot();
+		}
+	}
+	public class AquaOre : BaseOre
+	{
+		[Constructable]
+		public AquaOre() : this(1)
+		{
+		}
+
+		[Constructable]
+		public AquaOre(int amount) : base(CraftResource.Aqua, amount)
+		{
+		}
+
+		public AquaOre(Serial serial) : base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+
+		public override BaseIngot GetIngot()
+		{
+			return new AquaIngot();
+		}
+	}
+	public class PlazmaOre : BaseOre
+	{
+		[Constructable]
+		public PlazmaOre() : this(1)
+		{
+		}
+
+		[Constructable]
+		public PlazmaOre(int amount) : base(CraftResource.Plazma, amount)
+		{
+		}
+
+		public PlazmaOre(Serial serial) : base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+
+		public override BaseIngot GetIngot()
+		{
+			return new PlazmaIngot();
+		}
+	}
+	public class CrystalOre : BaseOre
+	{
+		[Constructable]
+		public CrystalOre() : this(1)
+		{
+		}
+
+		[Constructable]
+		public CrystalOre(int amount) : base(CraftResource.Crystal, amount)
+		{
+		}
+
+		public CrystalOre(Serial serial) : base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+
+		public override BaseIngot GetIngot()
+		{
+			return new CrystalIngot();
+		}
+	}
+	public class AcidOre : BaseOre
+	{
+		[Constructable]
+		public AcidOre() : this(1)
+		{
+		}
+
+		[Constructable]
+		public AcidOre(int amount) : base(CraftResource.Acid, amount)
+		{
+		}
+
+		public AcidOre(Serial serial) : base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+
+		public override BaseIngot GetIngot()
+		{
+			return new AcidIngot();
+		}
+	}
+	public class PlutoniumOre : BaseOre
+	{
+		[Constructable]
+		public PlutoniumOre() : this(1)
+		{
+		}
+
+		[Constructable]
+		public PlutoniumOre(int amount) : base(CraftResource.Plutonium, amount)
+		{
+		}
+
+		public PlutoniumOre(Serial serial) : base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+
+		public override BaseIngot GetIngot()
+		{
+			return new PlutoniumIngot();
+		}
+	}
+	public class BloodRockOre : BaseOre
+	{
+		[Constructable]
+		public BloodRockOre() : this(1)
+		{
+		}
+
+		[Constructable]
+		public BloodRockOre(int amount) : base(CraftResource.BloodRock, amount)
+		{
+		}
+
+		public BloodRockOre(Serial serial) : base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+
+		public override BaseIngot GetIngot()
+		{
+			return new BloodRockIngot();
+		}
+	}
+	public class GloryOre : BaseOre
+	{
+		[Constructable]
+		public GloryOre() : this(1)
+		{
+		}
+
+		[Constructable]
+		public GloryOre(int amount) : base(CraftResource.Glory, amount)
+		{
+		}
+
+		public GloryOre(Serial serial) : base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+
+		public override BaseIngot GetIngot()
+		{
+			return new GloryIngot();
+		}
+	}
+	public class FrostOre : BaseOre
+	{
+		[Constructable]
+		public FrostOre() : this(1)
+		{
+		}
+
+		[Constructable]
+		public FrostOre(int amount) : base(CraftResource.Frost, amount)
+		{
+		}
+
+		public FrostOre(Serial serial) : base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+
+		public override BaseIngot GetIngot()
+		{
+			return new FrostIngot();
+		}
+	}
+	public class MeteorOre : BaseOre
+	{
+		[Constructable]
+		public MeteorOre() : this(1)
+		{
+		}
+
+		[Constructable]
+		public MeteorOre(int amount) : base(CraftResource.Meteor, amount)
+		{
+		}
+
+		public MeteorOre(Serial serial) : base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+
+		public override BaseIngot GetIngot()
+		{
+			return new MeteorIngot();
+		}
+	}
+	public class BlueSteelOre : BaseOre
+	{
+		[Constructable]
+		public BlueSteelOre() : this(1)
+		{
+		}
+
+		[Constructable]
+		public BlueSteelOre(int amount) : base(CraftResource.BlueSteel, amount)
+		{
+		}
+
+		public BlueSteelOre(Serial serial) : base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+
+		public override BaseIngot GetIngot()
+		{
+			return new BlueSteelIngot();
+		}
+	}
+	public class IridiumOre : BaseOre
+	{
+		[Constructable]
+		public IridiumOre() : this(1)
+		{
+		}
+
+		[Constructable]
+		public IridiumOre(int amount) : base(CraftResource.Iridium, amount)
+		{
+		}
+
+		public IridiumOre(Serial serial) : base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+
+		public override BaseIngot GetIngot()
+		{
+			return new IridiumIngot();
+		}
+	}
+	public class WhiteStoneOre : BaseOre
+	{
+		[Constructable]
+		public WhiteStoneOre() : this(1)
+		{
+		}
+
+		[Constructable]
+		public WhiteStoneOre(int amount) : base(CraftResource.WhiteStone, amount)
+		{
+		}
+
+		public WhiteStoneOre(Serial serial) : base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+
+		public override BaseIngot GetIngot()
+		{
+			return new WhiteStoneIngot();
+		}
+	}
+	public class DiamondOre : BaseOre
+	{
+		[Constructable]
+		public DiamondOre() : this(1)
+		{
+		}
+
+		[Constructable]
+		public DiamondOre(int amount) : base(CraftResource.Diamond, amount)
+		{
+		}
+
+		public DiamondOre(Serial serial) : base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+
+		public override BaseIngot GetIngot()
+		{
+			return new DiamondIngot();
+		}
+	}
+	public class MythrilOre : BaseOre
+	{
+		[Constructable]
+		public MythrilOre() : this(1)
+		{
+		}
+
+		[Constructable]
+		public MythrilOre(int amount) : base(CraftResource.Mythril, amount)
+		{
+		}
+
+		public MythrilOre(Serial serial) : base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+
+		public override BaseIngot GetIngot()
+		{
+			return new MythrilIngot();
+		}
+	}
+	public class ShadowOre : BaseOre
+	{
+		[Constructable]
+		public ShadowOre() : this(1)
+		{
+		}
+
+		[Constructable]
+		public ShadowOre(int amount) : base(CraftResource.Shadow, amount)
+		{
+		}
+
+		public ShadowOre(Serial serial) : base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+
+		public override BaseIngot GetIngot()
+		{
+			return new ShadowIngot();
+		}
+	}
+	public class LegendaryOre : BaseOre
+	{
+		[Constructable]
+		public LegendaryOre() : this(1)
+		{
+		}
+
+		[Constructable]
+		public LegendaryOre(int amount) : base(CraftResource.Legendary, amount)
+		{
+		}
+
+		public LegendaryOre(Serial serial) : base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+
+		public override BaseIngot GetIngot()
+		{
+			return new LegendaryIngot();
+		}
+	}
+	public class LavaOre : BaseOre
+	{
+		[Constructable]
+		public LavaOre() : this(1)
+		{
+		}
+
+		[Constructable]
+		public LavaOre(int amount) : base(CraftResource.Lava, amount)
+		{
+		}
+
+		public LavaOre(Serial serial) : base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+
+		public override BaseIngot GetIngot()
+		{
+			return new LavaIngot();
 		}
 	}
 }
