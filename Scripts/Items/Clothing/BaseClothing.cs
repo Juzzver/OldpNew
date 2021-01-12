@@ -525,12 +525,12 @@ namespace Server.Items
 
 			switch ( m_Resource )
 			{
-				case CraftResource.DullCopper:		oreType = 1053108; break; // dull copper
-				case CraftResource.ShadowIron:		oreType = 1053107; break; // shadow iron
+			//	case CraftResource.DullCopper:		oreType = 1053108; break; // dull copper
+			//	case CraftResource.ShadowIron:		oreType = 1053107; break; // shadow iron
 				case CraftResource.Copper:			oreType = 1053106; break; // copper
 				case CraftResource.Bronze:			oreType = 1053105; break; // bronze
 				case CraftResource.Gold:			oreType = 1053104; break; // golden
-				case CraftResource.Agapite:			oreType = 1053103; break; // agapite
+			//	case CraftResource.Agapite:			oreType = 1053103; break; // agapite
 				case CraftResource.Verite:			oreType = 1053102; break; // verite
 				case CraftResource.Valorite:		oreType = 1053101; break; // valorite
 				case CraftResource.SpinedLeather:	oreType = 1061118; break; // spined

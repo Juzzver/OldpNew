@@ -137,12 +137,12 @@ namespace Server.Engines.Craft
 			SetSubRes( typeof( Granite ), 1044525 );
 
 			AddSubRes( typeof( Granite ),			1044525, 00.0, 1044514, 1044526 );
-			AddSubRes( typeof( DullCopperGranite ),	1044023, 65.0, 1044514, 1044527 );
-			AddSubRes( typeof( ShadowIronGranite ),	1044024, 70.0, 1044514, 1044527 );
+			//AddSubRes( typeof( DullCopperGranite ),	1044023, 65.0, 1044514, 1044527 );
+		//	AddSubRes( typeof( ShadowIronGranite ),	1044024, 70.0, 1044514, 1044527 );
 			AddSubRes( typeof( CopperGranite ),		1044025, 75.0, 1044514, 1044527 );
 			AddSubRes( typeof( BronzeGranite ),		1044026, 80.0, 1044514, 1044527 );
 			AddSubRes( typeof( GoldGranite ),		1044027, 85.0, 1044514, 1044527 );
-			AddSubRes( typeof( AgapiteGranite ),	1044028, 90.0, 1044514, 1044527 );
+		//	AddSubRes( typeof( AgapiteGranite ),	1044028, 90.0, 1044514, 1044527 );
 			AddSubRes( typeof( VeriteGranite ),		1044029, 95.0, 1044514, 1044527 );
 			AddSubRes( typeof( ValoriteGranite ),	1044030, 99.0, 1044514, 1044527 );
 		}

@@ -204,7 +204,7 @@ namespace Server.Items
 		{
 			m_Bonus = bonus;
 
-			this.Hue = CraftResources.GetHue( (CraftResource)Utility.RandomMinMax( (int)CraftResource.DullCopper, (int)CraftResource.Valorite ) );
+			this.Hue = CraftResources.GetHue( (CraftResource)Utility.RandomMinMax( (int)CraftResource.Bronze, (int)CraftResource.Valorite ) );
 		}
 
 		public override void GetProperties( ObjectPropertyList list )

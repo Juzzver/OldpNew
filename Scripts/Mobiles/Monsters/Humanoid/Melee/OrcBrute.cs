@@ -43,7 +43,7 @@ namespace Server.Mobiles
 
 			VirtualArmor = 50;
 
-			Item ore = new ShadowIronOre( 25 );
+			Item ore = new BronzeOre( 25 );
 			ore.ItemID = 0x19B9;
 			PackItem( ore );
 			PackItem( new IronIngot( 10 ) );

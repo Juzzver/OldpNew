@@ -49,21 +49,40 @@ namespace Server.Items
 				{
 					OreInfo info;
 
-					switch ( reader.ReadInt() )
-					{
-						case 0: info = OreInfo.Iron; break;
-						case 1: info = OreInfo.DullCopper; break;
-						case 2: info = OreInfo.ShadowIron; break;
-						case 3: info = OreInfo.Copper; break;
-						case 4: info = OreInfo.Bronze; break;
-						case 5: info = OreInfo.Gold; break;
-						case 6: info = OreInfo.Agapite; break;
-						case 7: info = OreInfo.Verite; break;
-						case 8: info = OreInfo.Valorite; break;
-						default: info = null; break;
-					}
+						switch (reader.ReadInt())
+						{
+							case 0: info = OreInfo.Iron; break;
+							case 1: info = OreInfo.Bronze; break;
+							case 2: info = OreInfo.Silver; break;
+							case 3: info = OreInfo.Stone; break;
+							case 4: info = OreInfo.Gypsum; break;
+							case 5: info = OreInfo.Copper; break;
+							case 6: info = OreInfo.Gold; break;
+							case 7: info = OreInfo.Titan; break;
+							case 8: info = OreInfo.Valorite; break;
+							case 9: info = OreInfo.Verite; break;
+							case 10: info = OreInfo.BlueRock; break;
+							case 11: info = OreInfo.Aqua; break;
+							case 12: info = OreInfo.Plazma; break;
+							case 13: info = OreInfo.Crystal; break;
+							case 14: info = OreInfo.Acid; break;
+							case 15: info = OreInfo.Plutonium; break;
+							case 16: info = OreInfo.BloodRock; break;
+							case 17: info = OreInfo.Glory; break;
+							case 18: info = OreInfo.Frost; break;
+							case 19: info = OreInfo.Meteor; break;
+							case 20: info = OreInfo.BlueSteel; break;
+							case 21: info = OreInfo.Iridium; break;
+							case 22: info = OreInfo.WhiteStone; break;
+							case 23: info = OreInfo.Diamond; break;
+							case 24: info = OreInfo.Mythril; break;
+							case 25: info = OreInfo.Shadow; break;
+							case 26: info = OreInfo.Legendary; break;
+							case 27: info = OreInfo.Lava; break;
+							default: info = null; break;
+						}
 
-					m_Resource = CraftResources.GetFromOreInfo( info );
+						m_Resource = CraftResources.GetFromOreInfo( info );
 					break;
 				}
 			}

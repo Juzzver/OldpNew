@@ -359,16 +359,16 @@ namespace Server.Mobiles
                     }
                 }
 
-                AgapiteIngot agap1 = (AgapiteIngot)backpack.FindItemByType(typeof(AgapiteIngot));
-                if( agap1 is BaseIngot )
-                {
-                    BaseIngot m_Ore7 = agap1 as BaseIngot;
+                //AgapiteIngot agap1 = (AgapiteIngot)backpack.FindItemByType(typeof(AgapiteIngot));
+                //if( agap1 is BaseIngot )
+                //{
+                //    BaseIngot m_Ore7 = agap1 as BaseIngot;
                 
-                    if (m_Ore7.Amount > 1000)
-                    {
-                        SendAgapiteIngot( this );
-                    }
-                }    
+                //    if (m_Ore7.Amount > 1000)
+                //    {
+                //        SendAgapiteIngot( this );
+                //    }
+                //}    
                 
                 VeriteIngot veri1 = (VeriteIngot)backpack.FindItemByType(typeof(VeriteIngot));
                 if( veri1 is BaseIngot )
@@ -462,11 +462,11 @@ namespace Server.Mobiles
                 switch (ore.Resource)
                 {
                     case CraftResource.Iron: { minskill = 00.0; minskill2 = 00.0; maxskill = 100.0; } break;
-                    case CraftResource.DullCopper: { minskill = 60.0; minskill2 = 25.0; maxskill = 105.0; } break;
-                    case CraftResource.ShadowIron: { minskill = 65.0; minskill2 = 30.0; maxskill = 110.0; } break;
+               //     case CraftResource.DullCopper: { minskill = 60.0; minskill2 = 25.0; maxskill = 105.0; } break;
+               //     case CraftResource.ShadowIron: { minskill = 65.0; minskill2 = 30.0; maxskill = 110.0; } break;
                     case CraftResource.Copper: { minskill = 70.0; minskill2 = 35.0; maxskill = 115.0; } break;
                     case CraftResource.Gold: { minskill = 75.0; minskill2 = 40.0; maxskill = 120.0; } break;
-                    case CraftResource.Agapite: { minskill = 80.0; minskill2 = 45.0; maxskill = 120.0; } break;
+               //     case CraftResource.Agapite: { minskill = 80.0; minskill2 = 45.0; maxskill = 120.0; } break;
                     case CraftResource.Verite: { minskill = 85.0; minskill2 = 50.0; maxskill = 120.0; } break;
                     case CraftResource.Valorite: { minskill = 90.0; minskill2 = 55.0; maxskill = 120.0; } break;
                 }
@@ -506,41 +506,41 @@ namespace Server.Mobiles
             }   
         }  
      
-        public void SendDullCopperIngot( Mobile from )
-        { 
-            Container backpack = this.Backpack;
-            from = this.ControlMaster;     
-            BankBox bank1 = from.BankBox;
-            DullCopperIngot dull = (DullCopperIngot)backpack.FindItemByType(typeof(DullCopperIngot)); 
-            if( dull is BaseIngot )
-            {
-                BaseIngot m_Ore2 = dull as BaseIngot;
+        //public void SendDullCopperIngot( Mobile from )
+        //{ 
+        //    Container backpack = this.Backpack;
+        //    from = this.ControlMaster;     
+        //    BankBox bank1 = from.BankBox;
+        //    DullCopperIngot dull = (DullCopperIngot)backpack.FindItemByType(typeof(DullCopperIngot)); 
+        //    if( dull is BaseIngot )
+        //    {
+        //        BaseIngot m_Ore2 = dull as BaseIngot;
                 
-                if (m_Ore2.Amount > 1000)
-                {
+        //        if (m_Ore2.Amount > 1000)
+        //        {
                 
-                  PlaceItemIn( bank1, 18, 169, dull);
-                }
-            }   
-        }  
+        //          PlaceItemIn( bank1, 18, 169, dull);
+        //        }
+        //    }   
+        //}  
         
-        public void SendShadowIronIngot( Mobile from )
-        { 
-            Container backpack = this.Backpack;
-            from = this.ControlMaster;     
-            BankBox bank1 = from.BankBox;
-            ShadowIronIngot shad = (ShadowIronIngot)backpack.FindItemByType(typeof(ShadowIronIngot)); 
-            if( shad is BaseIngot )
-            {
-                BaseIngot m_Ore3 = shad as BaseIngot;
+        //public void SendShadowIronIngot( Mobile from )
+        //{ 
+        //    Container backpack = this.Backpack;
+        //    from = this.ControlMaster;     
+        //    BankBox bank1 = from.BankBox;
+        //    ShadowIronIngot shad = (ShadowIronIngot)backpack.FindItemByType(typeof(ShadowIronIngot)); 
+        //    if( shad is BaseIngot )
+        //    {
+        //        BaseIngot m_Ore3 = shad as BaseIngot;
                 
-                if (m_Ore3.Amount > 1000)
-                {
+        //        if (m_Ore3.Amount > 1000)
+        //        {
                 
-                  PlaceItemIn( bank1, 18, 169, shad);
-                }
-            }   
-        }  
+        //          PlaceItemIn( bank1, 18, 169, shad);
+        //        }
+        //    }   
+        //}  
 
         public void SendCopperIngot( Mobile from )
         { 
@@ -601,17 +601,17 @@ namespace Server.Mobiles
             Container backpack = this.Backpack;
             from = this.ControlMaster;     
             BankBox bank1 = from.BankBox;
-            AgapiteIngot agap = (AgapiteIngot)backpack.FindItemByType(typeof(AgapiteIngot)); 
-            if( agap is BaseIngot )
-            {
-                BaseIngot m_Ore7 = agap as BaseIngot;
+            //AgapiteIngot agap = (AgapiteIngot)backpack.FindItemByType(typeof(AgapiteIngot)); 
+            //if( agap is BaseIngot )
+            //{
+            //    BaseIngot m_Ore7 = agap as BaseIngot;
                 
-                if (m_Ore7.Amount > 1000)
-                {
+            //    if (m_Ore7.Amount > 1000)
+            //    {
                 
-                  PlaceItemIn( bank1, 18, 169, agap);
-                }
-            }   
+            //      PlaceItemIn( bank1, 18, 169, agap);
+            //    }
+            //}   
         }  
 
          public void SendVeriteIngot( Mobile from )
@@ -684,33 +684,33 @@ namespace Server.Mobiles
 
               } 
  
-              ShadowIronOre item1 = (ShadowIronOre)backpack.FindItemByType(typeof(ShadowIronOre));
+              //ShadowIronOre item1 = (ShadowIronOre)backpack.FindItemByType(typeof(ShadowIronOre));
                          
-              if( item1 is BaseOre )
-              {
-                    BaseOre m_Ore = item1 as BaseOre;
+              //if( item1 is BaseOre )
+              //{
+              //      BaseOre m_Ore = item1 as BaseOre;
 
-                    int toConsume = m_Ore.Amount;
+              //      int toConsume = m_Ore.Amount;
 
-                    if (toConsume > 30000)
-                    {
-                        toConsume = 30000;
-                    }
-                    else if (m_Ore.Amount < 2)
-                    {
-                        m_Ore.Delete();
-                    }
+              //      if (toConsume > 30000)
+              //      {
+              //          toConsume = 30000;
+              //      }
+              //      else if (m_Ore.Amount < 2)
+              //      {
+              //          m_Ore.Delete();
+              //      }
 
-                    BaseIngot ingot = m_Ore.GetIngot();
-                    ingot.Amount = toConsume * 2;
+              //      BaseIngot ingot = m_Ore.GetIngot();
+              //      ingot.Amount = toConsume * 2;
 
-                    m_Ore.Consume(toConsume);
+              //      m_Ore.Consume(toConsume);
 
-                    this.PlaySound(0x57);
+              //      this.PlaySound(0x57);
 
-                    this.AddToBackpack(item);
-                    this.AddToBackpack(ingot);                 
-              }  
+              //      this.AddToBackpack(item);
+              //      this.AddToBackpack(ingot);                 
+              //}  
 
               BronzeOre item2 = (BronzeOre)backpack.FindItemByType(typeof(BronzeOre));
                          
@@ -796,61 +796,61 @@ namespace Server.Mobiles
                     this.AddToBackpack(ingot);
               }    
 
-              DullCopperOre item5 = (DullCopperOre)backpack.FindItemByType(typeof(DullCopperOre));
+             // DullCopperOre item5 = (DullCopperOre)backpack.FindItemByType(typeof(DullCopperOre));
                          
-              if( item5 is BaseOre )
-              {
-                    BaseOre m_Ore = item5 as BaseOre;
+             // if( item5 is BaseOre )
+             // {
+             //       BaseOre m_Ore = item5 as BaseOre;
 
-                    int toConsume = m_Ore.Amount;
+             //       int toConsume = m_Ore.Amount;
 
-                    if (toConsume > 30000)
-                    {
-                        toConsume = 30000;
-                    }
-                    else if (m_Ore.Amount < 2)
-                    {
-                        m_Ore.Delete();
-                    }
+             //       if (toConsume > 30000)
+             //       {
+             //           toConsume = 30000;
+             //       }
+             //       else if (m_Ore.Amount < 2)
+             //       {
+             //           m_Ore.Delete();
+             //       }
 
-                    BaseIngot ingot = m_Ore.GetIngot();
-                    ingot.Amount = toConsume * 2;
+             //       BaseIngot ingot = m_Ore.GetIngot();
+             //       ingot.Amount = toConsume * 2;
 
-                    m_Ore.Consume(toConsume);
+             //       m_Ore.Consume(toConsume);
 
-                    this.PlaySound(0x57);
+             //       this.PlaySound(0x57);
 
-                    this.AddToBackpack(item);
-                    this.AddToBackpack(ingot);
-             }
+             //       this.AddToBackpack(item);
+             //       this.AddToBackpack(ingot);
+             //}
             
-             AgapiteOre item6 = (AgapiteOre)backpack.FindItemByType(typeof(AgapiteOre));
+             //AgapiteOre item6 = (AgapiteOre)backpack.FindItemByType(typeof(AgapiteOre));
                          
-              if( item6 is BaseOre )
-              {
-                    BaseOre m_Ore = item6 as BaseOre;
+             // if( item6 is BaseOre )
+             // {
+             //       BaseOre m_Ore = item6 as BaseOre;
 
-                    int toConsume = m_Ore.Amount;
+             //       int toConsume = m_Ore.Amount;
 
-                    if (toConsume > 30000)
-                    {
-                        toConsume = 30000;
-                    }
-                    else if (m_Ore.Amount < 2)
-                    {
-                        m_Ore.Delete();
-                    }
+             //       if (toConsume > 30000)
+             //       {
+             //           toConsume = 30000;
+             //       }
+             //       else if (m_Ore.Amount < 2)
+             //       {
+             //           m_Ore.Delete();
+             //       }
 
-                    BaseIngot ingot = m_Ore.GetIngot();
-                    ingot.Amount = toConsume * 2;
+             //       BaseIngot ingot = m_Ore.GetIngot();
+             //       ingot.Amount = toConsume * 2;
 
-                    m_Ore.Consume(toConsume);
+             //       m_Ore.Consume(toConsume);
 
-                    this.PlaySound(0x57);
+             //       this.PlaySound(0x57);
 
-                    this.AddToBackpack(item);
-                    this.AddToBackpack(ingot);
-              }
+             //       this.AddToBackpack(item);
+             //       this.AddToBackpack(ingot);
+             // }
             
               VeriteOre item7 = (VeriteOre)backpack.FindItemByType(typeof(VeriteOre));
                          

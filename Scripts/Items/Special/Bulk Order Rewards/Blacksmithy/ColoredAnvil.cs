@@ -8,7 +8,7 @@ namespace Server.Items
 	public class ColoredAnvil : Item
 	{
 		[Constructable]
-		public ColoredAnvil() : this( CraftResources.GetHue( (CraftResource)Utility.RandomMinMax( (int)CraftResource.DullCopper, (int)CraftResource.Valorite ) ) )
+		public ColoredAnvil() : this( CraftResources.GetHue( (CraftResource)Utility.RandomMinMax( (int)CraftResource.Bronze, (int)CraftResource.Valorite ) ) )
 		{
 		}
 

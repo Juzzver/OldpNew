@@ -21,6 +21,20 @@ namespace Server.Engines.Harvest
 			}
 		}
 
+		public static Mining GetMiningSystem(Item tool)
+		{
+			if (m_System == null)
+				m_System = new Mining(tool);
+			else if (m_System != null && m_System.m_HarvestTool != tool)
+				m_System = new Mining(tool);
+
+			return m_System;
+			
+		}
+
+		Mobile m_Harvester;
+		Item m_HarvestTool;
+
 		private HarvestDefinition m_OreAndStone, m_Sand;
 
 		public HarvestDefinition OreAndStone
@@ -33,10 +47,14 @@ namespace Server.Engines.Harvest
 			get{ return m_Sand; }
 		}
 
-		private Mining()
+		public Mining(Item harvTool = null)
 		{
 			HarvestResource[] res;
-			HarvestVein[] veins;
+			HarvestResource[] defaultRes, blueRes, redRes, yellowRes, greenRes;
+
+			m_HarvestTool =  harvTool;
+
+			HarvestVein[] defaultVeins, blueVeins;
 
 			#region Mining for ore and stone
 			HarvestDefinition oreAndStone = m_OreAndStone = new HarvestDefinition();
@@ -81,34 +99,102 @@ namespace Server.Engines.Harvest
 			oreAndStone.PackFullMessage = 1010481; // Your backpack is full, so the ore you mined is lost.
 			oreAndStone.ToolBrokeMessage = 1044038; // You have worn out your tool!
 
-			res = new HarvestResource[]
+			//res = new HarvestResource[]
+			//	{
+			//		new HarvestResource( 00.0, 00.0, 100.0, 1007072, typeof( IronOre ),			typeof( Granite ) ),
+			//		new HarvestResource( 65.0, 25.0, 105.0, 1007073, typeof( DullCopperOre ),	typeof( DullCopperGranite ),	typeof( DullCopperElemental ) ),
+			//		new HarvestResource( 70.0, 30.0, 110.0, 1007074, typeof( ShadowIronOre ),	typeof( ShadowIronGranite ),	typeof( ShadowIronElemental ) ),
+			//		new HarvestResource( 75.0, 35.0, 115.0, 1007075, typeof( CopperOre ),		typeof( CopperGranite ),		typeof( CopperElemental ) ),
+			//		new HarvestResource( 80.0, 40.0, 120.0, 1007076, typeof( BronzeOre ),		typeof( BronzeGranite ),		typeof( BronzeElemental ) ),
+			//		new HarvestResource( 85.0, 45.0, 125.0, 1007077, typeof( GoldOre ),			typeof( GoldGranite ),			typeof( GoldenElemental ) ),
+			//		new HarvestResource( 90.0, 50.0, 130.0, 1007078, typeof( AgapiteOre ),		typeof( AgapiteGranite ),		typeof( AgapiteElemental ) ),
+			//		new HarvestResource( 95.0, 55.0, 135.0, 1007079, typeof( VeriteOre ),		typeof( VeriteGranite ),		typeof( VeriteElemental ) ),
+			//		new HarvestResource( 99.0, 59.0, 139.0, 1007080, typeof( ValoriteOre ),		typeof( ValoriteGranite ),		typeof( ValoriteElemental ) )
+			//	};
+
+			defaultRes = new HarvestResource[]
 				{
 					new HarvestResource( 00.0, 00.0, 100.0, 1007072, typeof( IronOre ),			typeof( Granite ) ),
-					new HarvestResource( 65.0, 25.0, 105.0, 1007073, typeof( DullCopperOre ),	typeof( DullCopperGranite ),	typeof( DullCopperElemental ) ),
-					new HarvestResource( 70.0, 30.0, 110.0, 1007074, typeof( ShadowIronOre ),	typeof( ShadowIronGranite ),	typeof( ShadowIronElemental ) ),
-					new HarvestResource( 75.0, 35.0, 115.0, 1007075, typeof( CopperOre ),		typeof( CopperGranite ),		typeof( CopperElemental ) ),
-					new HarvestResource( 80.0, 40.0, 120.0, 1007076, typeof( BronzeOre ),		typeof( BronzeGranite ),		typeof( BronzeElemental ) ),
-					new HarvestResource( 85.0, 45.0, 125.0, 1007077, typeof( GoldOre ),			typeof( GoldGranite ),			typeof( GoldenElemental ) ),
-					new HarvestResource( 90.0, 50.0, 130.0, 1007078, typeof( AgapiteOre ),		typeof( AgapiteGranite ),		typeof( AgapiteElemental ) ),
-					new HarvestResource( 95.0, 55.0, 135.0, 1007079, typeof( VeriteOre ),		typeof( VeriteGranite ),		typeof( VeriteElemental ) ),
-					new HarvestResource( 99.0, 59.0, 139.0, 1007080, typeof( ValoriteOre ),		typeof( ValoriteGranite ),		typeof( ValoriteElemental ) )
+					new HarvestResource( 00.0, 20.0, 105.0, 1007076, typeof( BronzeOre ),		typeof( BronzeGranite ),		typeof( BronzeElemental ) ),
+					new HarvestResource( 00.0, 20.0, 106.0, 1007075, typeof( CopperOre ),		typeof( CopperGranite ),		typeof( CopperElemental ) ),
+					new HarvestResource( 30.0, 07.0, 110.0, "You dig some silver ore and put it in your backpack.", typeof( SilverOre ),	typeof( SilverGranite ) ),
+					new HarvestResource( 30.0, 10.0, 115.0, "You dig some stone ore and put it in your backpack.",	typeof( StoneGranite )),
+					new HarvestResource( 30.0, 10.0, 120.0, "You dig some gypsum ore and put it in your backpack.",		typeof( GypsumGranite)),
+					new HarvestResource( 30.0, 08.0, 125.0, 1007077, typeof( GoldOre ),			typeof( GoldGranite ),			typeof( GoldenElemental ) )
 				};
 
-			veins = new HarvestVein[]
+			blueRes = new HarvestResource[]
 				{
-					new HarvestVein( 49.6, 0.0, res[0], null   ), // Iron
-					new HarvestVein( 11.2, 0.5, res[1], res[0] ), // Dull Copper
-					new HarvestVein( 09.8, 0.5, res[2], res[0] ), // Shadow Iron
-					new HarvestVein( 08.4, 0.5, res[3], res[0] ), // Copper
-					new HarvestVein( 07.0, 0.5, res[4], res[0] ), // Bronze
-					new HarvestVein( 05.6, 0.5, res[5], res[0] ), // Gold
-					new HarvestVein( 04.2, 0.5, res[6], res[0] ), // Agapite
-					new HarvestVein( 02.8, 0.5, res[7], res[0] ), // Verite
-					new HarvestVein( 01.4, 0.5, res[8], res[0] )  // Valorite
+					new HarvestResource( 50.0, 00.0, 100.0, "You dig some Titan ore and put it in your pack.", typeof( TitanOre ),         typeof( TitanGranite ) ),
+					new HarvestResource( 50.0, 25.0, 105.0, 1007080, typeof( ValoriteOre ),     typeof( ValoriteGranite ),      typeof( ValoriteElemental ) ),
+					new HarvestResource( 50.0, 30.0, 110.0, 1007079, typeof( VeriteOre ),       typeof( VeriteGranite ),        typeof( VeriteElemental ) ),
+					new HarvestResource( 50.0, 35.0, 115.0, "You dig some Blue Rock ore and put it in your pack.", typeof( BlueRockOre ),         typeof( BlueRockGranite ) ),
+					new HarvestResource( 50.0, 40.0, 120.0, "You dig some Aqua ore and put it in your pack.", typeof( AquaOre ),         typeof( AquaGranite ) ),
+					new HarvestResource( 50.0, 45.0, 125.0, "You dig some Plazma ore and put it in your pack.", typeof( PlazmaOre ),         typeof( PlazmaGranite ) ),
+					new HarvestResource( 50.0, 50.0, 130.0, "You dig some Crystal ore and put it in your pack.", typeof( CrystalOre ),         typeof( CrystalGranite ) ),
+					new HarvestResource( 50.0, 55.0, 135.0, "You dig some Acid ore and put it in your pack.", typeof( AcidOre ),         typeof( AcidGranite ) ),
 				};
 
-			oreAndStone.Resources = res;
-			oreAndStone.Veins = veins;
+			defaultVeins = new HarvestVein[]
+	{
+					new HarvestVein( 49.6, 0.0, defaultRes[0], null   ),		 // Iron
+					new HarvestVein( 12.2, 0.5, defaultRes[1], defaultRes[0] ), // Bronze
+					new HarvestVein( 10.8, 0.5, defaultRes[2], defaultRes[0] ), // Copper
+					new HarvestVein( 09.4, 0.5, defaultRes[3], defaultRes[0] ), // Silver
+					new HarvestVein( 08.0, 0.5, defaultRes[4], defaultRes[0] ), // Stone
+					new HarvestVein( 05.8, 0.5, defaultRes[5], defaultRes[0] ), // Gypsium
+					new HarvestVein( 04.2, 0.5, defaultRes[6], defaultRes[0] ), // Gold
+	};
+
+			//veins = new HarvestVein[]
+			//	{
+			//		//new HarvestVein( 49.6, 0.0, res[0], null   ), // Iron
+			//		//new HarvestVein( 11.2, 0.5, res[1], res[0] ), // Dull Copper
+			//		//new HarvestVein( 09.8, 0.5, res[2], res[0] ), // Shadow Iron
+			//		//new HarvestVein( 08.4, 0.5, res[3], res[0] ), // Copper
+			//		//new HarvestVein( 07.0, 0.5, res[4], res[0] ), // Bronze
+			//		//new HarvestVein( 05.6, 0.5, res[5], res[0] ), // Gold
+			//		//new HarvestVein( 04.2, 0.5, res[6], res[0] ), // Agapite
+			//		//new HarvestVein( 02.8, 0.5, res[7], res[0] ), // Verite
+			//		//new HarvestVein( 01.4, 0.5, res[8], res[0] )  // Valorite
+			//	};
+
+
+
+
+			blueVeins = new HarvestVein[]
+				{
+					new HarvestVein( 49.6, 0.0, blueRes[0], null   ), // Titan
+					new HarvestVein( 11.2, 0.5, blueRes[1], blueRes[0] ), // Valorite
+					new HarvestVein( 09.8, 0.5, blueRes[2], blueRes[0] ), // Verite
+					new HarvestVein( 08.4, 0.5, blueRes[3], blueRes[0] ), // BlueRock
+					new HarvestVein( 07.0, 0.5, blueRes[4], blueRes[0] ), // Aqua
+					new HarvestVein( 05.8, 0.5, blueRes[5], blueRes[0] ), // Plazma
+					new HarvestVein( 04.6, 0.5, blueRes[6], blueRes[0] ), // Crystal
+					new HarvestVein( 03.6, 0.5, blueRes[7], blueRes[0] ), // Acid
+				};
+
+
+			if (harvTool != null)
+			{
+				if (harvTool is BluePickaxe)
+				{
+					oreAndStone.Resources = blueRes;
+					oreAndStone.Veins = blueVeins;
+				}
+				else
+				{
+					oreAndStone.Resources = defaultRes;
+					oreAndStone.Veins = defaultVeins;
+				}
+			}
+			else
+			{
+				oreAndStone.Resources = defaultRes;
+				oreAndStone.Veins = defaultVeins;
+			}
+
+
 
 			if ( Core.ML )
 			{
@@ -173,18 +259,18 @@ namespace Server.Engines.Harvest
 			sand.PackFullMessage = 1044632; // Your backpack can't hold the sand, and it is lost!
 			sand.ToolBrokeMessage = 1044038; // You have worn out your tool!
 
-			res = new HarvestResource[]
+			defaultRes = new HarvestResource[]
 				{
 					new HarvestResource( 100.0, 70.0, 400.0, 1044631, typeof( Sand ) )
 				};
 
-			veins = new HarvestVein[]
+			defaultVeins = new HarvestVein[]
 				{
-					new HarvestVein( 100.0, 0.0, res[0], null )
+					new HarvestVein( 100.0, 0.0, defaultRes[0], null )
 				};
 
-			sand.Resources = res;
-			sand.Veins = veins;
+			sand.Resources = defaultRes;
+			sand.Veins = defaultVeins;
 
 			Definitions.Add( sand );
 			#endregion

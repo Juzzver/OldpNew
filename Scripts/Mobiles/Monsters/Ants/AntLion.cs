@@ -51,8 +51,8 @@ namespace Server.Mobiles
 
 			switch (Utility.Random(4))
 			{
-				case 0: orepile = new DullCopperOre(); break;
-				case 1: orepile = new ShadowIronOre(); break;
+				//case 0: orepile = new DullCopperOre(); break;
+				//case 1: orepile = new ShadowIronOre(); break;
 				case 2: orepile = new CopperOre(); break;
 				default: orepile = new BronzeOre(); break;
 			}

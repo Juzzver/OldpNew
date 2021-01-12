@@ -8,7 +8,7 @@ namespace Server.Items
 	[FlipableAttribute( 0xE86, 0xE85 )]
 	public class Pickaxe : BaseAxe, IUsesRemaining
 	{
-		public override HarvestSystem HarvestSystem{ get{ return Mining.System; } }
+		public override HarvestSystem HarvestSystem{ get{ return Mining.GetMiningSystem(this); } }
 
 		public override WeaponAbility PrimaryAbility{ get{ return WeaponAbility.DoubleStrike; } }
 		public override WeaponAbility SecondaryAbility{ get{ return WeaponAbility.Disarm; } }

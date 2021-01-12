@@ -177,12 +177,12 @@ namespace Server.Items
 							switch ( Utility.Random( 9 ) )
 							{
 								case 0: ingots = new IronIngot(); break;
-								case 1: ingots = new DullCopperIngot(); break;
-								case 2: ingots = new ShadowIronIngot(); break;
+								case 1:// ingots = new DullCopperIngot(); break;
+								case 2:// ingots = new ShadowIronIngot(); break;
 								case 3: ingots = new CopperIngot(); break;
 								case 4: ingots = new BronzeIngot(); break;
 								case 5: ingots = new GoldIngot(); break;
-								case 6: ingots = new AgapiteIngot(); break;
+								case 6:// ingots = new AgapiteIngot(); break;
 								case 7: ingots = new VeriteIngot(); break;
 								case 8: ingots = new ValoriteIngot(); break;
 							}

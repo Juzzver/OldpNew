@@ -44,7 +44,7 @@ namespace Server.Mobiles
 
 			VirtualArmor = 20;
 
-			Item ore = new DullCopperOre( oreAmount );
+			Item ore = new BronzeOre( oreAmount );
 			ore.ItemID = 0x19B9;
 			PackItem( ore );
 		}

@@ -153,12 +153,12 @@ namespace Server.Items
 
 				switch ( m_Resource )
 				{
-					case CraftResource.DullCopper:		ar += 2; break;
-					case CraftResource.ShadowIron:		ar += 4; break;
+				///	case CraftResource.DullCopper:		ar += 2; break;
+				//	case CraftResource.ShadowIron:		ar += 4; break;
 					case CraftResource.Copper:			ar += 6; break;
 					case CraftResource.Bronze:			ar += 8; break;
 					case CraftResource.Gold:			ar += 10; break;
-					case CraftResource.Agapite:			ar += 12; break;
+				//	case CraftResource.Agapite:			ar += 12; break;
 					case CraftResource.Verite:			ar += 14; break;
 					case CraftResource.Valorite:		ar += 16; break;
 					case CraftResource.SpinedLeather:	ar += 10; break;
@@ -1037,16 +1037,35 @@ namespace Server.Items
 						switch ( reader.ReadInt() )
 						{
 							default:
-							case 0: info = OreInfo.Iron; break;
-							case 1: info = OreInfo.DullCopper; break;
-							case 2: info = OreInfo.ShadowIron; break;
-							case 3: info = OreInfo.Copper; break;
-							case 4: info = OreInfo.Bronze; break;
-							case 5: info = OreInfo.Gold; break;
-							case 6: info = OreInfo.Agapite; break;
-							case 7: info = OreInfo.Verite; break;
-							case 8: info = OreInfo.Valorite; break;
-						}
+								case 0: info = OreInfo.Iron; break;
+								case 1: info = OreInfo.Bronze; break;
+								case 2: info = OreInfo.Silver; break;
+								case 3: info = OreInfo.Stone; break;
+								case 4: info = OreInfo.Gypsum; break;
+								case 5: info = OreInfo.Copper; break;
+								case 6: info = OreInfo.Gold; break;
+								case 7: info = OreInfo.Titan; break;
+								case 8: info = OreInfo.Valorite; break;
+								case 9: info = OreInfo.Verite; break;
+								case 10: info = OreInfo.BlueRock; break;
+								case 11: info = OreInfo.Aqua; break;
+								case 12: info = OreInfo.Plazma; break;
+								case 13: info = OreInfo.Crystal; break;
+								case 14: info = OreInfo.Acid; break;
+								case 15: info = OreInfo.Plutonium; break;
+								case 16: info = OreInfo.BloodRock; break;
+								case 17: info = OreInfo.Glory; break;
+								case 18: info = OreInfo.Frost; break;
+								case 19: info = OreInfo.Meteor; break;
+								case 20: info = OreInfo.BlueSteel; break;
+								case 21: info = OreInfo.Iridium; break;
+								case 22: info = OreInfo.WhiteStone; break;
+								case 23: info = OreInfo.Diamond; break;
+								case 24: info = OreInfo.Mythril; break;
+								case 25: info = OreInfo.Shadow; break;
+								case 26: info = OreInfo.Legendary; break;
+								case 27: info = OreInfo.Lava; break;
+							}
 
 						m_Resource = CraftResources.GetFromOreInfo( info, mat );
 					}
@@ -1370,12 +1389,12 @@ namespace Server.Items
 
 			switch ( m_Resource )
 			{
-				case CraftResource.DullCopper:		oreType = 1053108; break; // dull copper
-				case CraftResource.ShadowIron:		oreType = 1053107; break; // shadow iron
+			//	case CraftResource.DullCopper:		oreType = 1053108; break; // dull copper
+		//	case CraftResource.ShadowIron:		oreType = 1053107; break; // shadow iron
 				case CraftResource.Copper:			oreType = 1053106; break; // copper
 				case CraftResource.Bronze:			oreType = 1053105; break; // bronze
 				case CraftResource.Gold:			oreType = 1053104; break; // golden
-				case CraftResource.Agapite:			oreType = 1053103; break; // agapite
+		//		case CraftResource.Agapite:			oreType = 1053103; break; // agapite
 				case CraftResource.Verite:			oreType = 1053102; break; // verite
 				case CraftResource.Valorite:		oreType = 1053101; break; // valorite
 				case CraftResource.SpinedLeather:	oreType = 1061118; break; // spined

@@ -115,12 +115,12 @@ namespace Server.Items
 
 				switch ( resource )
 				{
-					case CraftResource.DullCopper: difficulty = 65.0; break;
-					case CraftResource.ShadowIron: difficulty = 70.0; break;
+					//case CraftResource.DullCopper: difficulty = 65.0; break;
+				//	case CraftResource.ShadowIron: difficulty = 70.0; break;
 					case CraftResource.Copper: difficulty = 75.0; break;
 					case CraftResource.Bronze: difficulty = 80.0; break;
 					case CraftResource.Gold: difficulty = 85.0; break;
-					case CraftResource.Agapite: difficulty = 90.0; break;
+				//	case CraftResource.Agapite: difficulty = 90.0; break;
 					case CraftResource.Verite: difficulty = 95.0; break;
 					case CraftResource.Valorite: difficulty = 99.0; break;
 				}				 

@@ -149,12 +149,12 @@ namespace Server.Engines.BulkOrders
 		{
 			switch ( resource )
 			{
-				case CraftResource.DullCopper:		return BulkMaterialType.DullCopper;
-				case CraftResource.ShadowIron:		return BulkMaterialType.ShadowIron;
+				//case CraftResource.DullCopper:		return BulkMaterialType.DullCopper;
+			//	case CraftResource.ShadowIron:		return BulkMaterialType.ShadowIron;
 				case CraftResource.Copper:			return BulkMaterialType.Copper;
 				case CraftResource.Bronze:			return BulkMaterialType.Bronze;
 				case CraftResource.Gold:			return BulkMaterialType.Gold;
-				case CraftResource.Agapite:			return BulkMaterialType.Agapite;
+			//	case CraftResource.Agapite:			return BulkMaterialType.Agapite;
 				case CraftResource.Verite:			return BulkMaterialType.Verite;
 				case CraftResource.Valorite:		return BulkMaterialType.Valorite;
 				case CraftResource.SpinedLeather:	return BulkMaterialType.Spined;
