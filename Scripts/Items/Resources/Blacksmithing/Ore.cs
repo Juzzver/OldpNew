@@ -375,7 +375,7 @@ namespace Server.Items
 
 							m_Ore.Consume( toConsume );
 							from.AddToBackpack( ingot );
-							//from.PlaySound( 0x57 );
+							from.PlaySound( 0x57 );
 
 							from.SendLocalizedMessage( 501988 ); // You smelt the ore removing the impurities and put the metal in your backpack.
 						}
