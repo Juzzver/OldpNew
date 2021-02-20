@@ -63,6 +63,19 @@ namespace Server.Items
 
 		public override int LabelNumber{ get{ return 1044607; } } // high quality granite
 
+		public override void OnSingleClick(Mobile from)
+		{
+			NetState ns = from.NetState;
+
+			if (ns != null)
+			{
+				if (Amount > 1)
+					ns.Send(new UnicodeMessage(this.Serial, this.ItemID, MessageType.Regular, 0x3B2, 3, "ENU", this.Name, String.Format("{0} high quality granite : {1}", CraftResources.GetName(m_Resource), this.Amount)));
+				else
+					ns.Send(new UnicodeMessage(this.Serial, this.ItemID, MessageType.Regular, 0x3B2, 3, "ENU", this.Name, String.Format("{0} high quality granite", CraftResources.GetName(m_Resource))));
+			}
+		}
+
 		public override void GetProperties( ObjectPropertyList list )
 		{
 			base.GetProperties( list );

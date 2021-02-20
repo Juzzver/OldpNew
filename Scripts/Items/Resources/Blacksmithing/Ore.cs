@@ -116,12 +116,25 @@ namespace Server.Items
 		{
 		}
 
-		public override void AddNameProperty( ObjectPropertyList list )
+		//public override void AddNameProperty( ObjectPropertyList list )
+		//{
+		//	if ( Amount > 1 )
+		//		list.Add( 1050039, "{0}\t#{1}", Amount, 1026583 ); // ~1_NUMBER~ ~2_ITEMNAME~
+		//	else
+		//		list.Add( 1026583 ); // ore
+		//}
+
+		public override void OnSingleClick(Mobile from)
 		{
-			if ( Amount > 1 )
-				list.Add( 1050039, "{0}\t#{1}", Amount, 1026583 ); // ~1_NUMBER~ ~2_ITEMNAME~
-			else
-				list.Add( 1026583 ); // ore
+			NetState ns = from.NetState;
+
+			if (ns != null)
+			{
+				if (Amount > 1)
+					ns.Send(new UnicodeMessage(this.Serial, this.ItemID, MessageType.Regular, 0x3B2, 3, "ENU", this.Name, String.Format("{0} ore : {1}", CraftResources.GetName(m_Resource), this.Amount)));
+				else
+					ns.Send(new UnicodeMessage(this.Serial, this.ItemID, MessageType.Regular, 0x3B2, 3, "ENU", this.Name, String.Format("{0} ore", CraftResources.GetName(m_Resource))));
+			}
 		}
 
 		public override void GetProperties( ObjectPropertyList list )
@@ -139,16 +152,16 @@ namespace Server.Items
 			}
 		}
 
-		public override int LabelNumber
-		{
-			get
-			{
-				//if ( m_Resource >= CraftResource.DullCopper && m_Resource <= CraftResource.Valorite )
-				//	return 1042845 + (int)(m_Resource - CraftResource.DullCopper);
+		//public override int LabelNumber
+		//{
+		//	get
+		//	{
+		//		//if ( m_Resource >= CraftResource.DullCopper && m_Resource <= CraftResource.Valorite )
+		//		//	return 1042845 + (int)(m_Resource - CraftResource.DullCopper);
 
-				return 1042853; // iron ore;
-			}
-		}
+		//		return 1042853; // iron ore;
+		//	}
+		//}
 
 		public override void OnDoubleClick( Mobile from )
 		{

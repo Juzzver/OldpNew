@@ -105,13 +105,13 @@ namespace Server.Items
 		{
 		}
 
-		public override void AddNameProperty( ObjectPropertyList list )
-		{
-			if ( Amount > 1 )
-				list.Add( 1050039, "{0}\t#{1}", Amount, 1027154 ); // ~1_NUMBER~ ~2_ITEMNAME~
-			else
-				list.Add( 1027154 ); // ingots
-		}
+		//public override void AddNameProperty( ObjectPropertyList list )
+		//{
+		//	if ( Amount > 1 )
+		//		list.Add( 1050039, "{0}\t#{1}", Amount, 1027154 ); // ~1_NUMBER~ ~2_ITEMNAME~
+		//	else
+		//		list.Add( 1027154 ); // ingots
+		//}
 
 		public override void GetProperties( ObjectPropertyList list )
 		{
@@ -128,16 +128,29 @@ namespace Server.Items
 			}
 		}
 
-		public override int LabelNumber
+		public override void OnSingleClick(Mobile from)
 		{
-			get
-			{
-				//if ( m_Resource >= CraftResource.DullCopper && m_Resource <= CraftResource.Valorite )
-				//	return 1042684 + (int)(m_Resource - CraftResource.DullCopper);
+			NetState ns = from.NetState;
 
-				return 1042692;
+			if (ns != null)
+			{
+				if (Amount > 1)
+					ns.Send(new UnicodeMessage(this.Serial, this.ItemID, MessageType.Regular, 0x3B2, 3, "ENU", this.Name, String.Format("{0} ingots : {1}", CraftResources.GetName(m_Resource), this.Amount)));
+				else
+					ns.Send(new UnicodeMessage(this.Serial, this.ItemID, MessageType.Regular, 0x3B2, 3, "ENU", this.Name, String.Format("{0} ingots", CraftResources.GetName(m_Resource))));
 			}
 		}
+
+		//public override int LabelNumber
+		//{
+		//	get
+		//	{
+		//		if ( m_Resource >= CraftResource.DullCopper && m_Resource <= CraftResource.Valorite )
+		//			return 1042684 + (int)(m_Resource - CraftResource.DullCopper);
+
+		//		return 1042692;
+		//	}
+		//}
 	}
 
 	[FlipableAttribute( 0x1BF2, 0x1BEF )]
