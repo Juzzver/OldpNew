@@ -147,8 +147,19 @@ namespace Server.Engines.Harvest
 
 			Type type = null;
 
-			if ( skillBase >= resource.ReqSkill && from.CheckSkill( def.Skill, resource.MinSkill, resource.MaxSkill ) )
+			if ( skillBase >= resource.ReqSkill && from.CheckSkill( def.Skill, resource.MinSkill, resource.MaxSkill ))
 			{
+				double chanceToFail = vein.ChanceToFallback;
+				double random = Utility.RandomDouble() * 100;
+
+				from.SendMessage(chanceToFail >= random ? 38 : 68, "Your chances [{0} vs {1}]", Math.Round(random, 1), chanceToFail);
+				if (chanceToFail >= random)
+				{
+					def.SendMessageTo(from, def.FailMessage);
+					OnHarvestFinished(from, tool, def, vein, bank, resource, toHarvest);
+					return;
+				}
+
 				type = GetResourceType( from, tool, def, map, loc, resource );
 
 				if ( type != null )
@@ -322,8 +333,8 @@ namespace Server.Engines.Harvest
 		{
 			bool racialBonus = (def.RaceBonus && from.Race == Race.Elf );
 
-			if( vein.ChanceToFallback > (Utility.RandomDouble() + (racialBonus ? .20 : 0)) )
-				return fallback;
+			//if( vein.ChanceToFallback > (Utility.RandomDouble() + (racialBonus ? .20 : 0)) )
+			//	return fallback;
 
 			double skillValue = from.Skills[def.Skill].Value;
 

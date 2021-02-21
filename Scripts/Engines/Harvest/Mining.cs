@@ -128,13 +128,13 @@ namespace Server.Engines.Harvest
 					new HarvestResource( 80.0, 45.0, 125.0, 200.0, PickaxeType.Green, "You dig some meteor ore and put it in your backpack.", typeof( MeteorOre ),         typeof( MeteorGranite ) ),
 					new HarvestResource( 80.0, 50.0, 125.0, 200.0, PickaxeType.Green, "You dig some iridium ore and put it in your backpack.", typeof( IridiumOre ),         typeof( IridiumGranite ) ),
 					//Orange
-					new HarvestResource( 100.0, 55.0, 145.0, 200.0, PickaxeType.Orange, "You dig some diamond ore and put it in your backpack.", typeof(DiamondOre ),         typeof( DiamondGranite ) ),
-					new HarvestResource( 100.0, 60.0, 145.0, 200.0, PickaxeType.Orange, "You dig some shadow ore and put it in your backpack.", typeof( ShadowOre ),         typeof( ShadowGranite ) ),
-					new HarvestResource( 100.0, 65.0, 145.0, 200.0, PickaxeType.Orange, "You dig some lava ore and put it in your backpack.", typeof( LavaOre ),         typeof( LavaGranite ) ),
+					new HarvestResource( 100.0, 55.0, 135.0, 200.0, PickaxeType.Orange, "You dig some diamond ore and put it in your backpack.", typeof(DiamondOre ),         typeof( DiamondGranite ) ),
+					new HarvestResource( 100.0, 60.0, 135.0, 200.0, PickaxeType.Orange, "You dig some shadow ore and put it in your backpack.", typeof( ShadowOre ),         typeof( ShadowGranite ) ),
+					new HarvestResource( 100.0, 65.0, 135.0, 200.0, PickaxeType.Orange, "You dig some lava ore and put it in your backpack.", typeof( LavaOre ),         typeof( LavaGranite ) ),
 					//White
-					new HarvestResource( 100.0, 70.0, 175.0, 200.0, PickaxeType.White, "You dig some white stone ore and put it in your backpack.", typeof(WhiteStoneOre ),         typeof( WhiteStoneGranite ) ),
-					new HarvestResource( 100.0, 75.0, 175.0, 200.0, PickaxeType.White, "You dig some mythril ore and put it in your backpack.", typeof( MythrilOre ),         typeof( MythrilGranite ) ),
-					new HarvestResource( 100.0, 80.0, 175.0, 200.0, PickaxeType.White, "You dig some legendary ore and put it in your backpack.", typeof( LegendaryOre ),         typeof( LegendaryGranite ) ),
+					new HarvestResource( 100.0, 70.0, 145.0, 200.0, PickaxeType.White, "You dig some white stone ore and put it in your backpack.", typeof(WhiteStoneOre ),         typeof( WhiteStoneGranite ) ),
+					new HarvestResource( 100.0, 75.0, 145.0, 200.0, PickaxeType.White, "You dig some mythril ore and put it in your backpack.", typeof( MythrilOre ),         typeof( MythrilGranite ) ),
+					new HarvestResource( 100.0, 80.0, 145.0, 200.0, PickaxeType.White, "You dig some legendary ore and put it in your backpack.", typeof( LegendaryOre ),         typeof( LegendaryGranite ) ),
 				};
 
 
@@ -155,13 +155,13 @@ namespace Server.Engines.Harvest
 						{
 							veins = new HarvestVein[]
 				{
-					new HarvestVein( 25.0, 0.0, res[0], null   ), // Iron
-					new HarvestVein( 20.0, 0.0, res[1], null ), // Copper
-					new HarvestVein( 20.0, 0.0, res[2], null ), // Bronze
-					new HarvestVein( 10.0, 0.0, res[3], null ), // Gypsum
-					new HarvestVein( 10.0, 0.0, res[4], null ), // Stone
-					new HarvestVein( 08.0, 0.0, res[5], null ), // Gold
-					new HarvestVein( 07.0, 0.0, res[6], null ), // Silver
+					new HarvestVein( 25.0, 40.0, res[0], null   ), // Iron
+					new HarvestVein( 20.0, 40.0, res[1], null ), // Copper
+					new HarvestVein( 20.0, 40.0, res[2], null ), // Bronze
+					new HarvestVein( 10.0, 40.0, res[3], null ), // Gypsum
+					new HarvestVein( 10.0, 40.0, res[4], null ), // Stone
+					new HarvestVein( 08.0, 40.0, res[5], null ), // Gold
+					new HarvestVein( 07.0, 40.0, res[6], null ), // Silver
 				};
 						}
 						break;
@@ -169,10 +169,10 @@ namespace Server.Engines.Harvest
 						{
 							veins = new HarvestVein[]
 				{
-					new HarvestVein( 25.0, 0.0, res[7], null   ), // Titan
-					new HarvestVein( 25.0, 0.0, res[8], null ), // Aqua
-					new HarvestVein( 25.0, 0.0, res[9], null ), // Plazma
-					new HarvestVein( 25.0, 0.0, res[10], null ), // Crystal
+					new HarvestVein( 25.0, 60.0, res[7], null   ), // Titan
+					new HarvestVein( 25.0, 60.0, res[8], null ), // Aqua
+					new HarvestVein( 25.0, 60.0, res[9], null ), // Plazma
+					new HarvestVein( 25.0, 60.0, res[10], null ), // Crystal
 				};
 						}
 						break;
@@ -180,10 +180,10 @@ namespace Server.Engines.Harvest
 						{
 							veins = new HarvestVein[]
 				{
-					new HarvestVein( 25.0, 0.0, res[11], null   ), // Verite
-					new HarvestVein( 25.0, 0.0, res[12], null ), // Valorite
-					new HarvestVein( 25.0, 0.0, res[13], null ), // BlueRock
-					new HarvestVein( 25.0, 0.0, res[14], null ), // Acid
+					new HarvestVein( 25.0, 60.0, res[11], null   ), // Verite
+					new HarvestVein( 25.0, 60.0, res[12], null ), // Valorite
+					new HarvestVein( 25.0, 60.0, res[13], null ), // BlueRock
+					new HarvestVein( 25.0, 60.0, res[14], null ), // Acid
 				};
 						}
 						break;
@@ -191,9 +191,9 @@ namespace Server.Engines.Harvest
 						{
 							veins = new HarvestVein[]
 				{
-					new HarvestVein( 40.0, 0.0, res[15], null   ), // Plutonium
-					new HarvestVein( 35.0, 0.0, res[16], null ), // Glory
-					new HarvestVein( 25.0, 0.0, res[17], null ), // BlueSteel
+					new HarvestVein( 40.0, 80.0, res[15], null   ), // Plutonium
+					new HarvestVein( 35.0, 80.0, res[16], null ), // Glory
+					new HarvestVein( 25.0, 80.0, res[17], null ), // BlueSteel
 				};
 						}
 						break;
@@ -201,10 +201,10 @@ namespace Server.Engines.Harvest
 						{
 							veins = new HarvestVein[]
 				{
-					new HarvestVein( 25.0, 0.0, res[18], null   ), // BloodRock
-					new HarvestVein( 25.0, 0.0, res[19], null ), // Frost
-					new HarvestVein( 25.0, 0.0, res[20], null ), // Meteor
-					new HarvestVein( 25.0, 0.0, res[21], null ), // Iridium
+					new HarvestVein( 25.0, 80.0, res[18], null   ), // BloodRock
+					new HarvestVein( 25.0, 80.0, res[19], null ), // Frost
+					new HarvestVein( 25.0, 80.0, res[20], null ), // Meteor
+					new HarvestVein( 25.0, 80.0, res[21], null ), // Iridium
 				};
 						}
 						break;
@@ -212,9 +212,9 @@ namespace Server.Engines.Harvest
 						{
 							veins = new HarvestVein[]
 				{
-					new HarvestVein( 40.0, 0.0, res[22], null   ), // Diamond
-					new HarvestVein( 35.0, 0.0, res[23], null ), // Shadow
-					new HarvestVein( 25.0, 0.0, res[24], null ), // Lava
+					new HarvestVein( 40.0, 91.0, res[22], null   ), // Diamond
+					new HarvestVein( 35.0, 91.0, res[23], null ), // Shadow
+					new HarvestVein( 25.0, 91.0, res[24], null ), // Lava
 				};
 						}
 						break;
@@ -222,9 +222,9 @@ namespace Server.Engines.Harvest
 						{
 							veins = new HarvestVein[]
 				{
-					new HarvestVein( 40.0, 0.0, res[25], null   ), // WhiteStone
-					new HarvestVein( 35.0, 0.0, res[26], null ), // Mythril
-					new HarvestVein( 25.0, 0.0, res[27], null ), // Legendary
+					new HarvestVein( 40.0, 91.0, res[25], null   ), // WhiteStone
+					new HarvestVein( 35.0, 91.0, res[26], null ), // Mythril
+					new HarvestVein( 25.0, 91.0, res[27], null ), // Legendary
 				};
 						}
 						break;
