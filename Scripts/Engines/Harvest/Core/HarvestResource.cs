@@ -1,4 +1,5 @@
 using System;
+using Server.Items;
 
 namespace Server.Engines.Harvest
 {
@@ -8,11 +9,17 @@ namespace Server.Engines.Harvest
 		private double m_ReqSkill, m_MinSkill, m_MaxSkill;
 		private object m_SuccessMessage;
 
+		private double m_DoubleResSkillReq;
+		private PickaxeType m_PickaxeType;
+
 		public Type[] Types{ get{ return m_Types; } set{ m_Types = value; } }
 		public double ReqSkill{ get{ return m_ReqSkill; } set{ m_ReqSkill = value; } }
 		public double MinSkill{ get{ return m_MinSkill; } set{ m_MinSkill = value; } }
 		public double MaxSkill{ get{ return m_MaxSkill; } set{ m_MaxSkill = value; } }
 		public object SuccessMessage{ get{ return m_SuccessMessage; } }
+
+		public double DoubledResSkillReq { get { return m_DoubleResSkillReq; } }
+		public PickaxeType PickAxeType { get { return m_PickaxeType; } }
 
 		public void SendSuccessTo( Mobile m )
 		{
@@ -22,7 +29,19 @@ namespace Server.Engines.Harvest
 				m.SendMessage( (string)m_SuccessMessage );
 		}
 
-		public HarvestResource( double reqSkill, double minSkill, double maxSkill, object message, params Type[] types )
+		public HarvestResource( double reqSkill, double minSkill, double maxSkill, double doubleResSkillReq, PickaxeType type, object message, params Type[] types )
+		{
+			m_ReqSkill = reqSkill;
+			m_MinSkill = minSkill;
+			m_MaxSkill = maxSkill;
+			m_Types = types;
+			m_SuccessMessage = message;
+
+			m_DoubleResSkillReq = doubleResSkillReq;
+			m_PickaxeType = type;
+		}
+
+		public HarvestResource(double reqSkill, double minSkill, double maxSkill, object message, params Type[] types)
 		{
 			m_ReqSkill = reqSkill;
 			m_MinSkill = minSkill;

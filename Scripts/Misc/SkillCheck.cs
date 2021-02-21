@@ -91,9 +91,16 @@ namespace Server.Misc
 			double value = skill.Value;
 
 			if ( value < minSkill )
+			{
+			//	from.SendMessage(38, "Too difficult to gain");
 				return false; // Too difficult
+			}
 			else if ( value >= maxSkill )
+			{
+			//	from.SendMessage(38, "Too expert, can't gain.");
 				return true; // No challenge
+			}
+				
 
 			double chance = (value - minSkill) / (maxSkill - minSkill);
 
@@ -137,6 +144,9 @@ namespace Server.Misc
 
 			if ( from is BaseCreature && ((BaseCreature)from).Controlled )
 				gc *= 2;
+
+			//if(skill.SkillName  == SkillName.Mining)
+			//	from.SendMessage(38, "Chance to gain skill: {0}%", Math.Round(gc*100, 3));
 
 			if ( from.Alive && ( ( gc >= Utility.RandomDouble() && AllowGain( from, skill, amObj ) ) || skill.Base < 10.0 ) )
 				Gain( from, skill );

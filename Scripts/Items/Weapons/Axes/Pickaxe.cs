@@ -5,11 +5,25 @@ using Server.Engines.Harvest;
 
 namespace Server.Items
 {
+	public enum PickaxeType
+	{
+		None,
+		Regular,
+		Blue,
+		Red,
+		Yellow,
+		Green,
+		Orange,
+		White
+	}
+
 	[FlipableAttribute( 0xE86, 0xE85 )]
 	public class Pickaxe : BaseAxe, IUsesRemaining
 	{
+		private PickaxeType m_PickType;
+		[CommandProperty(AccessLevel.GameMaster)]
+		public virtual PickaxeType PickType { get { return m_PickType; } set { m_PickType = value; } }
 		public override HarvestSystem HarvestSystem{ get{ return Mining.GetMiningSystem(this); } }
-
 		public override WeaponAbility PrimaryAbility{ get{ return WeaponAbility.DoubleStrike; } }
 		public override WeaponAbility SecondaryAbility{ get{ return WeaponAbility.Disarm; } }
 
@@ -35,6 +49,7 @@ namespace Server.Items
 			Weight = 11.0;
 			UsesRemaining = 50;
 			ShowUsesRemaining = true;
+			PickType = PickaxeType.Regular;
 		}
 
 		public Pickaxe( Serial serial ) : base( serial )
@@ -45,7 +60,9 @@ namespace Server.Items
 		{
 			base.Serialize( writer );
 
-			writer.Write( (int) 0 ); // version
+			writer.Write( (int) 1 ); // version
+
+			writer.Write((int)(m_PickType));
 		}
 
 		public override void Deserialize( GenericReader reader )
@@ -53,7 +70,21 @@ namespace Server.Items
 			base.Deserialize( reader );
 
 			int version = reader.ReadInt();
-			ShowUsesRemaining = true;
+
+			switch (version)
+			{
+				case 1:
+					{
+						m_PickType = (PickaxeType)reader.ReadInt();
+						goto case 0;
+					}
+				case 0:
+					{
+						ShowUsesRemaining = true;
+						break;
+					}
+			}
+			
 		}
 	}
 }
