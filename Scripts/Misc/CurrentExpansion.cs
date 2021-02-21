@@ -7,7 +7,7 @@ namespace Server
 {
 	public class CurrentExpansion
 	{
-		private static readonly Expansion Expansion = Expansion.UOR;
+		private static readonly Expansion Expansion = Expansion.AOS;
 
 		public static void Configure()
 		{
