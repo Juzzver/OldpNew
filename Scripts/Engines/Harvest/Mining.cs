@@ -81,7 +81,7 @@ namespace Server.Engines.Harvest
 
 			// One ore per harvest action
 			oreAndStone.ConsumedPerHarvest = 1;
-			oreAndStone.ConsumedPerFeluccaHarvest = 2;
+			oreAndStone.ConsumedPerFeluccaHarvest = 1;
 
 			// The digging effect
 			oreAndStone.EffectActions = new int[] { 11 };

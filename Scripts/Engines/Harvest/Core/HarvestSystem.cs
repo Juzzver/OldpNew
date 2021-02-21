@@ -170,6 +170,12 @@ namespace Server.Engines.Harvest
 							int amount = def.ConsumedPerHarvest;
 							int feluccaAmount = def.ConsumedPerFeluccaHarvest;
 
+							if( primary != null && primary.DoubledResSkillReq > 0 && from.Skills[def.Skill].Value >= primary.DoubledResSkillReq)
+							{
+								amount *= primary.DoubleFactor;
+								feluccaAmount *= primary.DoubleFactor;
+							}
+
 							int racialAmount = (int)Math.Ceiling( amount * 1.1 );
 							int feluccaRacialAmount = (int)Math.Ceiling( feluccaAmount * 1.1 );
 

@@ -19,6 +19,7 @@ namespace Server.Engines.Harvest
 		public object SuccessMessage{ get{ return m_SuccessMessage; } }
 
 		public double DoubledResSkillReq { get { return m_DoubleResSkillReq; } }
+		public int DoubleFactor { get { return 2; } }
 		public PickaxeType PickAxeType { get { return m_PickaxeType; } }
 
 		public void SendSuccessTo( Mobile m )
