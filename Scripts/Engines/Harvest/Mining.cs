@@ -100,44 +100,41 @@ namespace Server.Engines.Harvest
 
 			res = new HarvestResource[]
 				{
+					//Regular
 					new HarvestResource( 00.0, 00.0, 100.0, 100.0, PickaxeType.Regular, 1007072, typeof( IronOre ),         typeof( Granite ) ),
 					new HarvestResource( 00.0, 00.0, 100.0, 100.0, PickaxeType.Regular, 1007075, typeof( CopperOre ),       typeof( CopperGranite ),        typeof( CopperElemental ) ),
 					new HarvestResource( 00.0, 00.0, 100.0, 100.0, PickaxeType.Regular, 1007076, typeof( BronzeOre ),       typeof( BronzeGranite ),        typeof( BronzeElemental ) ),
-					new HarvestResource( 30.0, 10.0, 100.0, 100.0, PickaxeType.Regular, "You dig some gypsum ore and put it in your backpack.", typeof( GypsumOre ),         typeof( GypsumGranite ) ),
-					new HarvestResource( 30.0, 15.0, 100.0, 100.0, PickaxeType.Regular, "You dig some stone ore and put it in your backpack.", typeof( StoneOre ),         typeof( StoneGranite ) ),
-					new HarvestResource( 30.0, 26.0, 100.0, 100.0, PickaxeType.Regular, 1007077, typeof( GoldOre ),         typeof( GoldGranite ),          typeof( GoldenElemental ) ),
-					new HarvestResource( 30.0, 23.0, 100.0, 100.0, PickaxeType.Regular, "You dig some silver ore and put it in your backpack.", typeof( SilverOre ),         typeof( SilverGranite ) ),
-
-
-					new HarvestResource( 50.0, 28.0, 100.0, 200.0, PickaxeType.Blue, "You dig some titan ore and put it in your backpack.", typeof( TitanOre ),         typeof( TitanGranite ) ),
-					new HarvestResource( 50.0, 30.0, 100.0, 200.0, PickaxeType.Blue, "You dig some aqua ore and put it in your backpack.", typeof( AquaOre ),         typeof( AquaGranite ) ),
-					new HarvestResource( 50.0, 32.0, 100.0, 200.0, PickaxeType.Blue, "You dig some plazma ore and put it in your backpack.", typeof( PlazmaOre ),         typeof( PlazmaGranite ) ),
-					new HarvestResource( 50.0, 34.0, 100.0, 200.0, PickaxeType.Blue, "You dig some crystal ore and put it in your backpack.", typeof( CrystalOre ),         typeof( CrystalGranite ) ),
-
-
-					new HarvestResource( 50.0, 36.0, 135.0, 100.0, PickaxeType.Red, 1007079, typeof( VeriteOre ),       typeof( VeriteGranite ),        typeof( VeriteElemental ) ),
-					new HarvestResource( 50.0, 38.0, 139.0, 100.0, PickaxeType.Red, 1007080, typeof( ValoriteOre ),     typeof( ValoriteGranite ),      typeof( ValoriteElemental ) ),
-					new HarvestResource( 50.0, 40.0, 100.0, 100.0, PickaxeType.Red, "You dig some blue rock ore and put it in your backpack.", typeof( BlueRockOre ),         typeof( BlueRockGranite ) ),
-					new HarvestResource( 50.0, 42.0, 100.0, 100.0, PickaxeType.Red, "You dig some acid ore and put it in your backpack.", typeof( AcidOre ),         typeof( AcidGranite ) ),
-
-
-					new HarvestResource( 80.0, 00.0, 100.0, 200.0, PickaxeType.Yellow, "You dig some plutonium ore and put it in your backpack.", typeof( PlutoniumOre ),         typeof( PlutoniumGranite ) ),
-					new HarvestResource( 80.0, 00.0, 100.0, 200.0, PickaxeType.Yellow, "You dig some glory ore and put it in your backpack.", typeof( GloryOre ),         typeof( GloryGranite ) ),
-					new HarvestResource( 80.0, 00.0, 100.0, 200.0, PickaxeType.Yellow, "You dig some blue steel ore and put it in your backpack.", typeof( BlueSteelOre ),         typeof( BlueSteelGranite ) ),
-
-					new HarvestResource( 80.0, 00.0, 100.0, 200.0, PickaxeType.Green, "You dig blood rock ore and put it in your backpack.", typeof( BloodRockOre ),         typeof( BloodRockGranite ) ),
-					new HarvestResource( 80.0, 00.0, 100.0, 200.0, PickaxeType.Green, "You dig some frost ore and put it in your backpack.", typeof( FrostOre ),         typeof( FrostGranite ) ),
-					new HarvestResource( 80.0, 00.0, 100.0, 200.0, PickaxeType.Green, "You dig some meteor ore and put it in your backpack.", typeof( MeteorOre ),         typeof( MeteorGranite ) ),
-					new HarvestResource( 80.0, 00.0, 100.0, 200.0, PickaxeType.Green, "You dig some iridium ore and put it in your backpack.", typeof( IridiumOre ),         typeof( IridiumGranite ) ),
-
-
-					new HarvestResource( 100.0, 00.0, 100.0, 200.0, PickaxeType.Orange, "You dig some diamond ore and put it in your backpack.", typeof(DiamondOre ),         typeof( DiamondGranite ) ),
-					new HarvestResource( 100.0, 00.0, 100.0, 200.0, PickaxeType.Orange, "You dig some shadow ore and put it in your backpack.", typeof( ShadowOre ),         typeof( ShadowGranite ) ),
-					new HarvestResource( 100.0, 00.0, 100.0, 200.0, PickaxeType.Orange, "You dig some lava ore and put it in your backpack.", typeof( LavaOre ),         typeof( LavaGranite ) ),
-
-					new HarvestResource( 100.0, 00.0, 100.0, 200.0, PickaxeType.White, "You dig some white stone ore and put it in your backpack.", typeof(WhiteStoneOre ),         typeof( WhiteStoneGranite ) ),
-					new HarvestResource( 100.0, 00.0, 100.0, 200.0, PickaxeType.White, "You dig some mythril ore and put it in your backpack.", typeof( MythrilOre ),         typeof( MythrilGranite ) ),
-					new HarvestResource( 100.0, 00.0, 100.0, 200.0, PickaxeType.White, "You dig some legendary ore and put it in your backpack.", typeof( LegendaryOre ),         typeof( LegendaryGranite ) ),
+					new HarvestResource( 30.0, 05.0, 100.0, 100.0, PickaxeType.Regular, "You dig some gypsum ore and put it in your backpack.", typeof( GypsumOre ),         typeof( GypsumGranite ) ),
+					new HarvestResource( 30.0, 10.0, 100.0, 100.0, PickaxeType.Regular, "You dig some stone ore and put it in your backpack.", typeof( StoneOre ),         typeof( StoneGranite ) ),
+					new HarvestResource( 30.0, 12.0, 100.0, 100.0, PickaxeType.Regular, 1007077, typeof( GoldOre ),         typeof( GoldGranite ),          typeof( GoldenElemental ) ),
+					new HarvestResource( 30.0, 15.0, 100.0, 100.0, PickaxeType.Regular, "You dig some silver ore and put it in your backpack.", typeof( SilverOre ),         typeof( SilverGranite ) ),
+					//Blue
+					new HarvestResource( 50.0, 17.0, 100.0, 200.0, PickaxeType.Blue, "You dig some titan ore and put it in your backpack.", typeof( TitanOre ),         typeof( TitanGranite ) ),
+					new HarvestResource( 50.0, 19.0, 100.0, 200.0, PickaxeType.Blue, "You dig some aqua ore and put it in your backpack.", typeof( AquaOre ),         typeof( AquaGranite ) ),
+					new HarvestResource( 50.0, 21.0, 100.0, 200.0, PickaxeType.Blue, "You dig some plazma ore and put it in your backpack.", typeof( PlazmaOre ),         typeof( PlazmaGranite ) ),
+					new HarvestResource( 50.0, 23.0, 105.0, 200.0, PickaxeType.Blue, "You dig some crystal ore and put it in your backpack.", typeof( CrystalOre ),         typeof( CrystalGranite ) ),
+					//Red
+					new HarvestResource( 50.0, 24.0, 110.0, 200.0, PickaxeType.Red, 1007079, typeof( VeriteOre ),       typeof( VeriteGranite ),        typeof( VeriteElemental ) ),
+					new HarvestResource( 50.0, 25.0, 110.0, 200.0, PickaxeType.Red, 1007080, typeof( ValoriteOre ),     typeof( ValoriteGranite ),      typeof( ValoriteElemental ) ),
+					new HarvestResource( 50.0, 26.0, 110.0, 200.0, PickaxeType.Red, "You dig some blue rock ore and put it in your backpack.", typeof( BlueRockOre ),         typeof( BlueRockGranite ) ),
+					new HarvestResource( 50.0, 28.0, 110.0, 200.0, PickaxeType.Red, "You dig some acid ore and put it in your backpack.", typeof( AcidOre ),         typeof( AcidGranite ) ),
+					//Yellow
+					new HarvestResource( 80.0, 30.0, 115.0, 200.0, PickaxeType.Yellow, "You dig some plutonium ore and put it in your backpack.", typeof( PlutoniumOre ),         typeof( PlutoniumGranite ) ),
+					new HarvestResource( 80.0, 32.0, 115.0, 200.0, PickaxeType.Yellow, "You dig some glory ore and put it in your backpack.", typeof( GloryOre ),         typeof( GloryGranite ) ),
+					new HarvestResource( 80.0, 34.0, 115.0, 200.0, PickaxeType.Yellow, "You dig some blue steel ore and put it in your backpack.", typeof( BlueSteelOre ),         typeof( BlueSteelGranite ) ),
+					//Green
+					new HarvestResource( 80.0, 36.0, 125.0, 200.0, PickaxeType.Green, "You dig blood rock ore and put it in your backpack.", typeof( BloodRockOre ),         typeof( BloodRockGranite ) ),
+					new HarvestResource( 80.0, 40.0, 125.0, 200.0, PickaxeType.Green, "You dig some frost ore and put it in your backpack.", typeof( FrostOre ),         typeof( FrostGranite ) ),
+					new HarvestResource( 80.0, 45.0, 125.0, 200.0, PickaxeType.Green, "You dig some meteor ore and put it in your backpack.", typeof( MeteorOre ),         typeof( MeteorGranite ) ),
+					new HarvestResource( 80.0, 50.0, 125.0, 200.0, PickaxeType.Green, "You dig some iridium ore and put it in your backpack.", typeof( IridiumOre ),         typeof( IridiumGranite ) ),
+					//Orange
+					new HarvestResource( 100.0, 55.0, 145.0, 200.0, PickaxeType.Orange, "You dig some diamond ore and put it in your backpack.", typeof(DiamondOre ),         typeof( DiamondGranite ) ),
+					new HarvestResource( 100.0, 60.0, 145.0, 200.0, PickaxeType.Orange, "You dig some shadow ore and put it in your backpack.", typeof( ShadowOre ),         typeof( ShadowGranite ) ),
+					new HarvestResource( 100.0, 65.0, 145.0, 200.0, PickaxeType.Orange, "You dig some lava ore and put it in your backpack.", typeof( LavaOre ),         typeof( LavaGranite ) ),
+					//White
+					new HarvestResource( 100.0, 70.0, 175.0, 200.0, PickaxeType.White, "You dig some white stone ore and put it in your backpack.", typeof(WhiteStoneOre ),         typeof( WhiteStoneGranite ) ),
+					new HarvestResource( 100.0, 75.0, 175.0, 200.0, PickaxeType.White, "You dig some mythril ore and put it in your backpack.", typeof( MythrilOre ),         typeof( MythrilGranite ) ),
+					new HarvestResource( 100.0, 80.0, 175.0, 200.0, PickaxeType.White, "You dig some legendary ore and put it in your backpack.", typeof( LegendaryOre ),         typeof( LegendaryGranite ) ),
 				};
 
 
