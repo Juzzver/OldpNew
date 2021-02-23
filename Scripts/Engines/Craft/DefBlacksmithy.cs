@@ -699,15 +699,40 @@ namespace Server.Engines.Craft
 
 			// Add every material you want the player to be able to choose from
 			// This will override the overridable material
-			AddSubRes( typeof( IronIngot ),			1044022, 00.0, 1044036, 1044267 );
-		//	AddSubRes( typeof( DullCopperIngot ),	1044023, 65.0, 1044036, 1044268 );
-		//	AddSubRes( typeof( ShadowIronIngot ),	1044024, 70.0, 1044036, 1044268 );
-			AddSubRes( typeof( CopperIngot ),		1044025, 75.0, 1044036, 1044268 );
-			AddSubRes( typeof( BronzeIngot ),		1044026, 80.0, 1044036, 1044268 );
-			AddSubRes( typeof( GoldIngot ),			1044027, 85.0, 1044036, 1044268 );
-		//	AddSubRes( typeof( AgapiteIngot ),		1044028, 90.0, 1044036, 1044268 );
-			AddSubRes( typeof( VeriteIngot ),		1044029, 95.0, 1044036, 1044268 );
-			AddSubRes( typeof( ValoriteIngot ),		1044030, 99.0, 1044036, 1044268 );
+			AddSubRes(typeof(IronIngot), 1044022, 00.0, 1044036, 1044267);
+			AddSubRes(typeof(CopperIngot), 1044023,  00.0, 1044036, 1044268);
+			AddSubRes(typeof(BronzeIngot), 1044026, 00.0, 1044036, 1044268);
+			AddSubRes(typeof(GypsumIngot), "Gypsum", 30.0, 1044268);
+			AddSubRes(typeof(StoneIngot), "Stone", 30.0, 1044268);
+			AddSubRes(typeof(SilverIngot), "Silver", 30.0, 1044268);
+			AddSubRes(typeof(GoldIngot), 1044027, 30.0, 1044036, 1044268);
+
+			AddSubRes(typeof(TitanIngot), "Titan", 50.0, 1044268);
+			AddSubRes(typeof(AquaIngot), "Aqua", 50.0, 1044268);
+			AddSubRes(typeof(PlazmaIngot), "Plazma", 50.0, 1044267);
+			AddSubRes(typeof(CrystalIngot), "Crystal", 50.0, 1044268);
+
+			AddSubRes(typeof(VeriteIngot), 1044029, 50.0, 1044036, 1044268);
+			AddSubRes(typeof(ValoriteIngot), 1044030, 50.0, 104403, 1044268);
+			AddSubRes(typeof(BlueRockIngot), "Bluerock", 50.0, 1044268);
+			AddSubRes(typeof(AcidIngot), "Acid", 50.0, 1044268);
+
+			AddSubRes(typeof(PlutoniumIngot), "Plutonium", 80.0, 1044268);
+			AddSubRes(typeof(GloryIngot), "Glory", 80.0, 1044267);
+			AddSubRes(typeof(BlueSteelIngot), "Bluestee", 80.0, 1044268);
+
+			AddSubRes(typeof(BloodRockIngot), "Bloodrock", 80.0, 1044268);
+			AddSubRes(typeof(FrostIngot), "Frost", 80.0, 1044268);
+			AddSubRes(typeof(MeteorIngot), "Meteor", 80.0, 1044268);
+			AddSubRes(typeof(IridiumIngot), "Iridium", 80.0, 1044268);
+
+			AddSubRes(typeof(DiamondIngot), "Diamond", 100.0, 1044268);
+			AddSubRes(typeof(ShadowIngot), "Shadow", 100.0, 1044268);
+			AddSubRes(typeof(LavaIngot), "Lava", 100.0, 1044267);
+
+			AddSubRes(typeof(WhiteStoneIngot), "White Stone", 100.0, 1044268);
+			AddSubRes(typeof(MythrilIngot), "Mythril", 100.0, 1044268);
+			AddSubRes(typeof(LegendaryIngot), "Legendary", 100.0, 1044268);
 
 			SetSubRes2( typeof( RedScales ), 1060875 );
 
