@@ -719,7 +719,7 @@ namespace Server.Engines.Craft
 
 			AddSubRes(typeof(PlutoniumIngot), "Plutonium", 80.0, 1044268);
 			AddSubRes(typeof(GloryIngot), "Glory", 80.0, 1044267);
-			AddSubRes(typeof(BlueSteelIngot), "Bluestee", 80.0, 1044268);
+			AddSubRes(typeof(BlueSteelIngot), "Bluesteel", 80.0, 1044268);
 
 			AddSubRes(typeof(BloodRockIngot), "Bloodrock", 80.0, 1044268);
 			AddSubRes(typeof(FrostIngot), "Frost", 80.0, 1044268);
