@@ -27,6 +27,7 @@ namespace Server
 		public virtual int ManaRegenBonus { get; set; }
 
 		public virtual double AbsorbDamageRate { get; set; }
+		public virtual double AbsorbMagicDamageRate { get; set; }
 		public virtual double ResistFireRate { get; set; }
 		public virtual double ResistColdRate { get; set; }
 		public virtual double ResistPoisonRate { get; set; }
@@ -44,7 +45,7 @@ namespace Server
 		public virtual double IncreaseColdRate { get; set; }
 		public virtual double IncreasePoisonRate { get; set; }
 		public virtual double IncreaseEnergyRate { get; set; }
-		public virtual double StealthDamageRate { get; set; }
+		public virtual double StealthBonusDamageRate { get; set; }
 
 		public virtual double CriticalDamageRate { get; set; }
 
@@ -83,6 +84,7 @@ namespace Server
 		public virtual double CookingEatBonusRate { get; set; }
 
 		public virtual double MagicReflectionRate { get; set; }
+		public virtual double PhysReflectionRate { get; set; }
 
 		public virtual double GetBonusFromFullSet(Mobile m)
 		{
@@ -115,60 +117,46 @@ namespace Server
 
 				switch (GetSetResource(setItems))
 				{
-					case CraftResource.None: return null;
-					case CraftResource.Iron: return null;
-					case CraftResource.Bronze:
-						break;
-					case CraftResource.Silver:
-						break;
-					case CraftResource.Stone:
-						break;
-					case CraftResource.Gypsum:
-						break;
-					case CraftResource.Copper:
-						break;
-					case CraftResource.Gold:
-						break;
 					case CraftResource.Titan:
-						break;
+						return new TitanArmorBonuses(res, type, level);
 					case CraftResource.Verite:
-						break;
+						return new VeriteArmorBonuses(res, type, level);
 					case CraftResource.Valorite:
-						break;
+						return new ValoriteArmorBonuses(res, type, level);
 					case CraftResource.BlueRock:
-						break;
+						return new BlueRockArmorBonuses(res, type, level);
 					case CraftResource.Aqua:
-						break;
+						return new AquaArmorBonuses(res, type, level);
 					case CraftResource.Plazma:
-						break;
+						return new PlazmaArmorBonuses(res, type, level);
 					case CraftResource.Crystal:
-						break;
+						return new CrystalArmorBonuses(res, type, level);
 					case CraftResource.Acid:
-						break;
+						return new AcidArmorBonuses(res, type, level);
 					case CraftResource.Plutonium:
-						break;
+						return new PlutoniumArmorBonuses(res, type, level);
 					case CraftResource.BloodRock:
-						break;
+						return new BloodRockArmorBonuses(res, type, level);
 					case CraftResource.Glory:
-						break;
+						return new GloryArmorBonuses(res, type, level);
 					case CraftResource.Frost:
-						break;
+						return new FrostArmorBonuses(res, type, level);
 					case CraftResource.Meteor:
-						break;
+						return new MeteorArmorBonuses(res, type, level);
 					case CraftResource.BlueSteel:
-						break;
+						return new BlueSteelArmorBonuses(res, type, level);
 					case CraftResource.Iridium:
-						break;
+						return new IridiumArmorBonuses(res, type, level);
 					case CraftResource.WhiteStone:
-						break;
+						return new WhiteStoneArmorBonuses(res, type, level);
 					case CraftResource.Diamond:
-						break;
+						return new DiamondArmorBonuses(res, type, level);
 					case CraftResource.Mythril:
-						break;
+						return new MythrilArmorBonuses(res, type, level);
 					case CraftResource.Shadow:
-						break;
-					case CraftResource.Legendary:
-						break;
+						return new ShadowArmorBonuses(res, type, level);
+					//case CraftResource.Legendary:
+					//	return new LegendaryArmorBonuses(res, type, level);
 					case CraftResource.Lava:
 						return new LavaArmorBonuses(res, type, level);
 				}
@@ -197,7 +185,7 @@ namespace Server
 		{
 			for (int i = 0; i < setItems.Count; i++)
 			{
-if (setItems[i] is BaseArmor)
+				if (setItems[i] is BaseArmor)
 				{
 					BaseArmor armor = setItems[i] as BaseArmor;
 
@@ -237,12 +225,12 @@ if (setItems[i] is BaseArmor)
 			//);
 
 			if (setItems != null && setItems.Count == 6) // full set
-			{				
+			{
 				for (int i = 0; i < setItems.Count; i++)
 				{
 					BaseArmor armor = setItems[i] as BaseArmor;
 
-					if (armor.Resource <= CraftResource.Iron ||  armor.Resource != (setItems[0] as BaseArmor).Resource)
+					if (armor.Resource <= CraftResource.Iron || armor.Resource != (setItems[0] as BaseArmor).Resource)
 						return CraftResource.None;
 				}
 
@@ -293,7 +281,7 @@ if (setItems[i] is BaseArmor)
 							}
 						}
 					case ArmorMaterialType.Plate:
-						{							
+						{
 							switch (Level)
 							{
 								case 1: return 300;
@@ -301,7 +289,7 @@ if (setItems[i] is BaseArmor)
 								//case 3: return 240;
 								case 4: return 100;
 								case 5: return 100;
-							    default: return 0;
+								default: return 0;
 							}
 						}
 				}
@@ -323,23 +311,1048 @@ if (setItems[i] is BaseArmor)
 		}
 
 		public override bool DisableParalyzeFieldDelay { get { return Level == 2; } }
-		public override double CastSpeedRate { get { return Level == 1 ? 0.3 : 0 ;} }
+		public override double CastSpeedRate { get { return Level == 1 ? 0.3 : 0; } }
+	}
+
+	public class TitanArmorBonuses : BaseArmorResourceBonus
+	{
+		public TitanArmorBonuses(CraftResource res, ArmorMaterialType type, int level)
+		{
+			Resource = res;
+			Type = type;
+			Level = level;
+		}
+
+		public override double AbsorbDamageRate
+		{
+			get
+			{
+				switch (Type)
+				{
+					case ArmorMaterialType.Ringmail:
+						return 0.15;
+					case ArmorMaterialType.Chainmail:
+						return 0.15;
+					case ArmorMaterialType.Plate:
+						return 0.2; // 20%
+				}
+
+				return 0;
+			}
+		}
+	}
+
+	public class ValoriteArmorBonuses : BaseArmorResourceBonus
+	{
+		public ValoriteArmorBonuses(CraftResource res, ArmorMaterialType type, int level)
+		{
+			Resource = res;
+			Type = type;
+			Level = level;
+		}
+
+		public override Dictionary<SkillName, double> SkillBonuses
+		{
+			get
+			{
+				var skillTable = new Dictionary<SkillName, double>();
+				switch (Type)
+				{
+					case ArmorMaterialType.Ringmail:
+						{
+							skillTable.Add(SkillName.Archery, 12);
+							skillTable.Add(SkillName.Tactics, 12);
+							skillTable.Add(SkillName.Swords, 12);
+							skillTable.Add(SkillName.Parry, 12);
+							return skillTable;
+						}
+
+					case ArmorMaterialType.Chainmail:
+						{
+							skillTable.Add(SkillName.Archery, 10);
+							skillTable.Add(SkillName.Tactics, 10);
+							skillTable.Add(SkillName.Swords, 10);
+							skillTable.Add(SkillName.Parry, 10);
+							return skillTable;
+						}
+					case ArmorMaterialType.Plate:
+						{
+							skillTable.Add(SkillName.Archery, 15);
+							skillTable.Add(SkillName.Tactics, 15);
+							skillTable.Add(SkillName.Swords, 15);
+							skillTable.Add(SkillName.Parry, 15);
+							return skillTable;
+						}
+				}
+
+				return skillTable;
+			}
+		}
+	}
+
+	public class VeriteArmorBonuses : BaseArmorResourceBonus
+	{
+		public VeriteArmorBonuses(CraftResource res, ArmorMaterialType type, int level)
+		{
+			Resource = res;
+			Type = type;
+			Level = level;
+		}
+
+		public override double FatiqueRate => 2;
+	}
+
+	public class BlueRockArmorBonuses : BaseArmorResourceBonus
+	{
+		public BlueRockArmorBonuses(CraftResource res, ArmorMaterialType type, int level)
+		{
+			Resource = res;
+			Type = type;
+			Level = level;
+		}
+
+		public override Dictionary<SkillName, double> SkillBonuses
+		{
+			get
+			{
+				var skillTable = new Dictionary<SkillName, double>();
+
+				switch (Type)
+				{
+					case ArmorMaterialType.Ringmail:
+						{
+							skillTable.Add(SkillName.Macing, 35);
+							skillTable.Add(SkillName.Tactics, 35);
+							skillTable.Add(SkillName.Parry, 15);
+							return skillTable;
+						}
+
+					case ArmorMaterialType.Chainmail:
+						{
+							skillTable.Add(SkillName.Macing, 30);
+							skillTable.Add(SkillName.Tactics, 30);
+							skillTable.Add(SkillName.Parry, 12);
+							return skillTable;
+						}
+					case ArmorMaterialType.Plate:
+						{
+							skillTable.Add(SkillName.Macing, 40);
+							skillTable.Add(SkillName.Tactics, 40);
+							skillTable.Add(SkillName.Parry, 20);
+							return skillTable;
+						}
+				}
+
+				return skillTable;
+			}
+		}
+	}
+
+	public class AquaArmorBonuses : BaseArmorResourceBonus
+	{
+		public AquaArmorBonuses(CraftResource res, ArmorMaterialType type, int level)
+		{
+			Resource = res;
+			Type = type;
+			Level = level;
+		}
+
+		public override double AbsorbFireRate => 0.5;
+	}
+
+	public class PlazmaArmorBonuses : BaseArmorResourceBonus
+	{
+		public PlazmaArmorBonuses(CraftResource res, ArmorMaterialType type, int level)
+		{
+			Resource = res;
+			Type = type;
+			Level = level;
+		}
+
+		public override double ParalyzeFieldImmunityRate => 1;
+	}
+
+	public class CrystalArmorBonuses : BaseArmorResourceBonus
+	{
+		public CrystalArmorBonuses(CraftResource res, ArmorMaterialType type, int level)
+		{
+			Resource = res;
+			Type = type;
+			Level = level;
+		}
+
+		public override double AbsorbPoisonRate => 80;
 	}
 
 
+	public class AcidArmorBonuses : BaseArmorResourceBonus
+	{
+		public AcidArmorBonuses(CraftResource res, ArmorMaterialType type, int level)
+		{
+			Resource = res;
+			Type = type;
+			Level = level;
+		}
+
+		// ToDo стихи на выбор должны быть.
+		public override double IncreaseColdRate => 0.3;
+		public override double IncreaseEnergyRate => 0.3;
+		public override double IncreasePoisonRate => 0.3;
+		public override double IncreaseFireRate => 0.3;
+		public override double IncreaseDamageRate => 0.3;
+
+		//Каждая часть регенит +1 маны
+	}
+
+	public class PlutoniumArmorBonuses : BaseArmorResourceBonus
+	{
+		public PlutoniumArmorBonuses(CraftResource res, ArmorMaterialType type, int level)
+		{
+			Resource = res;
+			Type = type;
+			Level = level;
+		}
+
+		public override int StrBonus
+		{
+			get
+			{
+				switch (Type)
+				{
+					case ArmorMaterialType.Ringmail:
+						{
+							switch (Level)
+							{
+								case 1: return 80;
+								//case 2: return 80;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 80;
+								default: return 0;
+							}
+						}
+					case ArmorMaterialType.Chainmail:
+						{
+							switch (Level)
+							{
+								case 1: return 70;
+								//case 2: return 70;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 70;
+								default: return 0;
+							}
+						}
+					case ArmorMaterialType.Plate:
+						{
+							switch (Level)
+							{
+								case 1: return 100;
+								//case 2: return 100;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 100;
+								default: return 0;
+							}
+						}
+				}
+				return 0;
+
+			}
+		}
+		public override double IncreaseDamageRate => 0.15;
+		public override double CastSpeedRate { get { return Level == 1 ? 0.3 : 0; } }
+	}
+
+	public class BloodRockArmorBonuses : BaseArmorResourceBonus
+	{
+		public BloodRockArmorBonuses(CraftResource res, ArmorMaterialType type, int level)
+		{
+			Resource = res;
+			Type = type;
+			Level = level;
+		}
+
+		public override int StrBonus
+		{
+			get
+			{
+				switch (Type)
+				{
+					case ArmorMaterialType.Ringmail:
+						{
+							switch (Level)
+							{
+								case 1: return 45;
+								//case 2: return 80;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 80;
+								default: return 0;
+							}
+						}
+					case ArmorMaterialType.Chainmail:
+						{
+							switch (Level)
+							{
+								case 1: return 40;
+								//case 2: return 70;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 70;
+								default: return 0;
+							}
+						}
+					case ArmorMaterialType.Plate:
+						{
+							switch (Level)
+							{
+								case 1: return 50;
+								//case 2: return 100;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 100;
+								default: return 0;
+							}
+						}
+				}
+				return 0;
+
+			}
+		}
+		public override double CastSpeedRate { get { return Level == 1 ? 0.2 : 0; } }
+	}
+
+	public class GloryArmorBonuses : BaseArmorResourceBonus
+	{
+		public GloryArmorBonuses(CraftResource res, ArmorMaterialType type, int level)
+		{
+			Resource = res;
+			Type = type;
+			Level = level;
+		}
+
+		public override int StrBonus
+		{
+			get
+			{
+				switch (Type)
+				{
+					case ArmorMaterialType.Ringmail:
+						{
+							switch (Level)
+							{
+								case 1: return 80;
+								//case 2: return 80;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 80;
+								default: return 0;
+							}
+						}
+					case ArmorMaterialType.Chainmail:
+						{
+							switch (Level)
+							{
+								case 1: return 60;
+								//case 2: return 70;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 70;
+								default: return 0;
+							}
+						}
+					case ArmorMaterialType.Plate:
+						{
+							switch (Level)
+							{
+								case 1: return 100;
+								//case 2: return 100;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 100;
+								default: return 0;
+							}
+						}
+				}
+				return 0;
+
+			}
+		}
+		public override double AbsorbDamageRate => 0.25;
+	}
+
+	public class FrostArmorBonuses : BaseArmorResourceBonus
+	{
+		public FrostArmorBonuses(CraftResource res, ArmorMaterialType type, int level)
+		{
+			Resource = res;
+			Type = type;
+			Level = level;
+		}
+
+		public override int StrBonus
+		{
+			get
+			{
+				switch (Type)
+				{
+					case ArmorMaterialType.Ringmail:
+						{
+							switch (Level)
+							{
+								case 1: return 90;
+								//case 2: return 80;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 80;
+								default: return 0;
+							}
+						}
+					case ArmorMaterialType.Chainmail:
+						{
+							switch (Level)
+							{
+								case 1: return 80;
+								//case 2: return 70;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 70;
+								default: return 0;
+							}
+						}
+					case ArmorMaterialType.Plate:
+						{
+							switch (Level)
+							{
+								case 1: return 100;
+								//case 2: return 100;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 100;
+								default: return 0;
+							}
+						}
+				}
+				return 0;
+
+			}
+		}
+		public override double AbsorbFireRate => 0.7;
+	}
+
+
+	//todo regens
+	public class MeteorArmorBonuses : BaseArmorResourceBonus
+	{
+		public MeteorArmorBonuses(CraftResource res, ArmorMaterialType type, int level)
+		{
+			Resource = res;
+			Type = type;
+			Level = level;
+		}
+
+		public override int StrBonus
+		{
+			get
+			{
+				switch (Type)
+				{
+					case ArmorMaterialType.Ringmail:
+						{
+							switch (Level)
+							{
+								case 1: return 135;
+								//case 2: return 80;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 80;
+								default: return 0;
+							}
+						}
+					case ArmorMaterialType.Chainmail:
+						{
+							switch (Level)
+							{
+								case 1: return 120;
+								//case 2: return 70;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 70;
+								default: return 0;
+							}
+						}
+					case ArmorMaterialType.Plate:
+						{
+							switch (Level)
+							{
+								case 1: return 150;
+								//case 2: return 100;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 100;
+								default: return 0;
+							}
+						}
+				}
+				return 0;
+
+			}
+		}
+		public override double AbsorbFireRate => 0.7;
+	}
+
+	public class BlueSteelArmorBonuses : BaseArmorResourceBonus
+	{
+		public BlueSteelArmorBonuses(CraftResource res, ArmorMaterialType type, int level)
+		{
+			Resource = res;
+			Type = type;
+			Level = level;
+		}
+
+		public override int StrBonus
+		{
+			get
+			{
+				switch (Type)
+				{
+					case ArmorMaterialType.Ringmail:
+						{
+							switch (Level)
+							{
+								case 1: return 90;
+								//case 2: return 80;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 80;
+								default: return 0;
+							}
+						}
+					case ArmorMaterialType.Chainmail:
+						{
+							switch (Level)
+							{
+								case 1: return 80;
+								//case 2: return 70;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 70;
+								default: return 0;
+							}
+						}
+					case ArmorMaterialType.Plate:
+						{
+							switch (Level)
+							{
+								case 1: return 100;
+								//case 2: return 100;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 100;
+								default: return 0;
+							}
+						}
+				}
+				return 0;
+
+			}
+		}
+		public override Dictionary<SkillName, double> SkillBonuses
+		{
+			get
+			{
+				var skillTable = new Dictionary<SkillName, double>();
+				skillTable.Add(SkillName.Healing, 80);
+				return skillTable;
+			}
+		}
+	}
+	//todo musicanship delay
+	public class IridiumArmorBonuses : BaseArmorResourceBonus
+	{
+		public IridiumArmorBonuses(CraftResource res, ArmorMaterialType type, int level)
+		{
+			Resource = res;
+			Type = type;
+			Level = level;
+		}
+
+		public override int StrBonus
+		{
+			get
+			{
+				switch (Type)
+				{
+					case ArmorMaterialType.Ringmail:
+						{
+							switch (Level)
+							{
+								case 1: return 130;
+								//case 2: return 80;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 80;
+								default: return 0;
+							}
+						}
+					case ArmorMaterialType.Chainmail:
+						{
+							switch (Level)
+							{
+								case 1: return 120;
+								//case 2: return 70;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 70;
+								default: return 0;
+							}
+						}
+					case ArmorMaterialType.Plate:
+						{
+							switch (Level)
+							{
+								case 1: return 150;
+								//case 2: return 100;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 100;
+								default: return 0;
+							}
+						}
+				}
+				return 0;
+
+			}
+		}
+		public override double MusicanshipBonusRate => 0.5;
+	}
+
+	public class WhiteStoneArmorBonuses : BaseArmorResourceBonus
+	{
+		public WhiteStoneArmorBonuses(CraftResource res, ArmorMaterialType type, int level)
+		{
+			Resource = res;
+			Type = type;
+			Level = level;
+		}
+
+		public override int StrBonus
+		{
+			get
+			{
+				switch (Type)
+				{
+					case ArmorMaterialType.Ringmail:
+						{
+							switch (Level)
+							{
+								case 1: return 260;
+								//case 2: return 80;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 80;
+								default: return 0;
+							}
+						}
+					case ArmorMaterialType.Chainmail:
+						{
+							switch (Level)
+							{
+								case 1: return 220;
+								//case 2: return 70;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 70;
+								default: return 0;
+							}
+						}
+					case ArmorMaterialType.Plate:
+						{
+							switch (Level)
+							{
+								case 1: return 300;
+								//case 2: return 100;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 100;
+								default: return 0;
+							}
+						}
+				}
+				return 0;
+
+			}
+		}
+		public override double MagicReflectionRate => 0.3;
+	}
+
+	public class DiamondArmorBonuses : BaseArmorResourceBonus
+	{
+		public DiamondArmorBonuses(CraftResource res, ArmorMaterialType type, int level)
+		{
+			Resource = res;
+			Type = type;
+			Level = level;
+		}
+
+		public override int StrBonus
+		{
+			get
+			{
+				switch (Type)
+				{
+					case ArmorMaterialType.Ringmail:
+						{
+							switch (Level)
+							{
+								case 1: return 250;
+								//case 2: return 80;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 80;
+								default: return 0;
+							}
+						}
+					case ArmorMaterialType.Chainmail:
+						{
+							switch (Level)
+							{
+								case 1: return 220;
+								//case 2: return 70;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 70;
+								default: return 0;
+							}
+						}
+					case ArmorMaterialType.Plate:
+						{
+							switch (Level)
+							{
+								case 1: return 300;
+								//case 2: return 100;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 100;
+								default: return 0;
+							}
+						}
+				}
+				return 0;
+
+			}
+		}
+
+		// резистит в ближ врага.
+		public override double PhysReflectionRate => 0.2;
+	}
+
+	public class MythrilArmorBonuses : BaseArmorResourceBonus
+	{
+		public MythrilArmorBonuses(CraftResource res, ArmorMaterialType type, int level)
+		{
+			Resource = res;
+			Type = type;
+			Level = level;
+		}
+
+		public override int StrBonus
+		{
+			get
+			{
+				switch (Type)
+				{
+					case ArmorMaterialType.Ringmail:
+						{
+							switch (Level)
+							{
+								case 1: return 250;
+								//case 2: return 80;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 80;
+								default: return 0;
+							}
+						}
+					case ArmorMaterialType.Chainmail:
+						{
+							switch (Level)
+							{
+								case 1: return 200;
+								//case 2: return 70;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 70;
+								default: return 0;
+							}
+						}
+					case ArmorMaterialType.Plate:
+						{
+							switch (Level)
+							{
+								case 1: return 300;
+								//case 2: return 100;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 100;
+								default: return 0;
+							}
+						}
+				}
+				return 0;
+
+			}
+		}
+
+		public override double ResistMageryRate => 0.5;
+		public override double AbsorbMagicDamageRate => 0.2;
+
+
+	}
+
+	public class ShadowArmorBonuses : BaseArmorResourceBonus
+	{
+		public ShadowArmorBonuses(CraftResource res, ArmorMaterialType type, int level)
+		{
+			Resource = res;
+			Type = type;
+			Level = level;
+		}
+
+		public override int StrBonus
+		{
+			get
+			{
+				switch (Type)
+				{
+					case ArmorMaterialType.Ringmail:
+						{
+							switch (Level)
+							{
+								case 1: return 180;
+								//case 2: return 80;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 80;
+								default: return 0;
+							}
+						}
+					case ArmorMaterialType.Chainmail:
+						{
+							switch (Level)
+							{
+								case 1: return 160;
+								//case 2: return 70;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 70;
+								default: return 0;
+							}
+						}
+					case ArmorMaterialType.Plate:
+						{
+							switch (Level)
+							{
+								case 1: return 200;
+								//case 2: return 100;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 100;
+								default: return 0;
+							}
+						}
+				}
+				return 0;
+
+			}
+		}
+
+		public override int DexBonus
+		{
+			get
+			{
+				switch (Type)
+				{
+					case ArmorMaterialType.Ringmail:
+						{
+							switch (Level)
+							{
+								case 1: return 70;
+								//case 2: return 80;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 80;
+								default: return 0;
+							}
+						}
+					case ArmorMaterialType.Chainmail:
+						{
+							switch (Level)
+							{
+								case 1: return 60;
+								//case 2: return 70;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 70;
+								default: return 0;
+							}
+						}
+					case ArmorMaterialType.Plate:
+						{
+							switch (Level)
+							{
+								case 1: return 80;
+								//case 2: return 100;
+								////case 3: return 240;
+								//case 4: return 100;
+								//case 5: return 100;
+								default: return 0;
+							}
+						}
+				}
+				return 0;
+
+			}
+		}
+
+		public override Dictionary<SkillName, double> SkillBonuses
+		{
+			get
+			{
+				var skillTable = new Dictionary<SkillName, double>();
+
+				skillTable.Add(SkillName.Stealth, 60);
+
+				return skillTable;
+			}
+		}
+
+		public override double StealthBonusDamageRate => 0.3;
+
+
+	}
+
+	public class LegendaryArmorBonuses : BaseArmorResourceBonus
+	{
+		public LegendaryArmorBonuses(CraftResource res, ArmorMaterialType type, int level)
+		{
+			Resource = res;
+			Type = type;
+			Level = level;
+		}
+
+		//public override int StrBonus
+		//{
+		//	get
+		//	{
+		//		switch (Type)
+		//		{
+		//			case ArmorMaterialType.Ringmail:
+		//				{
+		//					switch (Level)
+		//					{
+		//						case 1: return 180;
+		//						//case 2: return 80;
+		//						////case 3: return 240;
+		//						//case 4: return 100;
+		//						//case 5: return 80;
+		//						default: return 0;
+		//					}
+		//				}
+		//			case ArmorMaterialType.Chainmail:
+		//				{
+		//					switch (Level)
+		//					{
+		//						case 1: return 160;
+		//						//case 2: return 70;
+		//						////case 3: return 240;
+		//						//case 4: return 100;
+		//						//case 5: return 70;
+		//						default: return 0;
+		//					}
+		//				}
+		//			case ArmorMaterialType.Plate:
+		//				{
+		//					switch (Level)
+		//					{
+		//						case 1: return 200;
+		//						//case 2: return 100;
+		//						////case 3: return 240;
+		//						//case 4: return 100;
+		//						//case 5: return 100;
+		//						default: return 0;
+		//					}
+		//				}
+		//		}
+		//		return 0;
+
+		//	}
+		//}
+
+		//public override int DexBonus
+		//{
+		//	get
+		//	{
+		//		switch (Type)
+		//		{
+		//			case ArmorMaterialType.Ringmail:
+		//				{
+		//					switch (Level)
+		//					{
+		//						case 1: return 70;
+		//						//case 2: return 80;
+		//						////case 3: return 240;
+		//						//case 4: return 100;
+		//						//case 5: return 80;
+		//						default: return 0;
+		//					}
+		//				}
+		//			case ArmorMaterialType.Chainmail:
+		//				{
+		//					switch (Level)
+		//					{
+		//						case 1: return 60;
+		//						//case 2: return 70;
+		//						////case 3: return 240;
+		//						//case 4: return 100;
+		//						//case 5: return 70;
+		//						default: return 0;
+		//					}
+		//				}
+		//			case ArmorMaterialType.Plate:
+		//				{
+		//					switch (Level)
+		//					{
+		//						case 1: return 80;
+		//						//case 2: return 100;
+		//						////case 3: return 240;
+		//						//case 4: return 100;
+		//						//case 5: return 100;
+		//						default: return 0;
+		//					}
+		//				}
+		//		}
+		//		return 0;
+
+		//	}
+		//}
+
+		//public override Dictionary<SkillName, double> SkillBonuses
+		//{
+		//	get
+		//	{
+		//		var skillTable = new Dictionary<SkillName, double>();
+
+		//		skillTable.Add(SkillName.Stealth, 60);
+
+		//		return skillTable;
+		//	}
+		//}
 
 
 
-
-
-
-
-
-
-
-
-
-
+	}
 
 
 
