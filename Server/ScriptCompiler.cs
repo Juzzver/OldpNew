@@ -55,45 +55,45 @@ namespace Server
 		{
 			List<string> list = new List<string>();
 
-			string path = Path.Combine( Core.BaseDirectory, "Data/Assemblies.cfg" );
+			string path = Path.Combine(Core.BaseDirectory, "Data/Assemblies.cfg");
 
-			if( File.Exists( path ) )
+			if (File.Exists(path))
 			{
-				using( StreamReader ip = new StreamReader( path ) )
+				using (StreamReader ip = new StreamReader(path))
 				{
 					string line;
 
-					while( (line = ip.ReadLine()) != null )
+					while ((line = ip.ReadLine()) != null)
 					{
-						if( line.Length > 0 && !line.StartsWith( "#" ) )
-							list.Add( line );
+						if (line.Length > 0 && !line.StartsWith("#"))
+							list.Add(line);
 					}
 				}
 			}
 
-			list.Add( Core.ExePath );
+			list.Add(Core.ExePath);
 
-			list.AddRange( m_AdditionalReferences );
+			list.AddRange(m_AdditionalReferences);
 
 			return list.ToArray();
 		}
 
-		public static string GetCompilerOptions( bool debug )
+		public static string GetCompilerOptions(bool debug)
 		{
-			StringBuilder sb = null;			
+			StringBuilder sb = null;
 
-			AppendCompilerOption( ref sb, "/unsafe" );
+			if (!debug)
+				AppendCompilerOption(ref sb, "/optimize");
 
-			if( !debug )
-				AppendCompilerOption( ref sb, "/optimize" );
+			//	AppendCompilerOption(ref sb, "/langversion:6");
 
 #if MONO
 			AppendCompilerOption( ref sb, "/d:MONO" );
 #endif
 
-			if( Core.Is64Bit )
-				AppendCompilerOption( ref sb, "/d:x64" );
-			
+			if (Core.Is64Bit)
+				AppendCompilerOption(ref sb, "/d:x64");
+
 #if NEWTIMERS
 			AppendCompilerOption(ref sb, "/d:NEWTIMERS");
 #endif
@@ -105,105 +105,142 @@ namespace Server
 			return (sb == null ? null : sb.ToString());
 		}
 
-		private static void AppendCompilerOption( ref StringBuilder sb, string define )
+		private static void AppendCompilerOption(ref StringBuilder sb, string define)
 		{
-			if( sb == null )
+			if (sb == null)
 				sb = new StringBuilder();
 			else
-				sb.Append( ' ' );
+				sb.Append(' ');
 
-			sb.Append( define );
+			sb.Append(define);
 		}
 
-		private static byte[] GetHashCode( string compiledFile, string[] scriptFiles, bool debug )
+		private static byte[] GetHashCode(string compiledFile, string[] scriptFiles, bool debug)
 		{
-			using( MemoryStream ms = new MemoryStream() )
+			using (MemoryStream ms = new MemoryStream())
 			{
-				using( BinaryWriter bin = new BinaryWriter( ms ) )
+				using (BinaryWriter bin = new BinaryWriter(ms))
 				{
-					FileInfo fileInfo = new FileInfo( compiledFile );
+					FileInfo fileInfo = new FileInfo(compiledFile);
 
-					bin.Write( fileInfo.LastWriteTimeUtc.Ticks );
+					bin.Write(fileInfo.LastWriteTimeUtc.Ticks);
 
-					foreach( string scriptFile in scriptFiles )
+					foreach (string scriptFile in scriptFiles)
 					{
-						fileInfo = new FileInfo( scriptFile );
+						fileInfo = new FileInfo(scriptFile);
 
-						bin.Write( fileInfo.LastWriteTimeUtc.Ticks );
+						bin.Write(fileInfo.LastWriteTimeUtc.Ticks);
 					}
 
-					bin.Write( debug );
-					bin.Write( Core.Version.ToString() );
+					bin.Write(debug);
+					bin.Write(Core.Version.ToString());
 
 					ms.Position = 0;
 
-					using( SHA1 sha1 = SHA1.Create() )
+					using (SHA1 sha1 = SHA1.Create())
 					{
-						return sha1.ComputeHash( ms );
+						return sha1.ComputeHash(ms);
 					}
 				}
 			}
 		}
 
-		public static bool CompileCSScripts( out Assembly assembly )
+		public static bool CompileCSScripts(out Assembly assembly)
 		{
-			return CompileCSScripts( false, true, out assembly );
+			return CompileCSScripts(false, true, out assembly);
 		}
 
-		public static bool CompileCSScripts( bool debug, out Assembly assembly )
+		public static bool CompileCSScripts(bool debug, out Assembly assembly)
 		{
-			return CompileCSScripts( debug, true, out assembly );
+			return CompileCSScripts(debug, true, out assembly);
 		}
 
-		public static bool CompileCSScripts( bool debug, bool cache, out Assembly assembly )
-		{
-			Console.Write( "Scripts: Compiling C# scripts..." );
-			string[] files = GetScripts( "*.cs" );
+		public static Lazy<CSharpCodeProvider> CodeProvider { get; } = new Lazy<CSharpCodeProvider>(() => {
+			var csc = new CSharpCodeProvider();
+			var settings = csc
+				.GetType()
+				.GetField("_compilerSettings", BindingFlags.Instance | BindingFlags.NonPublic)
+				.GetValue(csc);
 
-			if( files.Length == 0 )
+			var path = settings
+				.GetType()
+				.GetField("_compilerFullPath", BindingFlags.Instance | BindingFlags.NonPublic);
+
+			path.SetValue(settings, ((string)path.GetValue(settings)).Replace(@"bin\roslyn\", @"roslyn\"));
+
+			return csc;
+		});
+
+		public static Microsoft.CodeDom.Providers.DotNetCompilerPlatform.CSharpCodeProvider CProv
+		{
+			get
 			{
-				Console.WriteLine( "no files found." );
+				var csc = new Microsoft.CodeDom.Providers.DotNetCompilerPlatform.CSharpCodeProvider();
+
+				var settings = csc
+					.GetType()
+					.GetField("_compilerSettings", BindingFlags.Instance | BindingFlags.NonPublic)
+					.GetValue(csc);
+
+				var path = settings
+					.GetType()
+					.GetField("_compilerFullPath", BindingFlags.Instance | BindingFlags.NonPublic);
+
+				path.SetValue(settings, ((string)path.GetValue(settings)).Replace(@"bin\roslyn\", @"roslyn\"));
+
+				return csc;
+			}
+		}
+
+		public static bool CompileCSScripts(bool debug, bool cache, out Assembly assembly)
+		{
+			Console.Write("Scripts: Compiling C# scripts...");
+			string[] files = GetScripts("*.cs");
+
+			if (files.Length == 0)
+			{
+				Console.WriteLine("no files found.");
 				assembly = null;
 				return true;
 			}
 
-			if( File.Exists( "Scripts/Output/Scripts.CS.dll" ) )
+			if (File.Exists("Scripts/Output/Scripts.CS.dll"))
 			{
-				if( cache && File.Exists( "Scripts/Output/Scripts.CS.hash" ) )
+				if (cache && File.Exists("Scripts/Output/Scripts.CS.hash"))
 				{
 					try
 					{
-						byte[] hashCode = GetHashCode( "Scripts/Output/Scripts.CS.dll", files, debug );
+						byte[] hashCode = GetHashCode("Scripts/Output/Scripts.CS.dll", files, debug);
 
-						using( FileStream fs = new FileStream( "Scripts/Output/Scripts.CS.hash", FileMode.Open, FileAccess.Read, FileShare.Read ) )
+						using (FileStream fs = new FileStream("Scripts/Output/Scripts.CS.hash", FileMode.Open, FileAccess.Read, FileShare.Read))
 						{
-							using( BinaryReader bin = new BinaryReader( fs ) )
+							using (BinaryReader bin = new BinaryReader(fs))
 							{
-								byte[] bytes = bin.ReadBytes( hashCode.Length );
+								byte[] bytes = bin.ReadBytes(hashCode.Length);
 
-								if( bytes.Length == hashCode.Length )
+								if (bytes.Length == hashCode.Length)
 								{
 									bool valid = true;
 
-									for( int i = 0; i < bytes.Length; ++i )
+									for (int i = 0; i < bytes.Length; ++i)
 									{
-										if( bytes[i] != hashCode[i] )
+										if (bytes[i] != hashCode[i])
 										{
 											valid = false;
 											break;
 										}
 									}
 
-									if( valid )
+									if (valid)
 									{
-										assembly = Assembly.LoadFrom( "Scripts/Output/Scripts.CS.dll" );
+										assembly = Assembly.LoadFrom("Scripts/Output/Scripts.CS.dll");
 
-										if( !m_AdditionalReferences.Contains( assembly.Location ) )
+										if (!m_AdditionalReferences.Contains(assembly.Location))
 										{
-											m_AdditionalReferences.Add( assembly.Location );
+											m_AdditionalReferences.Add(assembly.Location);
 										}
 
-										Console.WriteLine( "done (cached)" );
+										Console.WriteLine("done (cached)");
 
 										return true;
 									}
@@ -217,34 +254,33 @@ namespace Server
 				}
 			}
 
-			DeleteFiles( "Scripts.CS*.dll" );
-
-			using ( CSharpCodeProvider provider = new CSharpCodeProvider() )
+			DeleteFiles("Scripts.CS*.dll");
+			using (Microsoft.CodeDom.Providers.DotNetCompilerPlatform.CSharpCodeProvider provider = CProv/*new CSharpCodeProvider()*/ )
 			{
-				string path = GetUnusedPath( "Scripts.CS" );
+				string path = GetUnusedPath("Scripts.CS");
 
-				CompilerParameters parms = new CompilerParameters( GetReferenceAssemblies(), path, debug );
+				CompilerParameters parms = new CompilerParameters(GetReferenceAssemblies(), path, debug);
 
-				string options = GetCompilerOptions( debug );
+				string options = GetCompilerOptions(debug);
 
-				if( options != null )
+				if (options != null)
 					parms.CompilerOptions = options;
 
-				if( Core.HaltOnWarning )
+				if (Core.HaltOnWarning)
 					parms.WarningLevel = 4;
 
 #if !MONO
-				CompilerResults results = provider.CompileAssemblyFromFile( parms, files );
+				CompilerResults results = provider.CompileAssemblyFromFile(parms, files);
 #else
 				parms.CompilerOptions = String.Format( "{0} /nowarn:169,219,414 /recurse:Scripts/*.cs", parms.CompilerOptions );
 				CompilerResults results = provider.CompileAssemblyFromFile( parms, "" );
 #endif
-				m_AdditionalReferences.Add( path );
+				m_AdditionalReferences.Add(path);
 
-				Display( results );
+				Display(results);
 
 #if !MONO
-				if( results.Errors.Count > 0 )
+				if (results.Errors.Count > 0)
 				{
 					assembly = null;
 					return false;
@@ -261,17 +297,17 @@ namespace Server
 #endif
 
 
-				if( cache && Path.GetFileName( path ) == "Scripts.CS.dll" )
+				if (cache && Path.GetFileName(path) == "Scripts.CS.dll")
 				{
 					try
 					{
-						byte[] hashCode = GetHashCode( path, files, debug );
+						byte[] hashCode = GetHashCode(path, files, debug);
 
-						using( FileStream fs = new FileStream( "Scripts/Output/Scripts.CS.hash", FileMode.Create, FileAccess.Write, FileShare.None ) )
+						using (FileStream fs = new FileStream("Scripts/Output/Scripts.CS.hash", FileMode.Create, FileAccess.Write, FileShare.None))
 						{
-							using( BinaryWriter bin = new BinaryWriter( fs ) )
+							using (BinaryWriter bin = new BinaryWriter(fs))
 							{
-								bin.Write( hashCode, 0, hashCode.Length );
+								bin.Write(hashCode, 0, hashCode.Length);
 							}
 						}
 					}
@@ -285,65 +321,65 @@ namespace Server
 			}
 		}
 
-		public static bool CompileVBScripts( out Assembly assembly )
+		public static bool CompileVBScripts(out Assembly assembly)
 		{
-			return CompileVBScripts( false, out assembly );
+			return CompileVBScripts(false, out assembly);
 		}
 
-		public static bool CompileVBScripts( bool debug, out Assembly assembly )
+		public static bool CompileVBScripts(bool debug, out Assembly assembly)
 		{
-			return CompileVBScripts( debug, true, out assembly );
+			return CompileVBScripts(debug, true, out assembly);
 		}
 
-		public static bool CompileVBScripts( bool debug, bool cache, out Assembly assembly )
+		public static bool CompileVBScripts(bool debug, bool cache, out Assembly assembly)
 		{
-			Console.Write( "Scripts: Compiling VB.NET scripts..." );
-			string[] files = GetScripts( "*.vb" );
+			Console.Write("Scripts: Compiling VB.NET scripts...");
+			string[] files = GetScripts("*.vb");
 
-			if( files.Length == 0 )
+			if (files.Length == 0)
 			{
-				Console.WriteLine( "no files found." );
+				Console.WriteLine("no files found.");
 				assembly = null;
 				return true;
 			}
 
-			if( File.Exists( "Scripts/Output/Scripts.VB.dll" ) )
+			if (File.Exists("Scripts/Output/Scripts.VB.dll"))
 			{
-				if( cache && File.Exists( "Scripts/Output/Scripts.VB.hash" ) )
+				if (cache && File.Exists("Scripts/Output/Scripts.VB.hash"))
 				{
-					byte[] hashCode = GetHashCode( "Scripts/Output/Scripts.VB.dll", files, debug );
+					byte[] hashCode = GetHashCode("Scripts/Output/Scripts.VB.dll", files, debug);
 
 					try
 					{
-						using( FileStream fs = new FileStream( "Scripts/Output/Scripts.VB.hash", FileMode.Open, FileAccess.Read, FileShare.Read ) )
+						using (FileStream fs = new FileStream("Scripts/Output/Scripts.VB.hash", FileMode.Open, FileAccess.Read, FileShare.Read))
 						{
-							using( BinaryReader bin = new BinaryReader( fs ) )
+							using (BinaryReader bin = new BinaryReader(fs))
 							{
-								byte[] bytes = bin.ReadBytes( hashCode.Length );
+								byte[] bytes = bin.ReadBytes(hashCode.Length);
 
-								if( bytes.Length == hashCode.Length )
+								if (bytes.Length == hashCode.Length)
 								{
 									bool valid = true;
 
-									for( int i = 0; i < bytes.Length; ++i )
+									for (int i = 0; i < bytes.Length; ++i)
 									{
-										if( bytes[i] != hashCode[i] )
+										if (bytes[i] != hashCode[i])
 										{
 											valid = false;
 											break;
 										}
 									}
 
-									if( valid )
+									if (valid)
 									{
-										assembly = Assembly.LoadFrom( "Scripts/Output/Scripts.VB.dll" );
+										assembly = Assembly.LoadFrom("Scripts/Output/Scripts.VB.dll");
 
-										if( !m_AdditionalReferences.Contains( assembly.Location ) )
+										if (!m_AdditionalReferences.Contains(assembly.Location))
 										{
-											m_AdditionalReferences.Add( assembly.Location );
+											m_AdditionalReferences.Add(assembly.Location);
 										}
 
-										Console.WriteLine( "done (cached)" );
+										Console.WriteLine("done (cached)");
 
 										return true;
 									}
@@ -357,44 +393,44 @@ namespace Server
 				}
 			}
 
-			DeleteFiles( "Scripts.VB*.dll" );
+			DeleteFiles("Scripts.VB*.dll");
 
-			using ( VBCodeProvider provider = new VBCodeProvider() )
+			using (VBCodeProvider provider = new VBCodeProvider())
 			{
-				string path = GetUnusedPath( "Scripts.VB" );
+				string path = GetUnusedPath("Scripts.VB");
 
-				CompilerParameters parms = new CompilerParameters( GetReferenceAssemblies(), path, debug );
+				CompilerParameters parms = new CompilerParameters(GetReferenceAssemblies(), path, debug);
 
-				string options = GetCompilerOptions( debug );
+				string options = GetCompilerOptions(debug);
 
-				if( options != null )
+				if (options != null)
 					parms.CompilerOptions = options;
 
-				if( Core.HaltOnWarning )
+				if (Core.HaltOnWarning)
 					parms.WarningLevel = 4;
 
-				CompilerResults results = provider.CompileAssemblyFromFile( parms, files );
-				m_AdditionalReferences.Add( path );
+				CompilerResults results = provider.CompileAssemblyFromFile(parms, files);
+				m_AdditionalReferences.Add(path);
 
-				Display( results );
+				Display(results);
 
-				if( results.Errors.Count > 0 )
+				if (results.Errors.Count > 0)
 				{
 					assembly = null;
 					return false;
 				}
 
-				if( cache && Path.GetFileName( path ) == "Scripts.VB.dll" )
+				if (cache && Path.GetFileName(path) == "Scripts.VB.dll")
 				{
 					try
 					{
-						byte[] hashCode = GetHashCode( path, files, debug );
+						byte[] hashCode = GetHashCode(path, files, debug);
 
-						using( FileStream fs = new FileStream( "Scripts/Output/Scripts.VB.hash", FileMode.Create, FileAccess.Write, FileShare.None ) )
+						using (FileStream fs = new FileStream("Scripts/Output/Scripts.VB.hash", FileMode.Create, FileAccess.Write, FileShare.None))
 						{
-							using( BinaryWriter bin = new BinaryWriter( fs ) )
+							using (BinaryWriter bin = new BinaryWriter(fs))
 							{
-								bin.Write( hashCode, 0, hashCode.Length );
+								bin.Write(hashCode, 0, hashCode.Length);
 							}
 						}
 					}
@@ -408,86 +444,87 @@ namespace Server
 			}
 		}
 
-		public static void Display( CompilerResults results )
+		public static void Display(CompilerResults results)
 		{
-			if( results.Errors.Count > 0 )
+			if (results.Errors.Count > 0)
 			{
-				Dictionary<string, List<CompilerError>> errors = new Dictionary<string, List<CompilerError>>( results.Errors.Count, StringComparer.OrdinalIgnoreCase );
-				Dictionary<string, List<CompilerError>> warnings = new Dictionary<string, List<CompilerError>>( results.Errors.Count, StringComparer.OrdinalIgnoreCase );
+				Dictionary<string, List<CompilerError>> errors = new Dictionary<string, List<CompilerError>>(results.Errors.Count, StringComparer.OrdinalIgnoreCase);
+				Dictionary<string, List<CompilerError>> warnings = new Dictionary<string, List<CompilerError>>(results.Errors.Count, StringComparer.OrdinalIgnoreCase);
 
-				foreach( CompilerError e in results.Errors )
+				foreach (CompilerError e in results.Errors)
 				{
 					string file = e.FileName;
 
 					// Ridiculous. FileName is null if the warning/error is internally generated in csc.
-					if ( string.IsNullOrEmpty( file ) ) {
-						Console.WriteLine( "ScriptCompiler: {0}: {1}", e.ErrorNumber, e.ErrorText );
+					if (string.IsNullOrEmpty(file))
+					{
+						Console.WriteLine("ScriptCompiler: {0}: {1}", e.ErrorNumber, e.ErrorText);
 						continue;
 					}
 
 					Dictionary<string, List<CompilerError>> table = (e.IsWarning ? warnings : errors);
 
 					List<CompilerError> list = null;
-					table.TryGetValue( file, out list );
+					table.TryGetValue(file, out list);
 
-					if( list == null )
+					if (list == null)
 						table[file] = list = new List<CompilerError>();
 
-					list.Add( e );
+					list.Add(e);
 				}
 
-				if( errors.Count > 0 )
-					Console.WriteLine( "failed ({0} errors, {1} warnings)", errors.Count, warnings.Count );
+				if (errors.Count > 0)
+					Console.WriteLine("failed ({0} errors, {1} warnings)", errors.Count, warnings.Count);
 				else
-					Console.WriteLine( "done ({0} errors, {1} warnings)", errors.Count, warnings.Count );
+					Console.WriteLine("done ({0} errors, {1} warnings)", errors.Count, warnings.Count);
 
-				string scriptRoot = Path.GetFullPath( Path.Combine( Core.BaseDirectory, "Scripts" + Path.DirectorySeparatorChar ) );
-				Uri scriptRootUri = new Uri( scriptRoot );
+				string scriptRoot = Path.GetFullPath(Path.Combine(Core.BaseDirectory, "Scripts" + Path.DirectorySeparatorChar));
+				Uri scriptRootUri = new Uri(scriptRoot);
 
-				Utility.PushColor( ConsoleColor.Yellow );
+				Utility.PushColor(ConsoleColor.Yellow);
 
-				if( warnings.Count > 0 )
-					Console.WriteLine( "Warnings:" );
+				if (warnings.Count > 0)
+					Console.WriteLine("Warnings:");
 
-				foreach( KeyValuePair<string, List<CompilerError>> kvp in warnings )
+				foreach (KeyValuePair<string, List<CompilerError>> kvp in warnings)
 				{
 					string fileName = kvp.Key;
 					List<CompilerError> list = kvp.Value;
 
-					string fullPath = Path.GetFullPath( fileName );
-					string usedPath = Uri.UnescapeDataString( scriptRootUri.MakeRelativeUri( new Uri( fullPath ) ).OriginalString );
+					string fullPath = Path.GetFullPath(fileName);
+					string usedPath = Uri.UnescapeDataString(scriptRootUri.MakeRelativeUri(new Uri(fullPath)).OriginalString);
 
-					Console.WriteLine( " + {0}:", usedPath );
+					Console.WriteLine(" + {0}:", usedPath);
 
-					Utility.PushColor( ConsoleColor.DarkYellow );
+					Utility.PushColor(ConsoleColor.DarkYellow);
 
-					foreach( CompilerError e in list )
-						Console.WriteLine( "    {0}: Line {1}: {2}", e.ErrorNumber, e.Line, e.ErrorText );
+					foreach (CompilerError e in list)
+						Console.WriteLine("    {0}: Line {1}: {2}", e.ErrorNumber, e.Line, e.ErrorText);
 
 					Utility.PopColor();
 				}
 
 				Utility.PopColor();
 
-				Utility.PushColor( ConsoleColor.Red );
+				Utility.PushColor(ConsoleColor.Red);
 
-				if( errors.Count > 0 )
-					Console.WriteLine( "Errors:" );
+				if (errors.Count > 0)
+					Console.WriteLine("Errors:");
 
-				foreach( KeyValuePair<string, List<CompilerError>> kvp in errors )
+				foreach (KeyValuePair<string, List<CompilerError>> kvp in errors)
 				{
 					string fileName = kvp.Key;
 					List<CompilerError> list = kvp.Value;
 
-					string fullPath = Path.GetFullPath( fileName );
-					string usedPath = Uri.UnescapeDataString( scriptRootUri.MakeRelativeUri( new Uri( fullPath ) ).OriginalString );
+					string fullPath = Path.GetFullPath(fileName);
+					string usedPath = Uri.UnescapeDataString(scriptRootUri.MakeRelativeUri(new Uri(fullPath)).OriginalString);
 
-					Console.WriteLine( " + {0}:", usedPath );
+					Console.WriteLine(" + {0}:", usedPath);
 
-					Utility.PushColor( ConsoleColor.DarkRed );
+					Utility.PushColor(ConsoleColor.DarkRed);
 
-					foreach( CompilerError e in list )
-						Console.WriteLine( "    {0}: Line {1}: {2}", e.ErrorNumber, e.Line, e.ErrorText );
+					foreach (CompilerError e in list)
+						Console.WriteLine("    {0}: Line {1}: {2}", e.ErrorNumber, e.Line, e.ErrorText);
 
 					Utility.PopColor();
 				}
@@ -496,29 +533,29 @@ namespace Server
 			}
 			else
 			{
-				Console.WriteLine( "done (0 errors, 0 warnings)" );
+				Console.WriteLine("done (0 errors, 0 warnings)");
 			}
 		}
 
-		public static string GetUnusedPath( string name )
+		public static string GetUnusedPath(string name)
 		{
-			string path = Path.Combine( Core.BaseDirectory, String.Format( "Scripts/Output/{0}.dll", name ) );
+			string path = Path.Combine(Core.BaseDirectory, String.Format("Scripts/Output/{0}.dll", name));
 
-			for( int i = 2; File.Exists( path ) && i <= 1000; ++i )
-				path = Path.Combine( Core.BaseDirectory, String.Format( "Scripts/Output/{0}.{1}.dll", name, i ) );
+			for (int i = 2; File.Exists(path) && i <= 1000; ++i)
+				path = Path.Combine(Core.BaseDirectory, String.Format("Scripts/Output/{0}.{1}.dll", name, i));
 
 			return path;
 		}
 
-		public static void DeleteFiles( string mask )
+		public static void DeleteFiles(string mask)
 		{
 			try
 			{
-				string[] files = Directory.GetFiles( Path.Combine( Core.BaseDirectory, "Scripts/Output" ), mask );
+				string[] files = Directory.GetFiles(Path.Combine(Core.BaseDirectory, "Scripts/Output"), mask);
 
-				foreach( string file in files )
+				foreach (string file in files)
 				{
-					try { File.Delete( file ); }
+					try { File.Delete(file); }
 					catch { }
 				}
 			}
@@ -527,35 +564,35 @@ namespace Server
 			}
 		}
 
-		private delegate CompilerResults Compiler( bool debug );
+		private delegate CompilerResults Compiler(bool debug);
 
 		public static bool Compile()
 		{
-			return Compile( false );
+			return Compile(false);
 		}
 
-		public static bool Compile( bool debug )
+		public static bool Compile(bool debug)
 		{
-			return Compile( debug, true );
+			return Compile(debug, true);
 		}
 
-		public static bool Compile( bool debug, bool cache )
+		public static bool Compile(bool debug, bool cache)
 		{
-			EnsureDirectory( "Scripts/" );
-			EnsureDirectory( "Scripts/Output/" );
+			EnsureDirectory("Scripts/");
+			EnsureDirectory("Scripts/Output/");
 
-			if( m_AdditionalReferences.Count > 0 )
+			if (m_AdditionalReferences.Count > 0)
 				m_AdditionalReferences.Clear();
 
 			List<Assembly> assemblies = new List<Assembly>();
 
 			Assembly assembly;
 
-			if( CompileCSScripts( debug, cache, out assembly ) )
+			if (CompileCSScripts(debug, cache, out assembly))
 			{
-				if( assembly != null )
+				if (assembly != null)
 				{
-					assemblies.Add( assembly );
+					assemblies.Add(assembly);
 				}
 			}
 			else
@@ -563,13 +600,13 @@ namespace Server
 				return false;
 			}
 
-			if ( Core.VBdotNet )
+			if (Core.VBdotNet)
 			{
-				if ( CompileVBScripts( debug, cache, out assembly ) )
+				if (CompileVBScripts(debug, cache, out assembly))
 				{
-					if ( assembly != null )
+					if (assembly != null)
 					{
-						assemblies.Add( assembly );
+						assemblies.Add(assembly);
 					}
 				}
 				else
@@ -579,22 +616,22 @@ namespace Server
 			}
 			else
 			{
-				Console.WriteLine( "Scripts: Skipping VB.NET Scripts...done (use -vb to enable)");
+				Console.WriteLine("Scripts: Skipping VB.NET Scripts...done (use -vb to enable)");
 			}
 
-			if( assemblies.Count == 0 )
+			if (assemblies.Count == 0)
 			{
 				return false;
 			}
 
 			m_Assemblies = assemblies.ToArray();
 
-			Console.Write( "Scripts: Verifying..." );
+			Console.Write("Scripts: Verifying...");
 
 			Stopwatch watch = Stopwatch.StartNew();
-			
+
 			Core.VerifySerialization();
-			
+
 			watch.Stop();
 
 			Console.WriteLine("done ({0} items, {1} mobiles) ({2:F2} seconds)", Core.ScriptItems, Core.ScriptMobiles, watch.Elapsed.TotalSeconds);
@@ -602,110 +639,110 @@ namespace Server
 			return true;
 		}
 
-		public static void Invoke( string method )
+		public static void Invoke(string method)
 		{
 			List<MethodInfo> invoke = new List<MethodInfo>();
 
-			for( int a = 0; a < m_Assemblies.Length; ++a )
+			for (int a = 0; a < m_Assemblies.Length; ++a)
 			{
 				Type[] types = m_Assemblies[a].GetTypes();
 
-				for( int i = 0; i < types.Length; ++i )
+				for (int i = 0; i < types.Length; ++i)
 				{
-					MethodInfo m = types[i].GetMethod( method, BindingFlags.Static | BindingFlags.Public );
+					MethodInfo m = types[i].GetMethod(method, BindingFlags.Static | BindingFlags.Public);
 
-					if( m != null )
-						invoke.Add( m );
+					if (m != null)
+						invoke.Add(m);
 				}
 			}
 
-			invoke.Sort( new CallPriorityComparer() );
+			invoke.Sort(new CallPriorityComparer());
 
-			for( int i = 0; i < invoke.Count; ++i )
-				invoke[i].Invoke( null, null );
+			for (int i = 0; i < invoke.Count; ++i)
+				invoke[i].Invoke(null, null);
 		}
 
 		private static Dictionary<Assembly, TypeCache> m_TypeCaches = new Dictionary<Assembly, TypeCache>();
 		private static TypeCache m_NullCache;
 
-		public static TypeCache GetTypeCache( Assembly asm )
+		public static TypeCache GetTypeCache(Assembly asm)
 		{
-			if( asm == null )
+			if (asm == null)
 			{
-				if( m_NullCache == null )
-					m_NullCache = new TypeCache( null );
+				if (m_NullCache == null)
+					m_NullCache = new TypeCache(null);
 
 				return m_NullCache;
 			}
 
 			TypeCache c = null;
-			m_TypeCaches.TryGetValue( asm, out c );
+			m_TypeCaches.TryGetValue(asm, out c);
 
-			if( c == null )
-				m_TypeCaches[asm] = c = new TypeCache( asm );
+			if (c == null)
+				m_TypeCaches[asm] = c = new TypeCache(asm);
 
 			return c;
 		}
 
-		public static Type FindTypeByFullName( string fullName )
+		public static Type FindTypeByFullName(string fullName)
 		{
-			return FindTypeByFullName( fullName, true );
+			return FindTypeByFullName(fullName, true);
 		}
 
-		public static Type FindTypeByFullName( string fullName, bool ignoreCase )
+		public static Type FindTypeByFullName(string fullName, bool ignoreCase)
 		{
 			Type type = null;
 
-			for( int i = 0; type == null && i < m_Assemblies.Length; ++i )
-				type = GetTypeCache( m_Assemblies[i] ).GetTypeByFullName( fullName, ignoreCase );
+			for (int i = 0; type == null && i < m_Assemblies.Length; ++i)
+				type = GetTypeCache(m_Assemblies[i]).GetTypeByFullName(fullName, ignoreCase);
 
-			if( type == null )
-				type = GetTypeCache( Core.Assembly ).GetTypeByFullName( fullName, ignoreCase );
+			if (type == null)
+				type = GetTypeCache(Core.Assembly).GetTypeByFullName(fullName, ignoreCase);
 
 			return type;
 		}
 
-		public static Type FindTypeByName( string name )
+		public static Type FindTypeByName(string name)
 		{
-			return FindTypeByName( name, true );
+			return FindTypeByName(name, true);
 		}
 
-		public static Type FindTypeByName( string name, bool ignoreCase )
+		public static Type FindTypeByName(string name, bool ignoreCase)
 		{
 			Type type = null;
 
-			for( int i = 0; type == null && i < m_Assemblies.Length; ++i )
-				type = GetTypeCache( m_Assemblies[i] ).GetTypeByName( name, ignoreCase );
+			for (int i = 0; type == null && i < m_Assemblies.Length; ++i)
+				type = GetTypeCache(m_Assemblies[i]).GetTypeByName(name, ignoreCase);
 
-			if( type == null )
-				type = GetTypeCache( Core.Assembly ).GetTypeByName( name, ignoreCase );
+			if (type == null)
+				type = GetTypeCache(Core.Assembly).GetTypeByName(name, ignoreCase);
 
 			return type;
 		}
 
-		public static void EnsureDirectory( string dir )
+		public static void EnsureDirectory(string dir)
 		{
-			string path = Path.Combine( Core.BaseDirectory, dir );
+			string path = Path.Combine(Core.BaseDirectory, dir);
 
-			if( !Directory.Exists( path ) )
-				Directory.CreateDirectory( path );
+			if (!Directory.Exists(path))
+				Directory.CreateDirectory(path);
 		}
 
-		public static string[] GetScripts( string filter )
+		public static string[] GetScripts(string filter)
 		{
 			List<string> list = new List<string>();
 
-			GetScripts( list, Path.Combine( Core.BaseDirectory, "Scripts" ), filter );
+			GetScripts(list, Path.Combine(Core.BaseDirectory, "Scripts"), filter);
 
 			return list.ToArray();
 		}
 
-		public static void GetScripts( List<string> list, string path, string filter )
+		public static void GetScripts(List<string> list, string path, string filter)
 		{
-			foreach( string dir in Directory.GetDirectories( path ) )
-				GetScripts( list, dir, filter );
+			foreach (string dir in Directory.GetDirectories(path))
+				GetScripts(list, dir, filter);
 
-			list.AddRange( Directory.GetFiles( path, filter ) );
+			list.AddRange(Directory.GetFiles(path, filter));
 		}
 	}
 
@@ -718,47 +755,47 @@ namespace Server
 		public TypeTable Names { get { return m_Names; } }
 		public TypeTable FullNames { get { return m_FullNames; } }
 
-		public Type GetTypeByName( string name, bool ignoreCase )
+		public Type GetTypeByName(string name, bool ignoreCase)
 		{
-			return m_Names.Get( name, ignoreCase );
+			return m_Names.Get(name, ignoreCase);
 		}
 
-		public Type GetTypeByFullName( string fullName, bool ignoreCase )
+		public Type GetTypeByFullName(string fullName, bool ignoreCase)
 		{
-			return m_FullNames.Get( fullName, ignoreCase );
+			return m_FullNames.Get(fullName, ignoreCase);
 		}
 
-		public TypeCache( Assembly asm )
+		public TypeCache(Assembly asm)
 		{
-			if( asm == null )
+			if (asm == null)
 				m_Types = Type.EmptyTypes;
 			else
 				m_Types = asm.GetTypes();
 
-			m_Names = new TypeTable( m_Types.Length );
-			m_FullNames = new TypeTable( m_Types.Length );
+			m_Names = new TypeTable(m_Types.Length);
+			m_FullNames = new TypeTable(m_Types.Length);
 
-			Type typeofTypeAliasAttribute = typeof( TypeAliasAttribute );
+			Type typeofTypeAliasAttribute = typeof(TypeAliasAttribute);
 
-			for( int i = 0; i < m_Types.Length; ++i )
+			for (int i = 0; i < m_Types.Length; ++i)
 			{
 				Type type = m_Types[i];
 
-				m_Names.Add( type.Name, type );
-				m_FullNames.Add( type.FullName, type );
+				m_Names.Add(type.Name, type);
+				m_FullNames.Add(type.FullName, type);
 
-				if( type.IsDefined( typeofTypeAliasAttribute, false ) )
+				if (type.IsDefined(typeofTypeAliasAttribute, false))
 				{
-					object[] attrs = type.GetCustomAttributes( typeofTypeAliasAttribute, false );
+					object[] attrs = type.GetCustomAttributes(typeofTypeAliasAttribute, false);
 
-					if( attrs != null && attrs.Length > 0 )
+					if (attrs != null && attrs.Length > 0)
 					{
 						TypeAliasAttribute attr = attrs[0] as TypeAliasAttribute;
 
-						if( attr != null )
+						if (attr != null)
 						{
-							for( int j = 0; j < attr.Aliases.Length; ++j )
-								m_FullNames.Add( attr.Aliases[j], type );
+							for (int j = 0; j < attr.Aliases.Length; ++j)
+								m_FullNames.Add(attr.Aliases[j], type);
 						}
 					}
 				}
@@ -770,28 +807,28 @@ namespace Server
 	{
 		private Dictionary<string, Type> m_Sensitive, m_Insensitive;
 
-		public void Add( string key, Type type )
+		public void Add(string key, Type type)
 		{
 			m_Sensitive[key] = type;
 			m_Insensitive[key] = type;
 		}
 
-		public Type Get( string key, bool ignoreCase )
+		public Type Get(string key, bool ignoreCase)
 		{
 			Type t = null;
 
-			if( ignoreCase )
-				m_Insensitive.TryGetValue( key, out t );
+			if (ignoreCase)
+				m_Insensitive.TryGetValue(key, out t);
 			else
-				m_Sensitive.TryGetValue( key, out t );
+				m_Sensitive.TryGetValue(key, out t);
 
 			return t;
 		}
 
-		public TypeTable( int capacity )
+		public TypeTable(int capacity)
 		{
-			m_Sensitive = new Dictionary<string, Type>( capacity );
-			m_Insensitive = new Dictionary<string, Type>( capacity, StringComparer.OrdinalIgnoreCase );
+			m_Sensitive = new Dictionary<string, Type>(capacity);
+			m_Insensitive = new Dictionary<string, Type>(capacity, StringComparer.OrdinalIgnoreCase);
 		}
 	}
 }

@@ -10,7 +10,6 @@ namespace Server
 {
 	public class BaseArmorResourceBonus
 	{
-
 		public virtual int Level { get; set; }
 		public virtual CraftResource Resource { get; set; }
 		public virtual ArmorMaterialType Type { get; set; }
@@ -324,7 +323,7 @@ if (setItems[i] is BaseArmor)
 		}
 
 		public override bool DisableParalyzeFieldDelay { get { return Level == 2; } }
-		public override double CastSpeedRate { get { return Level == 1 ? 0.3 : 0; } }
+		public override double CastSpeedRate { get { return Level == 1 ? 0.3 : 0 ;} }
 	}
 
 
