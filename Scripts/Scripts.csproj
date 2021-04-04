@@ -348,6 +348,7 @@
     <Compile Include="Custom\Nerun%27s Distro\SA\Mobiles\UnderWorld\Spiders\TrapdoorSpider.cs" />
     <Compile Include="Custom\Nerun%27s Distro\SA\Mobiles\UnderWorld\Spiders\WolfSpider.cs" />
     <Compile Include="Custom\Nerun%27s Distro\SA\Mobiles\UnderWorld\TanglingRoots.cs" />
+    <Compile Include="Custom\ResourceBonusesHelper.cs" />
     <Compile Include="Engines\BulkOrders\Books\BOBFilter.cs" />
     <Compile Include="Engines\BulkOrders\Books\BOBFilterGump.cs" />
     <Compile Include="Engines\BulkOrders\Books\BOBGump.cs" />

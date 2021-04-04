@@ -86,6 +86,10 @@ namespace Server.Mobiles
 
 	public partial class PlayerMobile : Mobile, IHonorTarget
 	{
+		private BaseArmorResourceBonus m_ArmorResBonusContext;
+
+		public BaseArmorResourceBonus ArmorResBonusContext { get { return m_ArmorResBonusContext; } set { m_ArmorResBonusContext = value; } }
+
 		#region Stygian Abyss
 		public override void ToggleFlying()
 		{
@@ -941,6 +945,9 @@ namespace Server.Mobiles
 
 			if( from is PlayerMobile )
 				((PlayerMobile)from).ClaimAutoStabledPets();
+
+			if (BaseArmorResourceBonus.IsFullArmorSet(from.Items))
+				((PlayerMobile)from).ArmorResBonusContext = BaseArmorResourceBonus.GetSetInstance(((PlayerMobile)from));
 		}
 
 		private bool m_NoDeltaRecursion;
@@ -1356,6 +1363,9 @@ namespace Server.Mobiles
 			if ( this.NetState != null )
 				CheckLightLevels( false );
 
+			if (BaseArmorResourceBonus.IsFullArmorSet(this.Items))
+				ArmorResBonusContext = BaseArmorResourceBonus.GetSetInstance(this);
+
 			InvalidateMyRunUO();
 		}
 
@@ -1370,6 +1380,9 @@ namespace Server.Mobiles
 
 			if ( this.NetState != null )
 				CheckLightLevels( false );
+
+			if (!BaseArmorResourceBonus.IsFullArmorSet(this.Items))
+				ArmorResBonusContext = null;
 
 			InvalidateMyRunUO();
 		}
@@ -1450,10 +1463,15 @@ namespace Server.Mobiles
 		{
 			get
 			{
-				if( Core.ML && this.AccessLevel == AccessLevel.Player )
-					return Math.Min( base.Str, 150 );
+				int str = base.Str;
 
-				return base.Str;
+				if (ArmorResBonusContext != null)
+					str += ArmorResBonusContext.StrBonus;
+
+				if( Core.ML && this.AccessLevel == AccessLevel.Player )
+					return Math.Min( str, 150 );
+
+				return str;
 			}
 			set
 			{

@@ -57,6 +57,7 @@ namespace Server.Items
 		private CraftResource m_Resource;
 		private bool m_Identified, m_PlayerConstructed;
 		private int m_PhysicalBonus, m_FireBonus, m_ColdBonus, m_PoisonBonus, m_EnergyBonus;
+		private int m_Level = 1;
 
 		private AosAttributes m_AosAttributes;
 		private AosArmorAttributes m_AosArmorAttributes;
@@ -133,6 +134,9 @@ namespace Server.Items
 				m_ArmorBase = value; Invalidate(); 
 			}
 		}
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public int ArmorLevel { get { return m_Level; } set { m_Level = value; } }
 
 		public double BaseArmorRatingScaled
 		{
@@ -677,6 +681,8 @@ namespace Server.Items
 					m_AosSkillBonuses.AddTo( from );
 
 				from.Delta( MobileDelta.Armor ); // Tell them armor rating has changed
+
+				ResourcesBonusHelper.GetManaRegBonus(from);
 			}
 		}
 
@@ -746,8 +752,10 @@ namespace Server.Items
 		{
 			base.Serialize( writer );
 
-			writer.Write( (int) 7 ); // version
+			writer.Write( (int) 8 ); // version
 
+			writer.Write(m_Level);
+			
 			SaveFlag flags = SaveFlag.None;
 
 			SetSaveFlag( ref flags, SaveFlag.Attributes,		!m_AosAttributes.IsEmpty );
@@ -856,6 +864,11 @@ namespace Server.Items
 
 			switch ( version )
 			{
+				case 8:
+					{
+						m_Level = reader.ReadInt();
+						goto case 7;
+					}
 				case 7:
 				case 6:
 				case 5:
@@ -1371,7 +1384,12 @@ namespace Server.Items
 			string name = this.Name;
 
 			if ( name == null )
-				name = String.Format( "#{0}", LabelNumber );
+			{
+				//if (m_Level > 1)
+				//	name = String.Format("#{0}\t +{1}", LabelNumber, m_Level);
+				//else
+					name = String.Format("#{0}", LabelNumber);
+			}
 
 			return name;
 		}
@@ -1385,46 +1403,78 @@ namespace Server.Items
 
 		public override void AddNameProperty( ObjectPropertyList list )
 		{
-			int oreType;
+			string resName = "";
+			resName = CraftResources.GetName(Resource);
 
-			switch ( m_Resource )
-			{
-			//	case CraftResource.DullCopper:		oreType = 1053108; break; // dull copper
-		//	case CraftResource.ShadowIron:		oreType = 1053107; break; // shadow iron
-				case CraftResource.Copper:			oreType = 1053106; break; // copper
-				case CraftResource.Bronze:			oreType = 1053105; break; // bronze
-				case CraftResource.Gold:			oreType = 1053104; break; // golden
-		//		case CraftResource.Agapite:			oreType = 1053103; break; // agapite
-				case CraftResource.Verite:			oreType = 1053102; break; // verite
-				case CraftResource.Valorite:		oreType = 1053101; break; // valorite
-				case CraftResource.SpinedLeather:	oreType = 1061118; break; // spined
-				case CraftResource.HornedLeather:	oreType = 1061117; break; // horned
-				case CraftResource.BarbedLeather:	oreType = 1061116; break; // barbed
-				case CraftResource.RedScales:		oreType = 1060814; break; // red
-				case CraftResource.YellowScales:	oreType = 1060818; break; // yellow
-				case CraftResource.BlackScales:		oreType = 1060820; break; // black
-				case CraftResource.GreenScales:		oreType = 1060819; break; // green
-				case CraftResource.WhiteScales:		oreType = 1060821; break; // white
-				case CraftResource.BlueScales:		oreType = 1060815; break; // blue
-				default: oreType = 0; break;
-			}
+			if (Resource == CraftResource.Iron)
+				resName = "";
 
-			if ( m_Quality == ArmorQuality.Exceptional )
+			if (m_Quality == ArmorQuality.Exceptional)
 			{
-				if ( oreType != 0 )
-					list.Add( 1053100, "#{0}\t{1}", oreType, GetNameString() ); // exceptional ~1_oretype~ ~2_armortype~
+				if (!String.IsNullOrEmpty(resName))
+					list.Add(1053100, "{0}\t{1}", resName, GetNameString()); // exceptional ~1_oretype~ ~2_armortype~
 				else
-					list.Add( 1050040, GetNameString() ); // exceptional ~1_ITEMNAME~
+					list.Add(1050040, GetNameString()); // exceptional ~1_ITEMNAME~
 			}
 			else
 			{
-				if ( oreType != 0 )
-					list.Add( 1053099, "#{0}\t{1}", oreType, GetNameString() ); // ~1_oretype~ ~2_armortype~
-				else if ( Name == null )
-					list.Add( LabelNumber );
+				if (!String.IsNullOrEmpty(resName))
+					list.Add(1053099, "{0}\t{1}", resName, GetNameString()); // ~1_oretype~ ~2_armortype~
+				else if (Name == null)
+					list.Add(LabelNumber);
 				else
-					list.Add( Name );
+					list.Add(Name);
 			}
+
+
+			//			if (m_Quality == ArmorQuality.Exceptional)
+			//			{
+			//				if (!String.IsNullOrEmpty(resName))
+			//				{
+			////if (m_Level > 1)
+			////						//list.Add(1053100, "#{0}\t{1}", resName, GetNameString()); // exceptional ~1_oretype~ ~2_armortype~
+			////						list.Add("+{0} {1} {2}", "Exceptional", resName, GetNameString()); // exceptional ~1_oretype~ ~2_armortype~
+			////else
+			//						list.Add(1053100, "{0}\t{1}", resName, GetNameString()); // exceptional ~1_oretype~ ~2_armortype~
+			//						//list.Add("#{0}\t{1}{2}", "Exceptional", resName, GetNameString()); // exceptional ~1_oretype~ ~2_armortype~
+			//				}
+			//				else
+			//				{
+			//					//	list.Add(1050040, GetNameString()); // exceptional ~1_ITEMNAME~
+
+			//				////	if (m_Level > 1)
+			//			//			list.Add("{0} {1}", m_Level, GetNameString()); // exceptional ~1_ITEMNAME~
+			//				//	else
+			//						list.Add(1050040, GetNameString()); // exceptional ~1_ITEMNAME~
+
+			//				}
+			//			}
+			//			else
+			//			{
+			//				if (!String.IsNullOrEmpty(resName))
+			//				{
+			//					//if( m_Level > 1)
+			//					//	list.Add("+{0} {1} {2}", m_Level, resName, GetNameString()); // ~1_oretype~ ~2_armortype~
+			//					//else
+			//					list.Add("{0} {1}", resName, GetNameString()); // ~1_oretype~ ~2_armortype~
+
+			//				}
+			//				else if (Name == null)
+			//				{
+			//					if(m_Level > 1)
+			//						list.Add(LabelNumber, "+{0}", m_Level);
+			//					else
+			//						list.Add(LabelNumber);
+			//				}
+			//				else
+			//				{
+			//					if (m_Level > 1)
+			//						list.Add("+{0} {1}", m_Level, Name);
+			//					else
+			//						list.Add(Name);
+			//				}
+
+			//			}
 		}
 
 		public override bool AllowEquipedCast( Mobile from )
@@ -1456,6 +1506,9 @@ namespace Server.Items
 
 			if ( m_Crafter != null )
 				list.Add( 1050043, m_Crafter.Name ); // crafted by ~1_NAME~
+
+			if (m_Level > 0)
+				list.Add("Level {0}", m_Level);
 
 			#region Factions
 			if ( m_FactionState != null )
