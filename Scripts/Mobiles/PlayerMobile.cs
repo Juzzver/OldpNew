@@ -946,8 +946,18 @@ namespace Server.Mobiles
 			if( from is PlayerMobile )
 				((PlayerMobile)from).ClaimAutoStabledPets();
 
-			if (BaseArmorResourceBonus.IsFullArmorSet(from.Items))
-				((PlayerMobile)from).ArmorResBonusContext = BaseArmorResourceBonus.GetSetInstance(((PlayerMobile)from));
+			if (BaseArmorResourceBonus.IsFullArmorSet(from.Items) && from is PlayerMobile)
+			{
+				PlayerMobile pm = from as PlayerMobile;
+				var tempContext = pm.ArmorResBonusContext;
+				pm.ArmorResBonusContext = BaseArmorResourceBonus.GetSetInstance(pm);
+
+				if ((pm.ArmorResBonusContext != null && tempContext != null && pm.ArmorResBonusContext.GetType() != tempContext.GetType()) || tempContext == null)
+					pm.ArmorResBonusContext.OnItemAdded(pm);
+
+				//((PlayerMobile)from).ArmorResBonusContext = BaseArmorResourceBonus.GetSetInstance(((PlayerMobile)from));
+				//((PlayerMobile)from).ArmorResBonusContext.OnItemAdded(((PlayerMobile)from));
+			}
 		}
 
 		private bool m_NoDeltaRecursion;
@@ -1364,7 +1374,14 @@ namespace Server.Mobiles
 				CheckLightLevels( false );
 
 			if (BaseArmorResourceBonus.IsFullArmorSet(this.Items))
+			{
+				var tempContext = ArmorResBonusContext;
+
 				ArmorResBonusContext = BaseArmorResourceBonus.GetSetInstance(this);
+
+				if((ArmorResBonusContext != null && tempContext != null && ArmorResBonusContext.GetType() != tempContext.GetType()) || tempContext == null)
+					ArmorResBonusContext.OnItemAdded(this);
+			}
 
 			InvalidateMyRunUO();
 		}
@@ -1381,8 +1398,12 @@ namespace Server.Mobiles
 			if ( this.NetState != null )
 				CheckLightLevels( false );
 
-			if (!BaseArmorResourceBonus.IsFullArmorSet(this.Items))
+			if (!BaseArmorResourceBonus.IsFullArmorSet(this.Items) && ArmorResBonusContext != null)
+			{
+				ArmorResBonusContext.OnItemRemoved(this);
 				ArmorResBonusContext = null;
+			}
+				
 
 			InvalidateMyRunUO();
 		}
@@ -1484,10 +1505,15 @@ namespace Server.Mobiles
 		{
 			get
 			{
-				if( Core.ML && this.AccessLevel == AccessLevel.Player )
-					return Math.Min( base.Int, 150 );
+				int _Int = base.Int;
 
-				return base.Int;
+				if( Core.ML && this.AccessLevel == AccessLevel.Player )
+					return Math.Min( _Int, 1000 );
+
+				if (ArmorResBonusContext != null)
+					_Int += ArmorResBonusContext.IntBonus;
+
+				return _Int;
 			}
 			set
 			{
@@ -1500,10 +1526,15 @@ namespace Server.Mobiles
 		{
 			get
 			{
-				if( Core.ML && this.AccessLevel == AccessLevel.Player )
-					return Math.Min( base.Dex, 150 );
+				int dex = base.Dex;
 
-				return base.Dex;
+				if( Core.ML && this.AccessLevel == AccessLevel.Player )
+					return Math.Min( base.Dex, 1000 );
+
+				if (ArmorResBonusContext != null)
+					dex += ArmorResBonusContext.DexBonus;
+
+				return dex;
 			}
 			set
 			{
@@ -2604,6 +2635,20 @@ namespace Server.Mobiles
 
 		public override void OnDamage( int amount, Mobile from, bool willKill )
 		{
+			if (ArmorResBonusContext != null)
+			{
+				int absorbDmg = (int)(amount * ArmorResBonusContext.AbsorbDamageRate);
+				amount -= absorbDmg;
+
+				if (amount <= 0)
+					amount = 1;
+
+				if (absorbDmg > 0)
+					from.SendMessage(38, $"You have to absorb {absorbDmg}");
+			}
+
+			
+
 			int disruptThreshold;
 
 			if ( !Core.AOS )

@@ -1,6 +1,7 @@
 using System;
 using Server;
 using Server.Items;
+using Server.Mobiles;
 
 namespace Server.Spells
 {
@@ -109,7 +110,17 @@ namespace Server.Spells
 		{
 			get
 			{
-				return TimeSpan.FromSeconds( (3 + (int)Circle) * CastDelaySecondsPerTick );
+				double delay = (3 + (int)Circle) * CastDelaySecondsPerTick; // default delay
+
+				if (Caster is PlayerMobile )
+				{
+					PlayerMobile pm = Caster as PlayerMobile;
+
+					if( pm.ArmorResBonusContext != null)
+						delay -= delay * pm.ArmorResBonusContext.CastSpeedRate;
+				}
+
+				return TimeSpan.FromSeconds(delay);
 			}
 		}
 	}

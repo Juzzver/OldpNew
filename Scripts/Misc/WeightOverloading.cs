@@ -25,7 +25,7 @@ namespace Server.Misc
 			set{ m_DFA = value; }
 		}
 
-		public static void FatigueOnDamage( Mobile m, int damage )
+		public static void FatigueOnDamage( Mobile m, int damage, Mobile attacker = null)
 		{
 			double fatigue = 0.0;
 
@@ -41,6 +41,19 @@ namespace Server.Misc
 					fatigue = (damage * ((100.0 / m.Hits) + ((50.0 + m.Stam) / 100) - 1.0)) - 5.0;
 					break;
 				}
+			}
+
+			if (attacker != null && attacker is PlayerMobile)
+			{
+				PlayerMobile pm = attacker as PlayerMobile;
+
+				if (pm.ArmorResBonusContext != null)
+				{
+					var result = fatigue * pm.ArmorResBonusContext.FatiqueRate;
+					pm.SendMessage($"You knocked down twice as much stamina points {fatigue} instead of {result}");
+					fatigue += result;
+				}
+
 			}
 
 			if ( fatigue > 0 )

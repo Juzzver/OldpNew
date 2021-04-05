@@ -108,6 +108,21 @@ namespace Server
 				int resPois = m.PoisonResistance;
 				int resNrgy = m.EnergyResistance;
 
+				if (from is PlayerMobile)
+				{
+					PlayerMobile pm = from as PlayerMobile;
+
+					if (pm.ArmorResBonusContext != null)
+					{
+						var result = fire * pm.ArmorResBonusContext.AbsorbFireRate;
+						pm.SendMessage($"You have to absorb {result}% of fire damage instead of {fire}%.");
+						//	fatigue += fatigue * pm.ArmorResBonusContext.FatiqueRate;
+
+						if (pm.ArmorResBonusContext.AbsorbFireRate > 0)
+							fire = (int)(fire * pm.ArmorResBonusContext.AbsorbFireRate);
+					}
+				}
+
 				totalDamage  = damage * phys * (100 - resPhys);
 				totalDamage += damage * fire * (100 - resFire);
 				totalDamage += damage * cold * (100 - resCold);
@@ -814,6 +829,14 @@ namespace Server
 
 			skill = (SkillName)vSkill;
 			bonus = (double)vBonus / 10;
+
+			//if (Owner.Parent is PlayerMobile)
+			//{
+			//	PlayerMobile pm = Owner.Parent as PlayerMobile;
+
+			//	if (pm.ArmorResBonusContext != null && pm.ArmorResBonusContext.SkillBonuses != null && pm.ArmorResBonusContext.SkillBonuses.ContainsKey(skill))
+			//		bonus += pm.ArmorResBonusContext.SkillBonuses[skill];
+			//}
 
 			return (bonus != 0);
 		}

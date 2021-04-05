@@ -165,6 +165,16 @@ namespace Server
 			return null;
 		}
 
+		public static bool IsItemPieceOfSet(Item item = null)
+		{
+			return item.Layer == Layer.Helm ||
+			item.Layer == Layer.Neck ||
+			item.Layer == Layer.Arms ||
+			item.Layer == Layer.Gloves ||
+			item.Layer == Layer.InnerTorso ||
+			item.Layer == Layer.Pants;
+		}
+
 		public static bool IsFullArmorSet(List<Item> setItems)
 		{
 			var setItemList = setItems.FindAll(x => x is BaseArmor &&
@@ -238,6 +248,41 @@ namespace Server
 			}
 			return CraftResource.None;
 
+		}
+
+		public virtual void OnItemAdded(Mobile m)
+		{
+			OnItemRemoved(m);
+
+			if (SkillBonuses != null && SkillBonuses.Count > 0)
+			{
+				foreach (KeyValuePair<SkillName, double> kvp in SkillBonuses)
+				{
+					SkillMod sk = new DefaultSkillMod(kvp.Key, true, kvp.Value);
+					sk.ObeyCap = false;
+					m.AddSkillMod(sk);
+				}
+			}
+		}
+
+		public virtual void OnItemRemoved(Mobile m)
+		{
+			if (SkillBonuses != null && SkillBonuses.Count > 0)
+			{
+				List<SkillMod> modsToRemove = new List<SkillMod>();
+
+				foreach (var mod in m.SkillMods)
+				{
+					if (SkillBonuses.ContainsKey(mod.Skill))
+						modsToRemove.Add(mod);
+				}
+
+				foreach (var mod in modsToRemove)
+				{
+					if (m.SkillMods.Contains(mod))
+						m.RemoveSkillMod(mod);
+				}
+			}
 		}
 	}
 
