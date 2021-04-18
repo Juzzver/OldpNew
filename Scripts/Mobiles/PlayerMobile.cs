@@ -952,7 +952,7 @@ namespace Server.Mobiles
 				var tempContext = pm.ArmorResBonusContext;
 				pm.ArmorResBonusContext = BaseArmorResourceBonus.GetSetInstance(pm);
 
-				if ((pm.ArmorResBonusContext != null && tempContext != null && pm.ArmorResBonusContext.GetType() != tempContext.GetType()) || tempContext == null)
+				if ((pm.ArmorResBonusContext != null && tempContext != null && pm.ArmorResBonusContext.GetType() != tempContext.GetType()) || (tempContext == null && pm.ArmorResBonusContext != null))
 					pm.ArmorResBonusContext.OnItemAdded(pm);
 
 				//((PlayerMobile)from).ArmorResBonusContext = BaseArmorResourceBonus.GetSetInstance(((PlayerMobile)from));
@@ -1379,7 +1379,7 @@ namespace Server.Mobiles
 
 				ArmorResBonusContext = BaseArmorResourceBonus.GetSetInstance(this);
 
-				if((ArmorResBonusContext != null && tempContext != null && ArmorResBonusContext.GetType() != tempContext.GetType()) || tempContext == null)
+				if((ArmorResBonusContext != null && tempContext != null && ArmorResBonusContext.GetType() != tempContext.GetType()) || (tempContext == null && ArmorResBonusContext != null))
 					ArmorResBonusContext.OnItemAdded(this);
 			}
 

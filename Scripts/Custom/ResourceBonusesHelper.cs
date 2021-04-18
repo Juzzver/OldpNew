@@ -98,67 +98,70 @@ namespace Server
 
 		public static BaseArmorResourceBonus GetSetInstance(Mobile m)
 		{
-			List<Item> setItems = m.Items.FindAll(x => x is BaseArmor &&
-			x.Layer == Layer.Helm ||
-			x.Layer == Layer.Neck ||
-			x.Layer == Layer.Arms ||
-			x.Layer == Layer.Gloves ||
-			x.Layer == Layer.InnerTorso ||
-			x.Layer == Layer.Pants
-			);
-
-
-			if (IsFullArmorSet(setItems))
+			if (m != null)
 			{
-				BaseArmor setPiece = setItems[0] as BaseArmor;
-				int level = setPiece.ArmorLevel;
-				CraftResource res = setPiece.Resource;
-				ArmorMaterialType type = setPiece.MaterialType;
 
-				switch (GetSetResource(setItems))
+				List<Item> setItems = m.Items.FindAll(x => x is BaseArmor &&
+														   (x.Layer == Layer.Helm ||
+														    x.Layer == Layer.Neck ||
+														    x.Layer == Layer.Arms ||
+														    x.Layer == Layer.Gloves ||
+														    x.Layer == Layer.InnerTorso ||
+														    x.Layer == Layer.Pants)
+														    );
+				
+				if (IsFullArmorSet(setItems))
 				{
-					case CraftResource.Titan:
-						return new TitanArmorBonuses(res, type, level);
-					case CraftResource.Verite:
-						return new VeriteArmorBonuses(res, type, level);
-					case CraftResource.Valorite:
-						return new ValoriteArmorBonuses(res, type, level);
-					case CraftResource.BlueRock:
-						return new BlueRockArmorBonuses(res, type, level);
-					case CraftResource.Aqua:
-						return new AquaArmorBonuses(res, type, level);
-					case CraftResource.Plazma:
-						return new PlazmaArmorBonuses(res, type, level);
-					case CraftResource.Crystal:
-						return new CrystalArmorBonuses(res, type, level);
-					case CraftResource.Acid:
-						return new AcidArmorBonuses(res, type, level);
-					case CraftResource.Plutonium:
-						return new PlutoniumArmorBonuses(res, type, level);
-					case CraftResource.BloodRock:
-						return new BloodRockArmorBonuses(res, type, level);
-					case CraftResource.Glory:
-						return new GloryArmorBonuses(res, type, level);
-					case CraftResource.Frost:
-						return new FrostArmorBonuses(res, type, level);
-					case CraftResource.Meteor:
-						return new MeteorArmorBonuses(res, type, level);
-					case CraftResource.BlueSteel:
-						return new BlueSteelArmorBonuses(res, type, level);
-					case CraftResource.Iridium:
-						return new IridiumArmorBonuses(res, type, level);
-					case CraftResource.WhiteStone:
-						return new WhiteStoneArmorBonuses(res, type, level);
-					case CraftResource.Diamond:
-						return new DiamondArmorBonuses(res, type, level);
-					case CraftResource.Mythril:
-						return new MythrilArmorBonuses(res, type, level);
-					case CraftResource.Shadow:
-						return new ShadowArmorBonuses(res, type, level);
-					//case CraftResource.Legendary:
-					//	return new LegendaryArmorBonuses(res, type, level);
-					case CraftResource.Lava:
-						return new LavaArmorBonuses(res, type, level);
+					BaseArmor setPiece = setItems[0] as BaseArmor;
+					int level = setPiece.ArmorLevel;
+					CraftResource res = setPiece.Resource;
+					ArmorMaterialType type = setPiece.MaterialType;
+
+					switch (GetSetResource(setItems))
+					{
+						case CraftResource.Titan:
+							return new TitanArmorBonuses(res, type, level);
+						case CraftResource.Verite:
+							return new VeriteArmorBonuses(res, type, level);
+						case CraftResource.Valorite:
+							return new ValoriteArmorBonuses(res, type, level);
+						case CraftResource.BlueRock:
+							return new BlueRockArmorBonuses(res, type, level);
+						case CraftResource.Aqua:
+							return new AquaArmorBonuses(res, type, level);
+						case CraftResource.Plazma:
+							return new PlazmaArmorBonuses(res, type, level);
+						case CraftResource.Crystal:
+							return new CrystalArmorBonuses(res, type, level);
+						case CraftResource.Acid:
+							return new AcidArmorBonuses(res, type, level);
+						case CraftResource.Plutonium:
+							return new PlutoniumArmorBonuses(res, type, level);
+						case CraftResource.BloodRock:
+							return new BloodRockArmorBonuses(res, type, level);
+						case CraftResource.Glory:
+							return new GloryArmorBonuses(res, type, level);
+						case CraftResource.Frost:
+							return new FrostArmorBonuses(res, type, level);
+						case CraftResource.Meteor:
+							return new MeteorArmorBonuses(res, type, level);
+						case CraftResource.BlueSteel:
+							return new BlueSteelArmorBonuses(res, type, level);
+						case CraftResource.Iridium:
+							return new IridiumArmorBonuses(res, type, level);
+						case CraftResource.WhiteStone:
+							return new WhiteStoneArmorBonuses(res, type, level);
+						case CraftResource.Diamond:
+							return new DiamondArmorBonuses(res, type, level);
+						case CraftResource.Mythril:
+							return new MythrilArmorBonuses(res, type, level);
+						case CraftResource.Shadow:
+							return new ShadowArmorBonuses(res, type, level);
+						//case CraftResource.Legendary:
+						//	return new LegendaryArmorBonuses(res, type, level);
+						case CraftResource.Lava:
+							return new LavaArmorBonuses(res, type, level);
+					}
 				}
 			}
 
@@ -178,12 +181,12 @@ namespace Server
 		public static bool IsFullArmorSet(List<Item> setItems)
 		{
 			var setItemList = setItems.FindAll(x => x is BaseArmor &&
-			x.Layer == Layer.Helm ||
+			(x.Layer == Layer.Helm ||
 			x.Layer == Layer.Neck ||
 			x.Layer == Layer.Arms ||
 			x.Layer == Layer.Gloves ||
 			x.Layer == Layer.InnerTorso ||
-			x.Layer == Layer.Pants
+			x.Layer == Layer.Pants)
 			);
 
 			return setItemList.Count == 6
@@ -503,6 +506,8 @@ namespace Server
 		}
 
 		public override double AbsorbFireRate => 0.5;
+
+		public override double ResistFireRate => 50;
 	}
 
 	public class PlazmaArmorBonuses : BaseArmorResourceBonus
@@ -1405,6 +1410,16 @@ namespace Server
 
 	public class ResourcesBonusHelper
 	{
+		public static int GetFireResistnace(Mobile m)
+		{
+			var setArmor = BaseArmorResourceBonus.GetSetInstance(m);
+
+			if (setArmor != null)
+				return (int)setArmor.ResistFireRate;
+
+			return 0;
+		}
+
 
 
 		public static int GetManaRegBonus(Mobile m)
