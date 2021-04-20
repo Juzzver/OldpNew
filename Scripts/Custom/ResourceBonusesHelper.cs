@@ -1,6 +1,7 @@
 using Server.Items;
 using Server.Mobiles;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -28,6 +29,7 @@ namespace Server
 
 		public virtual double AbsorbDamageRate { get; set; }
 		public virtual double AbsorbMagicDamageRate { get; set; }
+		public virtual double ResistPhysicalRate { get; set; } // need or delete?
 		public virtual double ResistFireRate { get; set; }
 		public virtual double ResistColdRate { get; set; }
 		public virtual double ResistPoisonRate { get; set; }
@@ -109,8 +111,8 @@ namespace Server
 														    x.Layer == Layer.InnerTorso ||
 														    x.Layer == Layer.Pants)
 														    );
-				
-				if (IsFullArmorSet(setItems))
+
+					if (IsFullArmorSet(setItems))
 				{
 					BaseArmor setPiece = setItems[0] as BaseArmor;
 					int level = setPiece.ArmorLevel;
@@ -1410,26 +1412,315 @@ namespace Server
 
 	public class ResourcesBonusHelper
 	{
-		public static int GetFireResistnace(Mobile m)
-		{
-			var setArmor = BaseArmorResourceBonus.GetSetInstance(m);
+		public static HashSet<PlayerMobile> RegenList = new HashSet<PlayerMobile>();
+		public static RegenTimer PlayersRegenTimer;
 
-			if (setArmor != null)
-				return (int)setArmor.ResistFireRate;
+		public class RegenTimer : Timer
+		{
+			public RegenTimer() : base(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1))
+			{
+			}
+
+			protected override void OnTick()
+			{				
+				if (RegenList != null && RegenList.Count > 0)
+				{
+					foreach (var m in RegenList)
+					{
+						if (m.Hits < m.HitsMax)
+							m.Hits += m.ArmorRegenHits;
+						if (m.Stam < m.StamMax)
+							m.Stam += m.ArmorRegenStam;
+						if (m.Mana < m.ManaMax)
+							m.Mana += m.ArmorRegenMana;
+					}
+				}
+			}
+		}
+
+		public static void CheckPlayerRegens(Mobile m)
+		{
+			if (PlayersRegenTimer == null)
+			{
+				PlayersRegenTimer = new RegenTimer();
+				PlayersRegenTimer.Start();
+			}
+
+			if (m is PlayerMobile)
+			{
+				PlayerMobile pm = m as PlayerMobile;
+
+				pm.ArmorRegenHits = GetHPRegBonus(m);
+				pm.ArmorRegenStam = GetStamRegBonus(m);
+				pm.ArmorRegenMana = GetManaRegBonus(m);
+
+				int total_regens = pm.ArmorRegenHits + pm.ArmorRegenMana + pm.ArmorRegenStam;
+
+				if (total_regens > 0)
+				{
+					if (!RegenList.Contains(pm))
+						RegenList.Add(pm);
+
+					if (!PlayersRegenTimer.Running)
+					{
+						PlayersRegenTimer.Start();
+						World.Broadcast(68, true, "Added first player to RegenList, RegenTimer has started!");
+					}
+				}
+				else if (RegenList.Contains(pm))
+				{
+				//	PlayersRegenTimer.Stop();
+					RegenList.Remove(pm);
+					//	PlayersRegenTimer.Start();
+
+					if (RegenList.Count == 0)
+					{
+						PlayersRegenTimer.Stop();
+						World.Broadcast(38, true, "There no longer players with regens. RegenTimer has stopped!");
+					}
+				
+				}
+
+					
+			}
+		}
+
+		public static int GetPhysicalResistance(Mobile m)
+		{
+			if (m is PlayerMobile)
+			{
+				PlayerMobile pm = m as PlayerMobile;
+
+				if (pm != null && pm.ArmorResBonusContext != null)
+					return (int)pm.ArmorResBonusContext.ResistPhysicalRate;
+			}
+
+			return 0;
+		}
+
+		public static int GetFireResistance(Mobile m)
+		{
+			if (m is PlayerMobile)
+			{
+				PlayerMobile pm = m as PlayerMobile;
+
+				if (pm != null && pm.ArmorResBonusContext != null)
+					return (int)pm.ArmorResBonusContext.ResistFireRate;
+			}
+
+			return 0;
+		}
+
+		public static int GetColdResistance(Mobile m)
+		{
+			if (m is PlayerMobile)
+			{
+				PlayerMobile pm = m as PlayerMobile;
+
+				if (pm != null && pm.ArmorResBonusContext != null)
+					return (int)pm.ArmorResBonusContext.ResistColdRate;
+			}
+
+			return 0;
+		}
+
+		public static int GetPoisonResistance(Mobile m)
+		{
+			if (m is PlayerMobile)
+			{
+				PlayerMobile pm = m as PlayerMobile;
+
+				if (pm != null && pm.ArmorResBonusContext != null)
+					return (int)pm.ArmorResBonusContext.ResistPoisonRate;
+			}
+
+			return 0;
+		}
+
+		public static int GetEnergyResistance(Mobile m)
+		{
+			if (m is PlayerMobile)
+			{
+				PlayerMobile pm = m as PlayerMobile;
+
+				if (pm != null && pm.ArmorResBonusContext != null)
+					return (int)pm.ArmorResBonusContext.ResistEnergyRate;
+			}
 
 			return 0;
 		}
 
 
-
 		public static int GetManaRegBonus(Mobile m)
 		{
-			return m.Items.FindAll(x => x is BaseArmor && ((BaseArmor)x).Resource == CraftResource.Silver).Count;
+			int mana_reg = 0;
+
+			foreach (BaseArmor item in m.Items.FindAll(x => x is BaseArmor && BaseArmorResourceBonus.IsItemPieceOfSet(x)))
+			{
+				switch (item.Resource)
+				{
+					case CraftResource.Silver:
+						{
+							mana_reg += 1;
+							break;
+						}
+
+					case CraftResource.BlueRock:
+						{
+							if (item.ArmorLevel >= 4)
+								mana_reg += 2;
+
+							break;
+						}
+					case CraftResource.Acid:
+						{
+							if (item.ArmorLevel >= 2)
+								mana_reg += 2;
+							else
+								mana_reg += 1;
+
+							break;
+						}
+
+					case CraftResource.Meteor:
+						{
+							mana_reg += 1;
+							break;
+						}
+					case CraftResource.Legendary:
+						{
+							if (item.ArmorLevel >= 5)
+								mana_reg += 4;
+							else
+								mana_reg += 2;
+
+							break;
+						}
+					case CraftResource.Lava:
+						{
+							if (item.ArmorLevel >= 4)
+								mana_reg += 2;
+
+							break;
+						}
+				}
+			}
+
+			return mana_reg;
 		}
 
 		public static int GetHPRegBonus(Mobile m)
 		{
-			return m.Items.FindAll(x => x is BaseArmor && ((BaseArmor)x).Resource == CraftResource.Gold).Count;
+			int hp_reg = 0;
+
+			foreach (BaseArmor item in m.Items.FindAll(x => x is BaseArmor && BaseArmorResourceBonus.IsItemPieceOfSet(x)))
+			{
+				switch (item.Resource)
+				{
+					case CraftResource.Gold:
+						{
+							hp_reg += 1;
+							break;
+						}
+					case CraftResource.Titan:
+						{
+							if (item.ArmorRating >= 4)
+								hp_reg += 2;
+							else if (item.ArmorLevel >= 2)
+								hp_reg += 1;
+
+							break;
+						}
+					case CraftResource.BlueRock:
+						{
+							if (item.ArmorLevel >= 4)
+								hp_reg += 2;
+
+							break;
+						}
+					case CraftResource.Plazma:
+						{
+							if (item.ArmorLevel >= 2)
+								hp_reg += 1;
+
+							break;
+						}
+					case CraftResource.Meteor:
+						{
+							hp_reg += 1;
+							break;
+						}
+					case CraftResource.Iridium:
+						{
+							if (item.ArmorLevel >= 5)
+								hp_reg += 3;
+							else if (item.ArmorLevel >= 2)
+								hp_reg += 1;
+
+							break;
+						}
+
+					case CraftResource.Legendary:
+						{
+							if (item.ArmorLevel >= 5)
+								hp_reg += 4;
+							else 
+								hp_reg += 2;
+
+							break;
+						}
+					case CraftResource.Lava:
+						{
+							if (item.ArmorLevel >= 4)
+								hp_reg += 2;
+
+							break;
+						}
+				}
+			}
+			return hp_reg;
+		}
+
+		public static int GetStamRegBonus(Mobile m)
+		{
+			int stam_reg = 0; 
+
+			foreach (BaseArmor item in m.Items.FindAll(x => x is BaseArmor && BaseArmorResourceBonus.IsItemPieceOfSet(x)))
+			{
+				switch (item.Resource)
+				{
+					case CraftResource.BlueRock:
+						{
+							if (item.ArmorLevel >= 4)
+								stam_reg += 2;
+
+							break;
+						}
+					case CraftResource.Meteor:
+						{
+							stam_reg += 1;
+							break;
+						}
+					case CraftResource.Legendary:
+						{
+							if (item.ArmorLevel >= 5)
+								stam_reg += 4;
+							else
+								stam_reg += 2;
+
+							break;
+						}
+					case CraftResource.Lava:
+						{
+							if (item.ArmorLevel >= 4)
+								stam_reg += 2;
+
+							break;
+						}
+				}
+			}
+
+			return stam_reg;
 		}
 
 		//public double DecreaseDamageRate(Mobile m)

@@ -90,6 +90,13 @@ namespace Server.Mobiles
 
 		public BaseArmorResourceBonus ArmorResBonusContext { get { return m_ArmorResBonusContext; } set { m_ArmorResBonusContext = value; } }
 
+		[CommandProperty(AccessLevel.GameMaster)]
+		public int ArmorRegenHits { get; set; }
+		[CommandProperty(AccessLevel.GameMaster)]
+		public int ArmorRegenStam { get; set; }
+		[CommandProperty(AccessLevel.GameMaster)]
+		public int ArmorRegenMana { get; set; }
+
 		#region Stygian Abyss
 		public override void ToggleFlying()
 		{
@@ -955,9 +962,10 @@ namespace Server.Mobiles
 				if ((pm.ArmorResBonusContext != null && tempContext != null && pm.ArmorResBonusContext.GetType() != tempContext.GetType()) || (tempContext == null && pm.ArmorResBonusContext != null))
 					pm.ArmorResBonusContext.OnItemAdded(pm);
 
-				//((PlayerMobile)from).ArmorResBonusContext = BaseArmorResourceBonus.GetSetInstance(((PlayerMobile)from));
-				//((PlayerMobile)from).ArmorResBonusContext.OnItemAdded(((PlayerMobile)from));
+				from.UpdateResistances();
 			}
+
+			ResourcesBonusHelper.CheckPlayerRegens(from);
 		}
 
 		private bool m_NoDeltaRecursion;
@@ -1383,6 +1391,9 @@ namespace Server.Mobiles
 					ArmorResBonusContext.OnItemAdded(this);
 			}
 
+			if (item is BaseArmor)
+				ResourcesBonusHelper.CheckPlayerRegens(this); 
+
 			InvalidateMyRunUO();
 		}
 
@@ -1403,7 +1414,9 @@ namespace Server.Mobiles
 				ArmorResBonusContext.OnItemRemoved(this);
 				ArmorResBonusContext = null;
 			}
-				
+
+			if (item is BaseArmor)
+				ResourcesBonusHelper.CheckPlayerRegens(this);
 
 			InvalidateMyRunUO();
 		}

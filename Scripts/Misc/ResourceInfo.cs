@@ -979,6 +979,20 @@ namespace Server.Items
 			return res;
 		}
 
+		public static CraftResource GetResourceFromItem(Item item)
+		{
+			if (item is BaseArmor)
+				return (item as BaseArmor).Resource;
+			else if (item is BaseWeapon)
+				return (item as BaseWeapon).Resource;
+			else if (item is BaseClothing)
+				return (item as BaseClothing).Resource;
+			else if (item is BaseJewel)
+				return (item as BaseJewel).Resource;
+
+			return CraftResource.None;
+		}
+
 		/// <summary>
 		/// Returns a <see cref="CraftResourceInfo"/> instance describing '<paramref name="resource"/>' -or- null if an invalid resource was specified.
 		/// </summary>

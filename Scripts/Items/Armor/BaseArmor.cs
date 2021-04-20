@@ -429,11 +429,11 @@ namespace Server.Items
 		public virtual int BasePoisonResistance{ get{ return 0; } }
 		public virtual int BaseEnergyResistance{ get{ return 0; } }
 
-		public override int PhysicalResistance{ get{ return BasePhysicalResistance + GetProtOffset() + GetResourceAttrs().ArmorPhysicalResist + m_PhysicalBonus; } }
-		public override int FireResistance{ get{ return BaseFireResistance + GetProtOffset() + GetResourceAttrs().ArmorFireResist + m_FireBonus + ResourcesBonusHelper.GetFireResistnace(this.Parent as Mobile); } }
-		public override int ColdResistance{ get{ return BaseColdResistance + GetProtOffset() + GetResourceAttrs().ArmorColdResist + m_ColdBonus; } }
-		public override int PoisonResistance{ get{ return BasePoisonResistance + GetProtOffset() + GetResourceAttrs().ArmorPoisonResist + m_PoisonBonus; } }
-		public override int EnergyResistance{ get{ return BaseEnergyResistance + GetProtOffset() + GetResourceAttrs().ArmorEnergyResist + m_EnergyBonus; } }
+		public override int PhysicalResistance{ get{ return BasePhysicalResistance + GetProtOffset() + GetResourceAttrs().ArmorPhysicalResist + ResourcesBonusHelper.GetPhysicalResistance(this.Parent as Mobile); } }
+		public override int FireResistance{ get{ return BaseFireResistance + GetProtOffset() + GetResourceAttrs().ArmorFireResist + m_FireBonus + ResourcesBonusHelper.GetFireResistance(this.Parent as Mobile); } }
+		public override int ColdResistance{ get{ return BaseColdResistance + GetProtOffset() + GetResourceAttrs().ArmorColdResist + m_ColdBonus + ResourcesBonusHelper.GetColdResistance(this.Parent as Mobile); } }
+		public override int PoisonResistance{ get{ return BasePoisonResistance + GetProtOffset() + GetResourceAttrs().ArmorPoisonResist + m_PoisonBonus + ResourcesBonusHelper.GetPoisonResistance(this.Parent as Mobile); } }
+		public override int EnergyResistance{ get{ return BaseEnergyResistance + GetProtOffset() + GetResourceAttrs().ArmorEnergyResist + m_EnergyBonus + ResourcesBonusHelper.GetEnergyResistance(this.Parent as Mobile); } }
 
 		public virtual int InitMinHits{ get{ return 0; } }
 		public virtual int InitMaxHits{ get{ return 0; } }
