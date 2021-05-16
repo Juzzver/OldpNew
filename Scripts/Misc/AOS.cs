@@ -183,7 +183,25 @@ namespace Server
 			}
 			#endregion
 
-			if( keepAlive && totalDamage > m.Hits )
+			if (from is PlayerMobile)
+			{
+				PlayerMobile pm = from as PlayerMobile;
+
+				if (pm.ArmorResBonusContext != null)
+				{
+					int bonusDamage = (int)(totalDamage * pm.ArmorResBonusContext.IncreaseDamageRate);
+
+					if (bonusDamage > 0)
+					{
+						pm.SendMessage($"You dealt {pm.ArmorResBonusContext.IncreaseDamageRate * 100}% more damage {totalDamage + bonusDamage} instead of {(int)totalDamage}.");
+						totalDamage += bonusDamage;
+					}
+					
+				}
+
+			}
+
+			if ( keepAlive && totalDamage > m.Hits )
 				totalDamage = m.Hits;
 
 			if( from != null && !from.Deleted && from.Alive )

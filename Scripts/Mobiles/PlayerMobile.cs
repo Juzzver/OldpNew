@@ -2682,7 +2682,7 @@ namespace Server.Mobiles
 			if( Confidence.IsRegenerating( this ) )
 				Confidence.StopRegenerating( this );
 
-			WeightOverloading.FatigueOnDamage( this, amount );
+			WeightOverloading.FatigueOnDamage( this, amount, from );
 
 			if ( m_ReceivedHonorContext != null )
 				m_ReceivedHonorContext.OnTargetDamaged( from, amount );

@@ -213,6 +213,8 @@ namespace Server
 			return true;
 		}
 
+
+		// To Do - need to fix level checks because all sets will inheritance low lvl set properties.
 		public static bool IsSetHasSameLevel(List<Item> setItems)
 		{
 			for (int i = 0; i < setItems.Count; i++)
@@ -450,7 +452,7 @@ namespace Server
 			Level = level;
 		}
 
-		public override double FatiqueRate => 2;
+		public override double FatiqueRate => 1.00; // 100%
 	}
 
 	public class BlueRockArmorBonuses : BaseArmorResourceBonus
@@ -508,7 +510,7 @@ namespace Server
 			Level = level;
 		}
 
-		public override double AbsorbFireRate => 0.5;
+	//	public override double AbsorbFireRate => 0.5;
 
 		public override double ResistFireRate => 50;
 	}
@@ -534,7 +536,9 @@ namespace Server
 			Level = level;
 		}
 
-		public override double AbsorbPoisonRate => 80;
+	//	public override double AbsorbPoisonRate => 80;
+
+		public override double ResistPoisonRate => 80; // 80 points
 	}
 
 
@@ -614,7 +618,6 @@ namespace Server
 			}
 		}
 		public override double IncreaseDamageRate => 0.15;
-		public override double CastSpeedRate { get { return Level == 1 ? 0.3 : 0; } }
 	}
 
 	public class BloodRockArmorBonuses : BaseArmorResourceBonus
