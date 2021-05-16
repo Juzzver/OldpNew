@@ -1040,6 +1040,22 @@ namespace Server.Spells
 
 		public static void Damage( Spell spell, TimeSpan delay, Mobile target, Mobile from, double damage, int phys, int fire, int cold, int pois, int nrgy, DFAlgorithm dfa )
 		{
+			if (target is PlayerMobile)
+			{
+				PlayerMobile pm = target as PlayerMobile;
+
+				if(pm.ArmorResBonusContext != null && pm.ArmorResBonusContext.IgnoreMagicDamageChance > 0)
+				{
+					if(pm.ArmorResBonusContext.IgnoreMagicDamageChance >= Utility.RandomDouble())
+					{
+						pm.SendMessage($"Your armor allowed you {pm.ArmorResBonusContext.IgnoreMagicDamageChance * 100}% chance to ignore magic damage.");
+						from.SendMessage($"{from.Name}'s armor allowed him {pm.ArmorResBonusContext.IgnoreMagicDamageChance * 100}% chance to ignore magic damage.");
+						return;
+					}
+				}
+					
+			}
+
 			int iDamage = (int)damage;
 
 			if( delay == TimeSpan.Zero )

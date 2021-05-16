@@ -29,6 +29,7 @@ namespace Server
 
 		public virtual double AbsorbDamageRate { get; set; }
 		public virtual double AbsorbMagicDamageRate { get; set; }
+		public virtual double IgnoreMagicDamageChance { get; set; }
 		public virtual double ResistPhysicalRate { get; set; } // need or delete?
 		public virtual double ResistFireRate { get; set; }
 		public virtual double ResistColdRate { get; set; }
@@ -105,14 +106,14 @@ namespace Server
 
 				List<Item> setItems = m.Items.FindAll(x => x is BaseArmor &&
 														   (x.Layer == Layer.Helm ||
-														    x.Layer == Layer.Neck ||
-														    x.Layer == Layer.Arms ||
-														    x.Layer == Layer.Gloves ||
-														    x.Layer == Layer.InnerTorso ||
-														    x.Layer == Layer.Pants)
-														    );
+															x.Layer == Layer.Neck ||
+															x.Layer == Layer.Arms ||
+															x.Layer == Layer.Gloves ||
+															x.Layer == Layer.InnerTorso ||
+															x.Layer == Layer.Pants)
+															);
 
-					if (IsFullArmorSet(setItems))
+				if (IsFullArmorSet(setItems))
 				{
 					BaseArmor setPiece = setItems[0] as BaseArmor;
 					int level = setPiece.ArmorLevel;
@@ -159,8 +160,8 @@ namespace Server
 							return new MythrilArmorBonuses(res, type, level);
 						case CraftResource.Shadow:
 							return new ShadowArmorBonuses(res, type, level);
-						//case CraftResource.Legendary:
-						//	return new LegendaryArmorBonuses(res, type, level);
+						case CraftResource.Legendary:
+							return new LegendaryArmorBonuses(res, type, level);
 						case CraftResource.Lava:
 							return new LavaArmorBonuses(res, type, level);
 					}
@@ -790,11 +791,11 @@ namespace Server
 
 			}
 		}
-		public override double AbsorbFireRate => 0.7;
+		//public override double AbsorbFireRate => 0.7;
+		public override double ResistFireRate => 70;
+
 	}
 
-
-	//todo regens
 	public class MeteorArmorBonuses : BaseArmorResourceBonus
 	{
 		public MeteorArmorBonuses(CraftResource res, ArmorMaterialType type, int level)
@@ -1157,10 +1158,28 @@ namespace Server
 			}
 		}
 
-		public override double ResistMageryRate => 0.5;
-		public override double AbsorbMagicDamageRate => 0.2;
+		public override double ResistMageryRate
+		{
+			get
+			{
+				if (Level == 1)
+					return 0.5;
+				else if (Level >= 2)
+					return 0.7;
 
-
+				return 0;
+			}
+		}
+		public override double IgnoreMagicDamageChance
+		{
+			get
+			{
+				if (Level >= 5)
+					return 0.4;
+				else
+					return 0.2;
+			}
+		}
 	}
 
 	public class ShadowArmorBonuses : BaseArmorResourceBonus
@@ -1390,25 +1409,37 @@ namespace Server
 		//	}
 		//}
 
-		//public override Dictionary<SkillName, double> SkillBonuses
-		//{
-		//	get
-		//	{
-		//		var skillTable = new Dictionary<SkillName, double>();
+		public override Dictionary<SkillName, double> SkillBonuses
+		{
+			get
+			{
+				if (Level >= 5)
+				{
+					var skillTable = new Dictionary<SkillName, double>();
+					skillTable.Add(SkillName.Magery, 50);
 
-		//		skillTable.Add(SkillName.Stealth, 60);
+					return skillTable;
+				}
+				else
+					return null;
+			}
+		}
 
-		//		return skillTable;
-		//	}
-		//}
+		public override double CastSpeedRate
+		{
+			get
+			{
+				if (Level >= 4)
+					return 0.20;
+				else if (Level == 3)
+					return 0.15;
 
 
+				return 0;
+			}
 
+		}
 	}
-
-
-
-
 
 	public class ResourcesBonusHelper
 	{
@@ -1422,7 +1453,7 @@ namespace Server
 			}
 
 			protected override void OnTick()
-			{				
+			{
 				if (RegenList != null && RegenList.Count > 0)
 				{
 					foreach (var m in RegenList)
@@ -1469,7 +1500,7 @@ namespace Server
 				}
 				else if (RegenList.Contains(pm))
 				{
-				//	PlayersRegenTimer.Stop();
+					//	PlayersRegenTimer.Stop();
 					RegenList.Remove(pm);
 					//	PlayersRegenTimer.Start();
 
@@ -1478,10 +1509,10 @@ namespace Server
 						PlayersRegenTimer.Stop();
 						World.Broadcast(38, true, "There no longer players with regens. RegenTimer has stopped!");
 					}
-				
+
 				}
 
-					
+
 			}
 		}
 
@@ -1664,7 +1695,7 @@ namespace Server
 						{
 							if (item.ArmorLevel >= 5)
 								hp_reg += 4;
-							else 
+							else
 								hp_reg += 2;
 
 							break;
@@ -1683,7 +1714,7 @@ namespace Server
 
 		public static int GetStamRegBonus(Mobile m)
 		{
-			int stam_reg = 0; 
+			int stam_reg = 0;
 
 			foreach (BaseArmor item in m.Items.FindAll(x => x is BaseArmor && BaseArmorResourceBonus.IsItemPieceOfSet(x)))
 			{
