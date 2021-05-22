@@ -196,6 +196,13 @@ namespace Server
 						pm.SendMessage($"You dealt {pm.ArmorResBonusContext.IncreaseDamageRate * 100}% more damage {totalDamage + bonusDamage} instead of {(int)totalDamage}.");
 						totalDamage += bonusDamage;
 					}
+
+					if (pm.Hidden && pm.ArmorResBonusContext.StealthBonusDamageRate > 0)
+					{
+						bonusDamage = (int)(totalDamage * pm.ArmorResBonusContext.StealthBonusDamageRate);
+						pm.SendMessage($"You dealt extra {pm.ArmorResBonusContext.StealthBonusDamageRate * 100}% more damage {totalDamage + bonusDamage} from hide instead of {(int)totalDamage}.");
+						totalDamage += bonusDamage;
+					}
 					
 				}
 

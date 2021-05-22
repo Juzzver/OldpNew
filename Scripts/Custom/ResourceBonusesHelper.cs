@@ -88,6 +88,7 @@ namespace Server
 
 		public virtual double MagicReflectionRate { get; set; }
 		public virtual double PhysReflectionRate { get; set; }
+		public virtual double PhysReflectNearEnemyRate { get; set; }
 
 		public virtual double GetBonusFromFullSet(Mobile m)
 		{
@@ -1101,7 +1102,7 @@ namespace Server
 		}
 
 		// резистит в ближ врага.
-		public override double PhysReflectionRate => 0.2;
+		public override double PhysReflectNearEnemyRate => 0.2; // 20%
 	}
 
 	public class MythrilArmorBonuses : BaseArmorResourceBonus
