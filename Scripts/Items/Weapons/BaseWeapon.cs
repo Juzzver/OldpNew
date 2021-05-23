@@ -12,6 +12,7 @@ using Server.Factions;
 using Server.Engines.Craft;
 using System.Collections.Generic;
 using Server.Spells.Spellweaving;
+using System.Linq;
 
 namespace Server.Items
 {
@@ -1587,7 +1588,14 @@ namespace Server.Items
 
 			bool ignoreArmor = ( a is ArmorIgnore || (move != null && move.IgnoreArmor( attacker )) );
 
-			damageGiven = AOS.Damage( defender, attacker, damage, ignoreArmor, phys, fire, cold, pois, nrgy, chaos, direct, false, this is BaseRanged, false );
+			if (defender is PlayerMobile && ((PlayerMobile)defender).ArmorResBonusContext != null && ((PlayerMobile)defender).ArmorResBonusContext.PhysReflectNearEnemyRate > Utility.RandomDouble()) // > 20%
+			{
+				Mobile enemy = GetNearestEnemy(attacker, defender, 5); // 5 tiles range
+				damageGiven = AOS.Damage(enemy, defender, damage, ignoreArmor, phys, fire, cold, pois, nrgy, chaos, direct, false, this is BaseRanged, false);
+				SendReflectDmgInfo(attacker, enemy, defender, damageGiven);
+			}
+			else
+				damageGiven = AOS.Damage(defender, attacker, damage, ignoreArmor, phys, fire, cold, pois, nrgy, chaos, direct, false, this is BaseRanged, false);
 
 			double propertyBonus = ( move == null ) ? 1.0 : move.GetPropertyBonus( attacker );
 
@@ -1758,6 +1766,47 @@ namespace Server.Items
 				if ( AnimalForm.UnderTransformation( defender, typeof( BullFrog ) ) )
 					attacker.ApplyPoison( defender, Poison.Regular );
 			}
+		}
+
+		public void SendReflectDmgInfo(Mobile attacker, Mobile enemy,  Mobile defender, int damage)
+		{
+			if (damage > 0)
+			{
+				if (enemy != attacker)
+				{
+					defender.SendMessage(67, $"You have reflected {attacker.Name}'s {damage} damage to nearest target: {enemy.Name}.");
+					enemy.SendMessage(38, $"You took {damage} damage from {defender.Name} reflect.");
+					attacker.SendMessage(38, $"Your damage was reflected to nearest target: {enemy.Name}.");
+				//	enemy.Damage(damage, defender);
+
+				}
+				else // do reflect to last attacker
+				{
+					defender.SendMessage(67, $"You have reflected {attacker.Name}'s {damage} damage back to {attacker.Name}.");
+					attacker.SendMessage(38, $"You received {damage} damage from {defender.Name} reflection.");
+				//	attacker.Damage(damage, defender);
+				}
+
+			}
+		}
+
+		public Mobile GetNearestEnemy(Mobile attacker, Mobile defender, int range)
+		{
+			List<int> enemiesNoto = new List<int> { Notoriety.Criminal, Notoriety.Enemy, Notoriety.Murderer };
+
+			// find nearest enemy
+			for (int i = 0; i < range; i++)
+			{
+				// To Do Check memory leak
+				var mobiles = defender.GetMobilesInRange(i).Where(x => x != defender && x.Alive && enemiesNoto.Contains(Notoriety.Compute(defender, x)));
+
+				if (mobiles.Count() > 0)
+				{
+					return mobiles.First();
+				}
+			}
+
+			return attacker;
 		}
 
 		public virtual double GetAosDamage( Mobile attacker, int bonus, int dice, int sides )

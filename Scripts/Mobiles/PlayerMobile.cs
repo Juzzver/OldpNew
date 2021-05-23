@@ -26,6 +26,7 @@ using Server.Engines.Craft;
 using Server.Spells.Spellweaving;
 using Server.Engines.PartySystem;
 using Server.Engines.MLQuests;
+using System.Text;
 
 namespace Server.Mobiles
 {
@@ -2661,47 +2662,45 @@ namespace Server.Mobiles
 					from.SendMessage(38, $"You have absorbed  {absorbDmg}.");
 
 
-				if (ArmorResBonusContext.PhysReflectNearEnemyRate > 0)
-				{
-					int ref_dmg = (int)(amount * ArmorResBonusContext.PhysReflectNearEnemyRate);
+				//if (ArmorResBonusContext.PhysReflectNearEnemyRate > 0)
+				//{
+				//	int ref_dmg = (int)(amount * ArmorResBonusContext.PhysReflectNearEnemyRate);
 
-					if (ref_dmg > 0)
-					{
-						int range = 5;
-						Mobile enemy = null;
-						List<int> enemiesNoto = new List<int> { Notoriety.Criminal, Notoriety.Enemy, Notoriety.Murderer };
+				//	if (ref_dmg > 0)
+				//	{
+				//		int range = 5;
+				//		Mobile enemy = null;
+				//		List<int> enemiesNoto = new List<int> { Notoriety.Criminal, Notoriety.Enemy, Notoriety.Murderer };
 
-						// find nearest enemy
-						for (int i = 0; i < range; i++)
-						{
-							// To Do Check memory leak
-							var mobiles = GetMobilesInRange(i).Where(x => enemiesNoto.Contains(Notoriety.Compute(this, x)) && x.Alive);
+				//		// find nearest enemy
+				//		for (int i = 0; i < range; i++)
+				//		{
+				//			// To Do Check memory leak
+				//			var mobiles = GetMobilesInRange(i).Where(x => enemiesNoto.Contains(Notoriety.Compute(this, x)) && x.Alive);
 
-							if (mobiles.Count() > 0)
-							{
-								enemy = mobiles.First();
-								break;
-							}
-						}
+				//			if (mobiles.Count() > 0)
+				//			{
+				//				enemy = mobiles.First();
+				//				break;
+				//			}
+				//		}
 
-						if (enemy != null)
-						{
-							SendMessage(67, $"You have reflected {ArmorResBonusContext.PhysReflectNearEnemyRate * 100}% of damage to near enemy {enemy.Name}.");
-							enemy.SendMessage(38, $"You took {ref_dmg} damage from {this.Name} reflect.");
-							enemy.Damage(ref_dmg, this);
+				//		if (enemy != null)
+				//		{
+				//			SendMessage(67, $"You have reflected {ArmorResBonusContext.PhysReflectNearEnemyRate * 100}% of damage to near enemy {enemy.Name}.");
+				//			enemy.SendMessage(38, $"You took {ref_dmg} damage from {this.Name} reflect.");
+				//			enemy.Damage(ref_dmg, this);
 
-						}
-						else // do reflect to last attacker
-						{
-							SendMessage(67, $"You have reflected {ArmorResBonusContext.PhysReflectNearEnemyRate * 100}% of damage to near enemy {from.Name}.");
-							from.SendMessage(38, $"You took {ref_dmg} damage from {this.Name} reflect.");
-							from.Damage(ref_dmg, this);
-						}
-					}
-				}
-			}
-
-			
+				//		}
+				//		else // do reflect to last attacker
+				//		{
+				//			SendMessage(67, $"You have reflected {ArmorResBonusContext.PhysReflectNearEnemyRate * 100}% of damage to near enemy {from.Name}.");
+				//			from.SendMessage(38, $"You took {ref_dmg} damage from {this.Name} reflect.");
+				//			from.Damage(ref_dmg, this);
+				//		}
+				//	}
+				//}
+			}			
 
 			int disruptThreshold;
 
