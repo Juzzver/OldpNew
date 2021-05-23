@@ -7,29 +7,46 @@ namespace Server.Engines.Harvest
 {
 	public class Lumberjacking : HarvestSystem
 	{
+		Mobile m_Harvester;
+		Item m_HarvestTool;
 		private static Lumberjacking m_System;
 
 		public static Lumberjacking System
 		{
 			get
 			{
-				if ( m_System == null )
+				if (m_System == null)
 					m_System = new Lumberjacking();
 
 				return m_System;
 			}
 		}
 
+		public static Lumberjacking GetLumberjackSystem(Item tool)
+		{
+			if (m_System == null)
+				m_System = new Lumberjacking(tool);
+			else if (m_System != null && m_System.m_HarvestTool != tool)
+				m_System = new Lumberjacking(tool);
+
+			return m_System;
+
+		}
+
 		private HarvestDefinition m_Definition;
 
 		public HarvestDefinition Definition
 		{
-			get{ return m_Definition; }
+			get { return m_Definition; }
 		}
 
-		private Lumberjacking()
+
+		private Lumberjacking(Item harvTool = null)
 		{
 			HarvestResource[] res;
+
+			m_HarvestTool = harvTool;
+
 			HarvestVein[] veins;
 
 			#region Lumberjacking
@@ -44,8 +61,8 @@ namespace Server.Engines.Harvest
 			lumber.MaxTotal = 45;
 
 			// A resource bank will respawn its content every 20 to 30 minutes
-			lumber.MinRespawn = TimeSpan.FromMinutes( 20.0 );
-			lumber.MaxRespawn = TimeSpan.FromMinutes( 30.0 );
+			lumber.MinRespawn = TimeSpan.FromMinutes(20.0);
+			lumber.MaxRespawn = TimeSpan.FromMinutes(30.0);
 
 			// Skill checking is done on the Lumberjacking skill
 			lumber.Skill = SkillName.Lumberjacking;
@@ -61,11 +78,11 @@ namespace Server.Engines.Harvest
 			lumber.ConsumedPerFeluccaHarvest = 20;
 
 			// The chopping effect
-			lumber.EffectActions = new int[]{ 13 };
-			lumber.EffectSounds = new int[]{ 0x13E };
-			lumber.EffectCounts = (Core.AOS ? new int[]{ 1 } : new int[]{ 1, 2, 2, 2, 3 });
-			lumber.EffectDelay = TimeSpan.FromSeconds( 1.6 );
-			lumber.EffectSoundDelay = TimeSpan.FromSeconds( 0.9 );
+			lumber.EffectActions = new int[] { 13 };
+			lumber.EffectSounds = new int[] { 0x13E };
+			lumber.EffectCounts = (Core.AOS ? new int[] { 1 } : new int[] { 1, 2, 2, 2, 3 });
+			lumber.EffectDelay = TimeSpan.FromSeconds(1.6);
+			lumber.EffectSoundDelay = TimeSpan.FromSeconds(0.9);
 
 			lumber.NoResourcesMessage = 500493; // There's not enough wood here to harvest.
 			lumber.FailMessage = 500495; // You hack at the tree for a while, but fail to produce any useable wood.
@@ -73,30 +90,107 @@ namespace Server.Engines.Harvest
 			lumber.PackFullMessage = 500497; // You can't place any wood into your backpack!
 			lumber.ToolBrokeMessage = 500499; // You broke your axe.
 
-			if ( Core.ML )
+			if (Core.ML)
 			{
 				res = new HarvestResource[]
-				{
-					new HarvestResource(  00.0, 00.0, 100.0, 1072540, typeof( Log ) ),
-					new HarvestResource(  65.0, 25.0, 105.0, 1072541, typeof( OakLog ) ),
-					new HarvestResource(  80.0, 40.0, 120.0, 1072542, typeof( AshLog ) ),
-					new HarvestResource(  95.0, 55.0, 135.0, 1072543, typeof( YewLog ) ),
-					new HarvestResource( 100.0, 60.0, 140.0, 1072544, typeof( HeartwoodLog ) ),
-					new HarvestResource( 100.0, 60.0, 140.0, 1072545, typeof( BloodwoodLog ) ),
-					new HarvestResource( 100.0, 60.0, 140.0, 1072546, typeof( FrostwoodLog ) ),
-				};
+					{
+					//Standard				
+					new HarvestResource( 00.0, 00.0, 100.0, 100.0, AxeType.Standard, "You chop some Willow logs and put them into your backpack.", typeof( Log ) ),
+					new HarvestResource( 10.0, 05.0, 100.0, 100.0, AxeType.Standard,"You chop some Aspen logs and put them into your backpack.", typeof( AspenLog ) ),
+					new HarvestResource( 30.0, 10.0, 100.0, 100.0, AxeType.Standard,"You chop some Elven and put them into your backpack.", typeof( ElvenLog ) ),
+					//Strong
+					new HarvestResource( 50.0, 15.0, 100.0, 150.0, AxeType.Strong, "You chop some Dendroid logs and put them into your backpack.", typeof( DendroidLog ) ),
+					new HarvestResource( 50.0, 20.0, 100.0, 150.0, AxeType.Strong, "You chop some Scorpion logs and put them into your backpack.", typeof( ScorpionLog ) ),
+					new HarvestResource( 50.0, 23.0, 100.0, 150.0, AxeType.Strong, "You chop some Frozen logs and put them into your backpack.", typeof(FrozenLog ) ),
+					//Hard
+					new HarvestResource( 70.0, 27.0, 105.0, 180.0, AxeType.Hard, "You chop some Hamelion logs and put them into your backpack.", typeof( HamelionLog ) ),
+					new HarvestResource( 70.0, 30.0, 108.0, 180.0, AxeType.Hard,     "You chop some Ice logs and put them into your backpack.", typeof( IceLog ) ),
+					new HarvestResource( 70.0, 33.0, 110.0, 180.0, AxeType.Hard,     "You chop some Rose logs and put them into your backpack.", typeof( RoseLog ) ),
+					new HarvestResource( 90.0, 36.0, 115.0, 180.0, AxeType.Hard,     "You chop some Dead logs and put them into your backpack.", typeof( DeadLog ) ),
+					new HarvestResource( 90.0, 39.0, 120.0, 180.0, AxeType.Hard,     "You chop some Holy logs and put them into your backpack.", typeof( HolyLog ) ),
+					//Mythril
+					new HarvestResource( 100.0, 43.0, 125.0, 200.0, AxeType.Mythril, "You chop some Arian logs and put them into your backpack.", typeof( ArianLog ) ),
+					new HarvestResource( 100.0, 46.0, 125.0, 200.0, AxeType.Mythril, "You chop some Millennium logs and put them into your backpack.", typeof( MillenniumLog ) ),
+					new HarvestResource( 100.0, 49.0, 125.0, 200.0, AxeType.Mythril, "You chop some Mystic logs and put them into your backpack.", typeof( MysticLog ) ),
+					new HarvestResource( 100.0, 53.0, 125.0, 200.0, AxeType.Mythril, "You chop some Terium logs and put them into your backpack.", typeof( TeriumLog ) ),
+
+					//Legendary
+					new HarvestResource( 100.0, 56.0, 130.0, 200.0, AxeType.Legendary, "You chop some Ancient logs and put them into your backpack.", typeof( AncientLog ) ),
+					new HarvestResource( 100.0, 59.0, 130.0, 200.0, AxeType.Legendary, "You chop some Life logs and put them into your backpack.", typeof( LifeLog ) ),
+					new HarvestResource( 100.0, 63.0, 130.0, 200.0, AxeType.Legendary, "You chop some Chaos logs and put them into your backpack.", typeof( ChaosLog ) ),
+					new HarvestResource( 150.0, 66.0, 160.0, 200.0, AxeType.Legendary, "You chop some Legendary Black Oak logs and put them into your backpack.", typeof( LegendaryBlackOakLog ) ),
+					};
 
 
 				veins = new HarvestVein[]
 				{
-					new HarvestVein( 49.0, 0.0, res[0], null ),	// Ordinary Logs
-					new HarvestVein( 30.0, 0.5, res[1], res[0] ), // Oak
-					new HarvestVein( 10.0, 0.5, res[2], res[0] ), // Ash
-					new HarvestVein( 05.0, 0.5, res[3], res[0] ), // Yew
-					new HarvestVein( 03.0, 0.5, res[4], res[0] ), // Heartwood
-					new HarvestVein( 02.0, 0.5, res[5], res[0] ), // Bloodwood
-					new HarvestVein( 01.0, 0.5, res[6], res[0] ), // Frostwood
+					new HarvestVein( 100.0, 0.0, res[0], null )
 				};
+
+				if (m_HarvestTool != null && (m_HarvestTool is BaseAxe) /*&& !(m_HarvestTool is Pickaxe)*/)
+				{
+					var tool = m_HarvestTool as BaseAxe;
+
+					switch (tool.ToolType)
+					{
+						case AxeType.None:
+							break;
+						case AxeType.Standard:
+							{
+								veins = new HarvestVein[]
+								{
+								new HarvestVein( 50.0, 20.0, res[0], null ), // Willow
+								new HarvestVein( 35.0, 40.0, res[1], null ), // Aspen
+								new HarvestVein( 15.0, 60.0, res[2], null ), // Elven					
+								};
+							}
+							break;
+						case AxeType.Strong:
+							{
+								veins = new HarvestVein[]
+								{
+								new HarvestVein( 50.0, 90.0, res[3], null ), // Dendroid
+								new HarvestVein( 30.0, 90.0, res[4], null ), // Scorpion
+								new HarvestVein( 20.0, 90.0, res[5], null ), // Frozen
+								};
+							}
+							break;
+						case AxeType.Hard:
+							{
+								veins = new HarvestVein[]
+								{
+								new HarvestVein( 22.0, 92.0, res[6], null ), // Hamelion
+								new HarvestVein( 21.0, 92.0, res[7], null ), // Ice
+								new HarvestVein( 20.0, 92.0, res[8], null ), // Rose
+								new HarvestVein( 20.0, 92.0, res[9], null ), // Dead
+								new HarvestVein( 17.0, 92.0, res[10], null ),// Holy
+								};
+							}
+							break;
+						case AxeType.Mythril:
+							{
+								veins = new HarvestVein[]
+								{
+								new HarvestVein( 25.0, 94.0, res[11], null   ), // Arian
+								new HarvestVein( 25.0, 94.0, res[12], null ), // Millennium
+								new HarvestVein( 25.0, 94.0, res[13], null ), // Mystic
+								new HarvestVein( 25.0, 94.0, res[14], null ), // Terium
+								};
+							}
+							break;
+						case AxeType.Legendary:
+							{
+								veins = new HarvestVein[]
+								{
+								new HarvestVein( 33.0, 97.0, res[15], null   ), // Ancient
+								new HarvestVein( 33.0, 97.0, res[16], null ),	// Life
+								new HarvestVein( 33.0, 97.0, res[17], null ),	// Chaos
+								new HarvestVein( 01.0, 99.0, res[18], null   ), // Legendary
+								};
+							}
+							break;
+					}
+				}
 
 				lumber.BonusResources = new BonusHarvestResource[]
 				{
@@ -121,6 +215,7 @@ namespace Server.Engines.Harvest
 				};
 			}
 
+
 			lumber.Resources = res;
 			lumber.Veins = veins;
 
@@ -128,61 +223,61 @@ namespace Server.Engines.Harvest
 			lumber.RandomizeVeins = Core.ML;
 
 			m_Definition = lumber;
-			Definitions.Add( lumber );
+			Definitions.Add(lumber);
 			#endregion
 		}
 
-		public override bool CheckHarvest( Mobile from, Item tool )
+		public override bool CheckHarvest(Mobile from, Item tool)
 		{
-			if ( !base.CheckHarvest( from, tool ) )
+			if (!base.CheckHarvest(from, tool))
 				return false;
 
-			if ( tool.Parent != from )
+			if (tool.Parent != from)
 			{
-				from.SendLocalizedMessage( 500487 ); // The axe must be equipped for any serious wood chopping.
+				from.SendLocalizedMessage(500487); // The axe must be equipped for any serious wood chopping.
 				return false;
 			}
 
 			return true;
 		}
 
-		public override bool CheckHarvest( Mobile from, Item tool, HarvestDefinition def, object toHarvest )
+		public override bool CheckHarvest(Mobile from, Item tool, HarvestDefinition def, object toHarvest)
 		{
-			if ( !base.CheckHarvest( from, tool, def, toHarvest ) )
+			if (!base.CheckHarvest(from, tool, def, toHarvest))
 				return false;
 
-			if ( tool.Parent != from )
+			if (tool.Parent != from)
 			{
-				from.SendLocalizedMessage( 500487 ); // The axe must be equipped for any serious wood chopping.
+				from.SendLocalizedMessage(500487); // The axe must be equipped for any serious wood chopping.
 				return false;
 			}
 
 			return true;
 		}
 
-		public override void OnBadHarvestTarget( Mobile from, Item tool, object toHarvest )
+		public override void OnBadHarvestTarget(Mobile from, Item tool, object toHarvest)
 		{
-			if ( toHarvest is Mobile )
-				( (Mobile)toHarvest ).PrivateOverheadMessage( MessageType.Regular, 0x3B2, 500450, from.NetState ); // You can only skin dead creatures.
-			else if ( toHarvest is Item )
-				( (Item)toHarvest ).LabelTo( from, 500464 ); // Use this on corpses to carve away meat and hide
-			else if ( toHarvest is Targeting.StaticTarget || toHarvest is Targeting.LandTarget )
-				from.SendLocalizedMessage( 500489 ); // You can't use an axe on that.
+			if (toHarvest is Mobile)
+				((Mobile)toHarvest).PrivateOverheadMessage(MessageType.Regular, 0x3B2, 500450, from.NetState); // You can only skin dead creatures.
+			else if (toHarvest is Item)
+				((Item)toHarvest).LabelTo(from, 500464); // Use this on corpses to carve away meat and hide
+			else if (toHarvest is Targeting.StaticTarget || toHarvest is Targeting.LandTarget)
+				from.SendLocalizedMessage(500489); // You can't use an axe on that.
 			else
-				from.SendLocalizedMessage( 1005213 ); // You can't do that
+				from.SendLocalizedMessage(1005213); // You can't do that
 		}
 
-		public override void OnHarvestStarted( Mobile from, Item tool, HarvestDefinition def, object toHarvest )
+		public override void OnHarvestStarted(Mobile from, Item tool, HarvestDefinition def, object toHarvest)
 		{
-			base.OnHarvestStarted( from, tool, def, toHarvest );
-			
-			if( Core.ML )
+			base.OnHarvestStarted(from, tool, def, toHarvest);
+
+			if (Core.ML)
 				from.RevealingAction();
 		}
 
 		public static void Initialize()
 		{
-			Array.Sort( m_TreeTiles );
+			Array.Sort(m_TreeTiles);
 		}
 
 		#region Tile lists
