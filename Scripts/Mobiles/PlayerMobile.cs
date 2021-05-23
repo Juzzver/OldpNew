@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Server.Misc;
 using Server.Items;
 using Server.Gumps;
@@ -25,6 +26,7 @@ using Server.Engines.Craft;
 using Server.Spells.Spellweaving;
 using Server.Engines.PartySystem;
 using Server.Engines.MLQuests;
+using System.Text;
 
 namespace Server.Mobiles
 {
@@ -89,6 +91,13 @@ namespace Server.Mobiles
 		private BaseArmorResourceBonus m_ArmorResBonusContext;
 
 		public BaseArmorResourceBonus ArmorResBonusContext { get { return m_ArmorResBonusContext; } set { m_ArmorResBonusContext = value; } }
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public int ArmorRegenHits { get; set; }
+		[CommandProperty(AccessLevel.GameMaster)]
+		public int ArmorRegenStam { get; set; }
+		[CommandProperty(AccessLevel.GameMaster)]
+		public int ArmorRegenMana { get; set; }
 
 		#region Stygian Abyss
 		public override void ToggleFlying()
@@ -952,12 +961,13 @@ namespace Server.Mobiles
 				var tempContext = pm.ArmorResBonusContext;
 				pm.ArmorResBonusContext = BaseArmorResourceBonus.GetSetInstance(pm);
 
-				if ((pm.ArmorResBonusContext != null && tempContext != null && pm.ArmorResBonusContext.GetType() != tempContext.GetType()) || tempContext == null)
+				if ((pm.ArmorResBonusContext != null && tempContext != null && pm.ArmorResBonusContext.GetType() != tempContext.GetType()) || (tempContext == null && pm.ArmorResBonusContext != null))
 					pm.ArmorResBonusContext.OnItemAdded(pm);
 
-				//((PlayerMobile)from).ArmorResBonusContext = BaseArmorResourceBonus.GetSetInstance(((PlayerMobile)from));
-				//((PlayerMobile)from).ArmorResBonusContext.OnItemAdded(((PlayerMobile)from));
+				from.UpdateResistances();
 			}
+
+			ResourcesBonusHelper.CheckPlayerRegens(from);
 		}
 
 		private bool m_NoDeltaRecursion;
@@ -1379,9 +1389,12 @@ namespace Server.Mobiles
 
 				ArmorResBonusContext = BaseArmorResourceBonus.GetSetInstance(this);
 
-				if((ArmorResBonusContext != null && tempContext != null && ArmorResBonusContext.GetType() != tempContext.GetType()) || tempContext == null)
+				if((ArmorResBonusContext != null && tempContext != null && ArmorResBonusContext.GetType() != tempContext.GetType()) || (tempContext == null && ArmorResBonusContext != null))
 					ArmorResBonusContext.OnItemAdded(this);
 			}
+
+			if (item is BaseArmor)
+				ResourcesBonusHelper.CheckPlayerRegens(this); 
 
 			InvalidateMyRunUO();
 		}
@@ -1403,7 +1416,9 @@ namespace Server.Mobiles
 				ArmorResBonusContext.OnItemRemoved(this);
 				ArmorResBonusContext = null;
 			}
-				
+
+			if (item is BaseArmor)
+				ResourcesBonusHelper.CheckPlayerRegens(this);
 
 			InvalidateMyRunUO();
 		}
@@ -2644,10 +2659,48 @@ namespace Server.Mobiles
 					amount = 1;
 
 				if (absorbDmg > 0)
-					from.SendMessage(38, $"You have to absorb {absorbDmg}");
-			}
+					from.SendMessage(38, $"You have absorbed  {absorbDmg}.");
 
-			
+
+				//if (ArmorResBonusContext.PhysReflectNearEnemyRate > 0)
+				//{
+				//	int ref_dmg = (int)(amount * ArmorResBonusContext.PhysReflectNearEnemyRate);
+
+				//	if (ref_dmg > 0)
+				//	{
+				//		int range = 5;
+				//		Mobile enemy = null;
+				//		List<int> enemiesNoto = new List<int> { Notoriety.Criminal, Notoriety.Enemy, Notoriety.Murderer };
+
+				//		// find nearest enemy
+				//		for (int i = 0; i < range; i++)
+				//		{
+				//			// To Do Check memory leak
+				//			var mobiles = GetMobilesInRange(i).Where(x => enemiesNoto.Contains(Notoriety.Compute(this, x)) && x.Alive);
+
+				//			if (mobiles.Count() > 0)
+				//			{
+				//				enemy = mobiles.First();
+				//				break;
+				//			}
+				//		}
+
+				//		if (enemy != null)
+				//		{
+				//			SendMessage(67, $"You have reflected {ArmorResBonusContext.PhysReflectNearEnemyRate * 100}% of damage to near enemy {enemy.Name}.");
+				//			enemy.SendMessage(38, $"You took {ref_dmg} damage from {this.Name} reflect.");
+				//			enemy.Damage(ref_dmg, this);
+
+				//		}
+				//		else // do reflect to last attacker
+				//		{
+				//			SendMessage(67, $"You have reflected {ArmorResBonusContext.PhysReflectNearEnemyRate * 100}% of damage to near enemy {from.Name}.");
+				//			from.SendMessage(38, $"You took {ref_dmg} damage from {this.Name} reflect.");
+				//			from.Damage(ref_dmg, this);
+				//		}
+				//	}
+				//}
+			}			
 
 			int disruptThreshold;
 
@@ -2669,7 +2722,7 @@ namespace Server.Mobiles
 			if( Confidence.IsRegenerating( this ) )
 				Confidence.StopRegenerating( this );
 
-			WeightOverloading.FatigueOnDamage( this, amount );
+			WeightOverloading.FatigueOnDamage( this, amount, from );
 
 			if ( m_ReceivedHonorContext != null )
 				m_ReceivedHonorContext.OnTargetDamaged( from, amount );

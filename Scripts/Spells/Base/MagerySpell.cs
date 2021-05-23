@@ -67,6 +67,16 @@ namespace Server.Spells
 
 			n /= 100.0;
 
+			if(target is PlayerMobile)
+			{
+				PlayerMobile pm = target as PlayerMobile;
+
+				if (pm.ArmorResBonusContext != null)
+					n += pm.ArmorResBonusContext.ResistMageryRate;
+
+				// To Do sys message
+			}
+
 			if( n <= 0.0 )
 				return false;
 

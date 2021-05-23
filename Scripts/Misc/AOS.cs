@@ -108,20 +108,19 @@ namespace Server
 				int resPois = m.PoisonResistance;
 				int resNrgy = m.EnergyResistance;
 
-				if (from is PlayerMobile)
-				{
-					PlayerMobile pm = from as PlayerMobile;
+				//if (from is PlayerMobile)
+				//{
+				//	PlayerMobile pm = from as PlayerMobile;
 
-					if (pm.ArmorResBonusContext != null)
-					{
-						var result = fire * pm.ArmorResBonusContext.AbsorbFireRate;
-						pm.SendMessage($"You have to absorb {result}% of fire damage instead of {fire}%.");
-						//	fatigue += fatigue * pm.ArmorResBonusContext.FatiqueRate;
+				//	if (pm.ArmorResBonusContext != null)
+				//	{
+				//		var result = fire * pm.ArmorResBonusContext.AbsorbFireRate;
+				//		pm.SendMessage($"You have to absorb {result}% of fire damage instead of {fire}%.");
 
-						if (pm.ArmorResBonusContext.AbsorbFireRate > 0)
-							fire = (int)(fire * pm.ArmorResBonusContext.AbsorbFireRate);
-					}
-				}
+				//		if (pm.ArmorResBonusContext.AbsorbFireRate > 0)
+				//			fire = (int)(fire * pm.ArmorResBonusContext.AbsorbFireRate);
+				//	}
+				//}
 
 				totalDamage  = damage * phys * (100 - resPhys);
 				totalDamage += damage * fire * (100 - resFire);
@@ -184,7 +183,32 @@ namespace Server
 			}
 			#endregion
 
-			if( keepAlive && totalDamage > m.Hits )
+			if (from is PlayerMobile)
+			{
+				PlayerMobile pm = from as PlayerMobile;
+
+				if (pm.ArmorResBonusContext != null)
+				{
+					int bonusDamage = (int)(totalDamage * pm.ArmorResBonusContext.IncreaseDamageRate);
+
+					if (bonusDamage > 0)
+					{
+						pm.SendMessage($"You dealt {pm.ArmorResBonusContext.IncreaseDamageRate * 100}% more damage {totalDamage + bonusDamage} instead of {(int)totalDamage}.");
+						totalDamage += bonusDamage;
+					}
+
+					if (pm.Hidden && pm.ArmorResBonusContext.StealthBonusDamageRate > 0)
+					{
+						bonusDamage = (int)(totalDamage * pm.ArmorResBonusContext.StealthBonusDamageRate);
+						pm.SendMessage($"You dealt extra {pm.ArmorResBonusContext.StealthBonusDamageRate * 100}% more damage {totalDamage + bonusDamage} from hide instead of {(int)totalDamage}.");
+						totalDamage += bonusDamage;
+					}
+					
+				}
+
+			}
+
+			if ( keepAlive && totalDamage > m.Hits )
 				totalDamage = m.Hits;
 
 			if( from != null && !from.Deleted && from.Alive )

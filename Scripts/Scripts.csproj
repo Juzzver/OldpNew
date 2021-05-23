@@ -135,7 +135,17 @@
     <Compile Include="Context Menus\OpenBankEntry.cs" />
     <Compile Include="Context Menus\TeachEntry.cs" />
     <Compile Include="Custom\BagOfArmor.cs" />
+    <Compile Include="Custom\Custom Bows\DemonHunter.cs" />
+    <Compile Include="Custom\Custom Bows\DragonSlayer.cs" />
+    <Compile Include="Custom\Custom Bows\BowOfTrueSight.cs" />
+    <Compile Include="Custom\Custom Bows\BowOfTheDeadKing.cs" />
+    <Compile Include="Custom\Custom Bows\BeastHunter.cs" />
+    <Compile Include="Custom\Custom Bows\HolyWord.cs" />
+    <Compile Include="Custom\Custom Bows\RoseBow.cs" />
+    <Compile Include="Custom\Custom Bows\MageHunter.cs" />
+    <Compile Include="Custom\Custom Bows\FrozenBow.cs" />
     <Compile Include="Custom\HueRoomGen.cs" />
+    <Compile Include="Custom\LumberAxes.cs" />
     <Compile Include="Custom\MiningPickAxes.cs" />
     <Compile Include="Custom\Nerun%27s Distro\ML\Mobiles\Blighted Grove\Jamal.cs" />
     <Compile Include="Custom\Nerun%27s Distro\ML\Mobiles\Blighted Grove\LadyMelisande.cs" />

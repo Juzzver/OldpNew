@@ -1040,6 +1040,30 @@ namespace Server.Spells
 
 		public static void Damage( Spell spell, TimeSpan delay, Mobile target, Mobile from, double damage, int phys, int fire, int cold, int pois, int nrgy, DFAlgorithm dfa )
 		{
+			if (target is PlayerMobile)
+			{
+				PlayerMobile pm = target as PlayerMobile;
+
+				if(pm.ArmorResBonusContext != null)
+				{
+					if(pm.ArmorResBonusContext.IgnoreMagicDamageChance > 0 && pm.ArmorResBonusContext.IgnoreMagicDamageChance >= Utility.RandomDouble())
+					{
+						pm.SendMessage($"Your armor allowed you {pm.ArmorResBonusContext.IgnoreMagicDamageChance * 100}% chance to ignore magic damage.");
+						from.SendMessage($"{from.Name}'s armor allowed him {pm.ArmorResBonusContext.IgnoreMagicDamageChance * 100}% chance to ignore magic damage.");
+						return;
+					}
+
+					if (pm.ArmorResBonusContext.MagicReflectionRate > Utility.RandomDouble())
+					{
+						pm.SendMessage($"The White Stone set allowed you to reflect {(int)damage} damage with a {pm.ArmorResBonusContext.MagicReflectionRate * 100}% chance.");
+						from.SendMessage($"{from.Name}'s armor allowed him with a {pm.ArmorResBonusContext.MagicReflectionRate * 100}% chance to reflect magic damage.");
+						Mobile targ = target;
+						target = from;
+						from = targ;
+					}
+				}					
+			}
+
 			int iDamage = (int)damage;
 
 			if( delay == TimeSpan.Zero )
@@ -1179,6 +1203,20 @@ namespace Server.Spells
 					((BaseCreature)m_Target).AlterSpellDamageFrom( m_From, ref m_Damage );
 
 				WeightOverloading.DFA = m_DFA;
+
+				if (m_Target is PlayerMobile)
+				{
+					PlayerMobile pm = m_Target as PlayerMobile;
+
+					if (pm.ArmorResBonusContext.MagicReflectionRate > Utility.RandomDouble())
+					{
+						pm.SendMessage($"The White Stone set allowed you to reflect {(int)m_Damage} damage with a {pm.ArmorResBonusContext.MagicReflectionRate * 100}% chance.");
+						m_From.SendMessage($"{m_From.Name}'s armor allowed him with a {pm.ArmorResBonusContext.MagicReflectionRate * 100}% chance to reflect magic damage.");
+						Mobile targ = m_Target;
+						m_Target = m_From;
+						m_From = targ;
+					}
+				}
 
 				int damageGiven = AOS.Damage( m_Target, m_From, m_Damage, m_Phys, m_Fire, m_Cold, m_Pois, m_Nrgy );
 

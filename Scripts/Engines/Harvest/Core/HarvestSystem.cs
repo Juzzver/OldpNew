@@ -152,7 +152,7 @@ namespace Server.Engines.Harvest
 				double chanceToFail = vein.ChanceToFallback;
 				double random = Utility.RandomDouble() * 100;
 
-				from.SendMessage(chanceToFail >= random ? 38 : 68, "Your chances [{0} vs {1}]", Math.Round(random, 1), chanceToFail);
+				from.SendMessage(chanceToFail >= random ? 38 : 68, "Your chances [{0}% vs {1}%]", Math.Round(random, 1), chanceToFail);
 				if (chanceToFail >= random)
 				{
 					def.SendMessageTo(from, def.FailMessage);

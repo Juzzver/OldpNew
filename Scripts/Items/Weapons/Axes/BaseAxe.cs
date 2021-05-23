@@ -14,8 +14,22 @@ namespace Server.Items
 		bool Axe( Mobile from, BaseAxe axe );
 	}
 
+	public enum AxeType
+	{
+		None,	
+		Standard,
+		Strong,
+		Hard,
+		Mythril,
+		Legendary
+	}
+
 	public abstract class BaseAxe : BaseMeleeWeapon
 	{
+		private AxeType m_AxeType;
+		[CommandProperty(AccessLevel.GameMaster)]
+		public virtual AxeType ToolType { get { return m_AxeType; } set { m_AxeType = value; } }
+		public virtual HarvestSystem HarvestSystem { get { return Lumberjacking.GetLumberjackSystem(this); } }
 		public override int DefHitSound{ get{ return 0x232; } }
 		public override int DefMissSound{ get{ return 0x23A; } }
 
@@ -23,7 +37,7 @@ namespace Server.Items
 		public override WeaponType DefType{ get{ return WeaponType.Axe; } }
 		public override WeaponAnimation DefAnimation{ get{ return WeaponAnimation.Slash2H; } }
 
-		public virtual HarvestSystem HarvestSystem{ get{ return Lumberjacking.System; } }
+	//	public virtual HarvestSystem HarvestSystem{ get{ return Lumberjacking.System; } }
 
 		private int m_UsesRemaining;
 		private bool m_ShowUsesRemaining;
@@ -73,6 +87,7 @@ namespace Server.Items
 		public BaseAxe( int itemID ) : base( itemID )
 		{
 			m_UsesRemaining = 150;
+			ToolType = AxeType.Standard;
 		}
 
 		public BaseAxe( Serial serial ) : base( serial )
@@ -115,7 +130,9 @@ namespace Server.Items
 		{
 			base.Serialize( writer );
 
-			writer.Write( (int) 2 ); // version
+			writer.Write( (int) 3 ); // version
+
+			writer.Write((int)m_AxeType);
 
 			writer.Write( (bool) m_ShowUsesRemaining );
 
@@ -130,6 +147,11 @@ namespace Server.Items
 
 			switch ( version )
 			{
+				case 3:
+					{
+						m_AxeType = (AxeType)reader.ReadInt();
+						goto case 2;
+					}
 				case 2:
 				{
 					m_ShowUsesRemaining = reader.ReadBool();

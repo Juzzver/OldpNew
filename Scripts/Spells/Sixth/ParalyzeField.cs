@@ -184,7 +184,19 @@ namespace Server.Spells.Sixth
 						duration = 7.0 + (m_Caster.Skills[SkillName.Magery].Value * 0.2);
 					}
 
-					m.Paralyze( TimeSpan.FromSeconds( duration ) );
+					if (m is PlayerMobile )
+					{
+						PlayerMobile pm = m as PlayerMobile;
+
+						if (pm.ArmorResBonusContext != null && pm.ArmorResBonusContext.ParalyzeFieldImmunityRate >= Utility.RandomDouble())
+						{
+							duration = 0;
+							m.SendMessage("Plazma set lets you ignore Paralyze Field.");
+						}
+					}
+
+					if (duration > 0)
+						m.Paralyze(TimeSpan.FromSeconds(duration));
 
 					m.PlaySound( 0x204 );
 					m.FixedEffect( 0x376A, 10, 16 );

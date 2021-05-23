@@ -51,12 +51,26 @@ namespace Server.Items
 		BlueScales,
 
 		RegularWood = 301,
-		OakWood,
-		AshWood,
-		YewWood,
-		Heartwood,
-		Bloodwood,
-		Frostwood
+		WillowWood,
+		AspenWood,
+		ElvenWood,
+		DendroidWood,
+		ScorpionWood,
+		FrozenWood,
+		HamelionWood,
+		IceWood,
+		RoseWood,
+		DeadWood,
+		HolyWood,
+		ArianWood,
+		MillenniumWood,
+		MysticWood,
+		TeriumWood,
+		AncientWood,
+		LifeWood,
+		ChaosWood,
+		LegendaryBlackOakWood
+
 	}
 
 	public enum CraftResourceType
@@ -132,7 +146,9 @@ namespace Server.Items
 		Meteor, BlueSteel, Iridium, WhiteStone, Diamond, Mythril, Shadow, Legendary, Lava;
 		public static readonly CraftAttributeInfo Spined, Horned, Barbed;
 		public static readonly CraftAttributeInfo RedScales, YellowScales, BlackScales, GreenScales, WhiteScales, BlueScales;
-		public static readonly CraftAttributeInfo OakWood, AshWood, YewWood, Heartwood, Bloodwood, Frostwood;
+		public static readonly CraftAttributeInfo WillowWood, AspenWood, ElvenWood, DendroidWood, ScorpionWood, FrozenWood,
+		HamelionWood, IceWood, RoseWood, DeadWood, HolyWood, ArianWood, MillenniumWood,
+		MysticWood, TeriumWood, AncientWood, LifeWood, ChaosWood, LegendaryBlackOakWood;
 
 		static CraftAttributeInfo()
 		{
@@ -821,17 +837,17 @@ namespace Server.Items
 
 			//public static readonly CraftAttributeInfo OakWood, AshWood, YewWood, Heartwood, Bloodwood, Frostwood;
 
-			CraftAttributeInfo oak = OakWood = new CraftAttributeInfo();
+			//CraftAttributeInfo oak = OakWood = new CraftAttributeInfo();
 
-			CraftAttributeInfo ash = AshWood = new CraftAttributeInfo();
+			//CraftAttributeInfo ash = AshWood = new CraftAttributeInfo();
 
-			CraftAttributeInfo yew = YewWood = new CraftAttributeInfo();
+			//CraftAttributeInfo yew = YewWood = new CraftAttributeInfo();
 
-			CraftAttributeInfo heart = Heartwood = new CraftAttributeInfo();
+			//CraftAttributeInfo heart = Heartwood = new CraftAttributeInfo();
 
-			CraftAttributeInfo blood = Bloodwood = new CraftAttributeInfo();
+			//CraftAttributeInfo blood = Bloodwood = new CraftAttributeInfo();
 
-			CraftAttributeInfo frostwood = Frostwood = new CraftAttributeInfo();
+			//CraftAttributeInfo frostwood = Frostwood = new CraftAttributeInfo();
 		}
 	}
 
@@ -933,13 +949,26 @@ namespace Server.Items
 
 		private static CraftResourceInfo[] m_WoodInfo = new CraftResourceInfo[]
 			{
-				new CraftResourceInfo( 0x000, 1011542, "Normal",        CraftAttributeInfo.Blank,       CraftResource.RegularWood,  typeof( Log ),          typeof( Board ) ),
-				new CraftResourceInfo( 0x7DA, 1072533, "Oak",           CraftAttributeInfo.OakWood,     CraftResource.OakWood,      typeof( OakLog ),       typeof( OakBoard ) ),
-				new CraftResourceInfo( 0x4A7, 1072534, "Ash",           CraftAttributeInfo.AshWood,     CraftResource.AshWood,      typeof( AshLog ),       typeof( AshBoard ) ),
-				new CraftResourceInfo( 0x4A8, 1072535, "Yew",           CraftAttributeInfo.YewWood,     CraftResource.YewWood,      typeof( YewLog ),       typeof( YewBoard ) ),
-				new CraftResourceInfo( 0x4A9, 1072536, "Heartwood",     CraftAttributeInfo.Heartwood,   CraftResource.Heartwood,    typeof( HeartwoodLog ), typeof( HeartwoodBoard ) ),
-				new CraftResourceInfo( 0x4AA, 1072538, "Bloodwood",     CraftAttributeInfo.Bloodwood,   CraftResource.Bloodwood,    typeof( BloodwoodLog ), typeof( BloodwoodBoard ) ),
-				new CraftResourceInfo( 0x47F, 1072539, "Frostwood",     CraftAttributeInfo.Frostwood,   CraftResource.Frostwood,    typeof( FrostwoodLog ), typeof( FrostwoodBoard ) )
+				new CraftResourceInfo( 1287, 0, "Normal",        CraftAttributeInfo.Blank,       CraftResource.RegularWood,  typeof( Log ),          typeof( Board ) ),
+				new CraftResourceInfo( 1195, 0, "Willow",           CraftAttributeInfo.WillowWood,     CraftResource.WillowWood,      typeof( Log ),       typeof( Board ) ),
+				new CraftResourceInfo( 1969, 0, "Aspen",           CraftAttributeInfo.AspenWood,     CraftResource.AspenWood,      typeof( AspenLog ),       typeof( AspenBoard ) ),
+				new CraftResourceInfo( 1161, 0, "Elven",           CraftAttributeInfo.ElvenWood,     CraftResource.ElvenWood,      typeof( ElvenLog ),       typeof( ElvenBoard ) ),
+				new CraftResourceInfo( 1920, 0, "Dendroid",     CraftAttributeInfo.DendroidWood,   CraftResource.DendroidWood,    typeof( DendroidLog ), typeof( DendroidBoard ) ),
+				new CraftResourceInfo( 1288, 0, "Scorpion",     CraftAttributeInfo.ScorpionWood,   CraftResource.ScorpionWood,    typeof( ScorpionLog ), typeof( ScorpionBoard ) ),
+				new CraftResourceInfo( 2741, 0, "Frozen",     CraftAttributeInfo.FrozenWood,   CraftResource.FrozenWood,    typeof( FrozenLog ), typeof( FrozenBoard ) ),
+				new CraftResourceInfo( 2071, 0, "Hamelion",           CraftAttributeInfo.HamelionWood,     CraftResource.HamelionWood,      typeof( HamelionLog ),       typeof( HamelionBoard ) ),
+				new CraftResourceInfo( 2746, 0, "Ice",           CraftAttributeInfo.IceWood,     CraftResource.IceWood,      typeof( IceLog ),       typeof( IceBoard ) ),
+				new CraftResourceInfo( 2728, 0, "Rose",           CraftAttributeInfo.RoseWood,     CraftResource.RoseWood,      typeof( RoseLog ),       typeof( RoseBoard ) ),
+				new CraftResourceInfo( 1153, 0, "Dead",           CraftAttributeInfo.DeadWood,     CraftResource.DeadWood,      typeof( DeadLog ),       typeof( DeadBoard ) ),
+				new CraftResourceInfo( 2066, 0, "Holy",           CraftAttributeInfo.HolyWood,     CraftResource.HolyWood,      typeof( HolyLog ),       typeof( HolyBoard ) ),               
+				new CraftResourceInfo( 2738, 0, "Arian",           CraftAttributeInfo.ArianWood,     CraftResource.ArianWood,      typeof( ArianLog ),       typeof( ArianBoard ) ),
+				new CraftResourceInfo( 1154, 0, "Millennium",           CraftAttributeInfo.MillenniumWood,     CraftResource.MillenniumWood,      typeof( MillenniumLog ),       typeof( MillenniumBoard ) ),				
+				new CraftResourceInfo( 2965, 0, "Mystic",           CraftAttributeInfo.MysticWood,     CraftResource.MysticWood,      typeof( MysticLog ),       typeof( MysticBoard ) ),
+				new CraftResourceInfo( 1910, 0, "Terium",           CraftAttributeInfo.TeriumWood,     CraftResource.TeriumWood,      typeof( TeriumLog ),       typeof( TeriumBoard ) ),				
+				new CraftResourceInfo( 2070, 0, "Ancient",           CraftAttributeInfo.AncientWood,     CraftResource.AncientWood,      typeof( AncientLog ),       typeof( AncientBoard ) ),
+				new CraftResourceInfo( 2736, 0, "Life",           CraftAttributeInfo.LifeWood,     CraftResource.LifeWood,      typeof( LifeLog ),       typeof( LifeBoard ) ),				
+				new CraftResourceInfo( 2747, 0, "Chaos",           CraftAttributeInfo.ChaosWood,     CraftResource.ChaosWood,      typeof( ChaosLog ),       typeof( ChaosBoard ) ),
+				new CraftResourceInfo( 2729, 0, "Legendary Black Oak",           CraftAttributeInfo.LegendaryBlackOakWood,     CraftResource.LegendaryBlackOakWood,      typeof( LegendaryBlackOakLog ),       typeof( LegendaryBlackOakBoard ) ),				
 			};
 
 		/// <summary>
@@ -977,6 +1006,20 @@ namespace Server.Items
 				return CraftResource.None;
 
 			return res;
+		}
+
+		public static CraftResource GetResourceFromItem(Item item)
+		{
+			if (item is BaseArmor)
+				return (item as BaseArmor).Resource;
+			else if (item is BaseWeapon)
+				return (item as BaseWeapon).Resource;
+			else if (item is BaseClothing)
+				return (item as BaseClothing).Resource;
+			else if (item is BaseJewel)
+				return (item as BaseJewel).Resource;
+
+			return CraftResource.None;
 		}
 
 		/// <summary>
@@ -1019,7 +1062,7 @@ namespace Server.Items
 			if (resource >= CraftResource.RedScales && resource <= CraftResource.BlueScales)
 				return CraftResourceType.Scales;
 
-			if (resource >= CraftResource.RegularWood && resource <= CraftResource.Frostwood)
+			if (resource >= CraftResource.RegularWood && resource <= CraftResource.LegendaryBlackOakWood)
 				return CraftResourceType.Wood;
 
 			return CraftResourceType.None;

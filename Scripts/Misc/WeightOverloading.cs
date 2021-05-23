@@ -47,13 +47,15 @@ namespace Server.Misc
 			{
 				PlayerMobile pm = attacker as PlayerMobile;
 
-				if (pm.ArmorResBonusContext != null)
+				if (pm.ArmorResBonusContext != null && pm.ArmorResBonusContext.FatiqueRate > 0)
 				{
 					var result = fatigue * pm.ArmorResBonusContext.FatiqueRate;
-					pm.SendMessage($"You knocked down twice as much stamina points {fatigue} instead of {result}");
-					fatigue += result;
+					if (result > 0)
+					{
+						pm.SendMessage($"You knocked down twice as much stamina points {(int)(fatigue + result)} instead of {(int)fatigue}.");
+						fatigue += result;
+					}
 				}
-
 			}
 
 			if ( fatigue > 0 )

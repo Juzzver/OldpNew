@@ -11,6 +11,7 @@ namespace Server.Engines.Harvest
 
 		private double m_DoubleResSkillReq;
 		private PickaxeType m_PickaxeType;
+		private AxeType m_AxeType;
 
 		public Type[] Types{ get{ return m_Types; } set{ m_Types = value; } }
 		public double ReqSkill{ get{ return m_ReqSkill; } set{ m_ReqSkill = value; } }
@@ -21,6 +22,7 @@ namespace Server.Engines.Harvest
 		public double DoubledResSkillReq { get { return m_DoubleResSkillReq; } }
 		public int DoubleFactor { get { return 2; } }
 		public PickaxeType PickAxeType { get { return m_PickaxeType; } }
+		public AxeType AxeType { get { return m_AxeType; } }
 
 		public void SendSuccessTo( Mobile m )
 		{
@@ -40,6 +42,18 @@ namespace Server.Engines.Harvest
 
 			m_DoubleResSkillReq = doubleResSkillReq;
 			m_PickaxeType = type;
+		}
+
+		public HarvestResource(double reqSkill, double minSkill, double maxSkill, double doubleResSkillReq, AxeType type, object message, params Type[] types)
+		{
+			m_ReqSkill = reqSkill;
+			m_MinSkill = minSkill;
+			m_MaxSkill = maxSkill;
+			m_Types = types;
+			m_SuccessMessage = message;
+
+			m_DoubleResSkillReq = doubleResSkillReq;
+			m_AxeType = type;
 		}
 
 		public HarvestResource(double reqSkill, double minSkill, double maxSkill, object message, params Type[] types)

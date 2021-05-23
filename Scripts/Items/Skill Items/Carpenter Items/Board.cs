@@ -18,17 +18,19 @@ namespace Server.Items
 		{ 
 			get
 			{
-				if ( m_Resource >= CraftResource.OakWood && m_Resource <= CraftResource.YewWood )
-					return 1075052 + ( (int)m_Resource - (int)CraftResource.OakWood );
+				//if ( m_Resource >= CraftResource.ScorpionWood && m_Resource <= CraftResource.YewWood )
+				//	return 1075052 + ( (int)m_Resource - (int)CraftResource.ScorpionWood );
 
-				switch ( m_Resource )
-				{
-					case CraftResource.Bloodwood: return 1075055;
-					case CraftResource.Frostwood: return 1075056;
-					case CraftResource.Heartwood: return 1075062;	//WHY Osi.  Why?
-				}
+				//switch ( m_Resource )
+				//{
+				//	case CraftResource.Elven: return 1075055;
+				//	case CraftResource.Dendroid: return 1075056;
+				//	case CraftResource.Aspen: return 1075062;	//WHY Osi.  Why?
+				//}
 
-				return LabelNumber;
+				//return LabelNumber;
+
+				return 0;
 			} 
 		}
 
@@ -42,7 +44,7 @@ namespace Server.Items
 
 		[Constructable]
 		public Board( int amount )
-			: this( CraftResource.RegularWood, amount )
+			: this( CraftResource.WillowWood, amount )
 		{
 		}
 
@@ -118,21 +120,21 @@ namespace Server.Items
 	}
 
 
-	public class HeartwoodBoard : Board
+	public class AspenBoard : Board
 	{
 		[Constructable]
-		public HeartwoodBoard()
+		public AspenBoard()
 			: this( 1 )
 		{
 		}
 
 		[Constructable]
-		public HeartwoodBoard( int amount )
-			: base( CraftResource.Heartwood, amount )
+		public AspenBoard( int amount )
+			: base( CraftResource.AspenWood, amount )
 		{
 		}
 
-		public HeartwoodBoard( Serial serial )
+		public AspenBoard( Serial serial )
 			: base( serial )
 		{
 		}
@@ -152,21 +154,21 @@ namespace Server.Items
 		}
 	}
 
-	public class BloodwoodBoard : Board
+	public class ElvenBoard : Board
 	{
 		[Constructable]
-		public BloodwoodBoard()
+		public ElvenBoard()
 			: this( 1 )
 		{
 		}
 
 		[Constructable]
-		public BloodwoodBoard( int amount )
-			: base( CraftResource.Bloodwood, amount )
+		public ElvenBoard( int amount )
+			: base( CraftResource.ElvenWood, amount )
 		{
 		}
 
-		public BloodwoodBoard( Serial serial )
+		public ElvenBoard( Serial serial )
 			: base( serial )
 		{
 		}
@@ -186,21 +188,21 @@ namespace Server.Items
 		}
 	}
 
-	public class FrostwoodBoard : Board
+	public class DendroidBoard : Board
 	{
 		[Constructable]
-		public FrostwoodBoard()
+		public DendroidBoard()
 			: this( 1 )
 		{
 		}
 
 		[Constructable]
-		public FrostwoodBoard( int amount )
-			: base( CraftResource.Frostwood, amount )
+		public DendroidBoard( int amount )
+			: base( CraftResource.DendroidWood, amount )
 		{
 		}
 
-		public FrostwoodBoard( Serial serial )
+		public DendroidBoard( Serial serial )
 			: base( serial )
 		{
 		}
@@ -220,21 +222,21 @@ namespace Server.Items
 		}
 	}
 
-	public class OakBoard : Board
+	public class ScorpionBoard : Board
 	{
 		[Constructable]
-		public OakBoard()
+		public ScorpionBoard()
 			: this( 1 )
 		{
 		}
 
 		[Constructable]
-		public OakBoard( int amount )
-			: base( CraftResource.OakWood, amount )
+		public ScorpionBoard( int amount )
+			: base( CraftResource.ScorpionWood, amount )
 		{
 		}
 
-		public OakBoard( Serial serial )
+		public ScorpionBoard( Serial serial )
 			: base( serial )
 		{
 		}
@@ -254,21 +256,21 @@ namespace Server.Items
 		}
 	}
 
-	public class AshBoard : Board
+	public class FrozenBoard : Board
 	{
 		[Constructable]
-		public AshBoard()
+		public FrozenBoard()
 			: this( 1 )
 		{
 		}
 
 		[Constructable]
-		public AshBoard( int amount )
-			: base( CraftResource.AshWood, amount )
+		public FrozenBoard( int amount )
+			: base( CraftResource.FrozenWood, amount )
 		{
 		}
 
-		public AshBoard( Serial serial )
+		public FrozenBoard( Serial serial )
 			: base( serial )
 		{
 		}
@@ -288,21 +290,21 @@ namespace Server.Items
 		}
 	}
 
-	public class YewBoard : Board
+	public class HamelionBoard : Board
 	{
 		[Constructable]
-		public YewBoard()
+		public HamelionBoard()
 			: this( 1 )
 		{
 		}
 
 		[Constructable]
-		public YewBoard( int amount )
-			: base( CraftResource.YewWood, amount )
+		public HamelionBoard( int amount )
+			: base( CraftResource.HamelionWood, amount )
 		{
 		}
 
-		public YewBoard( Serial serial )
+		public HamelionBoard( Serial serial )
 			: base( serial )
 		{
 		}
@@ -317,6 +319,402 @@ namespace Server.Items
 		public override void Deserialize( GenericReader reader )
 		{
 			base.Deserialize( reader );
+
+			int version = reader.ReadInt();
+		}
+	}
+	public class IceBoard : Board
+	{
+		[Constructable]
+		public IceBoard()
+			: this(1)
+		{
+		}
+
+		[Constructable]
+		public IceBoard(int amount)
+			: base(CraftResource.IceWood, amount)
+		{
+		}
+
+		public IceBoard(Serial serial)
+			: base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+	}
+	public class RoseBoard : Board
+	{
+		[Constructable]
+		public RoseBoard()
+			: this(1)
+		{
+		}
+
+		[Constructable]
+		public RoseBoard(int amount)
+			: base(CraftResource.RoseWood, amount)
+		{
+		}
+
+		public RoseBoard(Serial serial)
+			: base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+	}
+	public class DeadBoard : Board
+	{
+		[Constructable]
+		public DeadBoard()
+			: this(1)
+		{
+		}
+
+		[Constructable]
+		public DeadBoard(int amount)
+			: base(CraftResource.DeadWood, amount)
+		{
+		}
+
+		public DeadBoard(Serial serial)
+			: base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+	}
+	public class HolyBoard : Board
+	{
+		[Constructable]
+		public HolyBoard()
+			: this(1)
+		{
+		}
+
+		[Constructable]
+		public HolyBoard(int amount)
+			: base(CraftResource.HolyWood, amount)
+		{
+		}
+
+		public HolyBoard(Serial serial)
+			: base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+	}
+	public class ArianBoard : Board
+	{
+		[Constructable]
+		public ArianBoard()
+			: this(1)
+		{
+		}
+
+		[Constructable]
+		public ArianBoard(int amount)
+			: base(CraftResource.ArianWood, amount)
+		{
+		}
+
+		public ArianBoard(Serial serial)
+			: base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+	}
+	public class MillenniumBoard : Board
+	{
+		[Constructable]
+		public MillenniumBoard()
+			: this(1)
+		{
+		}
+
+		[Constructable]
+		public MillenniumBoard(int amount)
+			: base(CraftResource.MillenniumWood, amount)
+		{
+		}
+
+		public MillenniumBoard(Serial serial)
+			: base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+	}
+	public class MysticBoard : Board
+	{
+		[Constructable]
+		public MysticBoard()
+			: this(1)
+		{
+		}
+
+		[Constructable]
+		public MysticBoard(int amount)
+			: base(CraftResource.MysticWood, amount)
+		{
+		}
+
+		public MysticBoard(Serial serial)
+			: base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+	}
+	public class TeriumBoard : Board
+	{
+		[Constructable]
+		public TeriumBoard()
+			: this(1)
+		{
+		}
+
+		[Constructable]
+		public TeriumBoard(int amount)
+			: base(CraftResource.TeriumWood, amount)
+		{
+		}
+
+		public TeriumBoard(Serial serial)
+			: base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+	}
+	public class AncientBoard : Board
+	{
+		[Constructable]
+		public AncientBoard()
+			: this(1)
+		{
+		}
+
+		[Constructable]
+		public AncientBoard(int amount)
+			: base(CraftResource.AncientWood, amount)
+		{
+		}
+
+		public AncientBoard(Serial serial)
+			: base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+	}
+	public class LifeBoard : Board
+	{
+		[Constructable]
+		public LifeBoard()
+			: this(1)
+		{
+		}
+
+		[Constructable]
+		public LifeBoard(int amount)
+			: base(CraftResource.LifeWood, amount)
+		{
+		}
+
+		public LifeBoard(Serial serial)
+			: base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+	}
+	public class ChaosBoard : Board
+	{
+		[Constructable]
+		public ChaosBoard()
+			: this(1)
+		{
+		}
+
+		[Constructable]
+		public ChaosBoard(int amount)
+			: base(CraftResource.ChaosWood, amount)
+		{
+		}
+
+		public ChaosBoard(Serial serial)
+			: base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+	}
+	public class LegendaryBlackOakBoard : Board
+	{
+		[Constructable]
+		public LegendaryBlackOakBoard()
+			: this(1)
+		{
+		}
+
+		[Constructable]
+		public LegendaryBlackOakBoard(int amount)
+			: base(CraftResource.LegendaryBlackOakWood, amount)
+		{
+		}
+
+		public LegendaryBlackOakBoard(Serial serial)
+			: base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
 
 			int version = reader.ReadInt();
 		}

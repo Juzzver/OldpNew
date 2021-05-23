@@ -86,7 +86,7 @@ namespace Server.Engines.Craft
 			int index = -1;
 
 			// Other Items
-			if ( Core.Expansion == Expansion.AOS || Core.Expansion == Expansion.SE )
+		//	if ( Core.Expansion == Expansion.AOS || Core.Expansion == Expansion.SE )
 			{
 				index =	AddCraft( typeof( Board ),				1044294, 1027127,	 0.0,   0.0,	typeof( Log ), 1044466,  1, 1044465 );
 				SetUseAllRes( index, true );
@@ -511,12 +511,31 @@ namespace Server.Engines.Craft
 			// Add every material you want the player to be able to choose from
 			// This will override the overridable material	TODO: Verify the required skill amount
 			AddSubRes( typeof( Log ), 1072643, 00.0, 1044041, 1072652 );
-			AddSubRes( typeof( OakLog ), 1072644, 65.0, 1044041, 1072652 );
-			AddSubRes( typeof( AshLog ), 1072645, 80.0, 1044041, 1072652 );
-			AddSubRes( typeof( YewLog ), 1072646, 95.0, 1044041, 1072652 );
-			AddSubRes( typeof( HeartwoodLog ), 1072647, 100.0, 1044041, 1072652 );
-			AddSubRes( typeof( BloodwoodLog ), 1072648, 100.0, 1044041, 1072652 );
-			AddSubRes( typeof( FrostwoodLog ), 1072649, 100.0, 1044041, 1072652 );
+			//AddSubRes( typeof( OakLog ), 1072644, 65.0, 1044041, 1072652 );
+			//AddSubRes( typeof( AshLog ), 1072645, 80.0, 1044041, 1072652 );
+			//AddSubRes( typeof( YewLog ), 1072646, 95.0, 1044041, 1072652 );
+			//AddSubRes( typeof( HeartwoodLog ), 1072647, 100.0, 1044041, 1072652 );
+			//AddSubRes( typeof( BloodwoodLog ), 1072648, 100.0, 1044041, 1072652 );
+			//AddSubRes( typeof( FrostwoodLog ), 1072649, 100.0, 1044041, 1072652 );
+
+			AddSubRes(typeof(AspenLog),			 "Aspen",         10.0,		1072652);
+			AddSubRes(typeof(ElvenLog     ),	 "Elven",         30.0,		1072652);
+			AddSubRes(typeof(DendroidLog  ),	 "Dendroid",      50.0,		1072652);
+			AddSubRes(typeof(ScorpionLog  ),	 "Scorpion",      50.0,		1072652);
+			AddSubRes(typeof(FrozenLog    ),	 "FrozenWood",    50.0,		1072652);
+			AddSubRes(typeof(HamelionLog  ),	 "Hamelion",      70.0,		1072652);
+			AddSubRes(typeof(IceLog       ),	 "Ice",           70.0,		1072652);
+			AddSubRes(typeof(RoseLog      ),	 "Rose",          70.0,		1072652);
+			AddSubRes(typeof(DeadLog      ),	 "Dead",          90.0,		1072652);
+			AddSubRes(typeof(HolyLog      ),	 "Holy",          90.0,		1072652);
+			AddSubRes(typeof(ArianLog     ),	 "Arian",         100.0,	1072652);
+			AddSubRes(typeof(MillenniumLog),	 "Millennium",    100.0,	1072652);
+			AddSubRes(typeof(MysticLog    ),	 "Mystic",        100.0,	1072652);
+			AddSubRes(typeof(TeriumLog    ),	 "Terium",        100.0,	1072652);
+			AddSubRes(typeof(AncientLog   ),	 "Ancient",       100.0,	1072652);
+			AddSubRes(typeof(LifeLog      ),	 "Life",          100.0,	1072652);
+			AddSubRes(typeof(ChaosLog     ),	 "Chaos",         100.0,	1072652);
+  AddSubRes(typeof(LegendaryBlackOakLog), "Legendary Black Oak", 150.0,		1072652);
 		}
 	}
 }
