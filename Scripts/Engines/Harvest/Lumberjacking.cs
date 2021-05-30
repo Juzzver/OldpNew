@@ -57,8 +57,8 @@ namespace Server.Engines.Harvest
 			lumber.BankHeight = 3;
 
 			// Every bank holds from 20 to 45 logs
-			lumber.MinTotal = 20;
-			lumber.MaxTotal = 45;
+			lumber.MinTotal = 4;
+			lumber.MaxTotal = 4;
 
 			// A resource bank will respawn its content every 20 to 30 minutes
 			lumber.MinRespawn = TimeSpan.FromMinutes(20.0);
@@ -74,14 +74,14 @@ namespace Server.Engines.Harvest
 			lumber.MaxRange = 2;
 
 			// Ten logs per harvest action
-			lumber.ConsumedPerHarvest = 10;
-			lumber.ConsumedPerFeluccaHarvest = 20;
+			lumber.ConsumedPerHarvest = 1;
+			lumber.ConsumedPerFeluccaHarvest = 1;
 
 			// The chopping effect
 			lumber.EffectActions = new int[] { 13 };
 			lumber.EffectSounds = new int[] { 0x13E };
-			lumber.EffectCounts = (Core.AOS ? new int[] { 1 } : new int[] { 1, 2, 2, 2, 3 });
-			lumber.EffectDelay = TimeSpan.FromSeconds(1.6);
+			lumber.EffectCounts = new int[] { 1, 2, 2, 2, 3 };//(Core.AOS ? new int[] { 1 } : new int[] { 1, 2, 2, 2, 3 });
+			lumber.EffectDelay = TimeSpan.FromSeconds(3.6);
 			lumber.EffectSoundDelay = TimeSpan.FromSeconds(0.9);
 
 			lumber.NoResourcesMessage = 500493; // There's not enough wood here to harvest.
