@@ -2684,6 +2684,10 @@ namespace Server
 
 			//if ( version < 9 )
 				VerifyCompactInfo();
+
+			// To Do remove
+			if (Weight > 0.001)
+				Weight = 0.001;
 		}
 
 		private void FixHolding_Sandbox()
@@ -4662,6 +4666,9 @@ namespace Server
 			Movable = true;
 			Amount = 1;
 			m_Map = Map.Internal;
+
+			// Oldp Feature, all items should
+			Timer.DelayCall(TimeSpan.FromSeconds(0.2), () => Weight = 0.001);
 
 			SetLastMoved();
 
