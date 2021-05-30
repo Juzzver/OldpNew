@@ -144,6 +144,7 @@
     <Compile Include="Custom\Custom Bows\RoseBow.cs" />
     <Compile Include="Custom\Custom Bows\MageHunter.cs" />
     <Compile Include="Custom\Custom Bows\FrozenBow.cs" />
+    <Compile Include="Custom\Creature_BodyID_Room.cs" />
     <Compile Include="Custom\HueRoomGen.cs" />
     <Compile Include="Custom\LumberAxes.cs" />
     <Compile Include="Custom\MiningPickAxes.cs" />
