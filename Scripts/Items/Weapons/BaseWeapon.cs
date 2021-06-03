@@ -24,6 +24,10 @@ namespace Server.Items
 
 	public abstract class BaseWeapon : Item, IWeapon, IFactionItem, ICraftable, ISlayer, IDurability
 	{
+		private int m_Level;
+
+		public int Level { get { return m_Level; } set { m_Level = value; } }
+
 		private string m_EngravedText;
 		
 		[CommandProperty( AccessLevel.GameMaster )]
@@ -2529,7 +2533,9 @@ namespace Server.Items
 		{
 			base.Serialize( writer );
 
-			writer.Write( (int) 9 ); // version
+			writer.Write( (int) 10 ); // version
+
+			writer.Write(m_Level);
 
 			SaveFlag flags = SaveFlag.None;
 
@@ -2700,6 +2706,11 @@ namespace Server.Items
 
 			switch ( version )
 			{
+				case 10:
+					{
+						m_Level = reader.ReadInt();
+						goto case 9;
+					}
 				case 9:
 				case 8:
 				case 7:
@@ -3043,6 +3054,8 @@ namespace Server.Items
 			m_AosWeaponAttributes = new AosWeaponAttributes( this );
 			m_AosSkillBonuses = new AosSkillBonuses( this );
 			m_AosElementDamages = new AosElementAttributes( this );
+
+			m_Level = 1;
 		}
 
 		public BaseWeapon( Serial serial ) : base( serial )
@@ -3188,6 +3201,9 @@ namespace Server.Items
 
 			if ( m_Crafter != null )
 				list.Add( 1050043, m_Crafter.Name ); // crafted by ~1_NAME~
+
+			if (m_Level > 0)
+				list.Add("Level {0}", m_Level);
 
 			#region Factions
 			if ( m_FactionState != null )
