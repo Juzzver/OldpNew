@@ -1208,7 +1208,7 @@ namespace Server.Spells
 				{
 					PlayerMobile pm = m_Target as PlayerMobile;
 
-					if (pm.ArmorResBonusContext.MagicReflectionRate > Utility.RandomDouble())
+					if (pm.ArmorResBonusContext != null && pm.ArmorResBonusContext.MagicReflectionRate > Utility.RandomDouble())
 					{
 						pm.SendMessage($"The White Stone set allowed you to reflect {(int)m_Damage} damage with a {pm.ArmorResBonusContext.MagicReflectionRate * 100}% chance.");
 						m_From.SendMessage($"{m_From.Name}'s armor allowed him with a {pm.ArmorResBonusContext.MagicReflectionRate * 100}% chance to reflect magic damage.");
