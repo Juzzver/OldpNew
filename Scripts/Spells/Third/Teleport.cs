@@ -67,7 +67,7 @@ namespace Server.Spells.Third
 			else if ( !SpellHelper.CheckTravel( Caster, map, to, TravelCheckType.TeleportTo ) )
 			{
 			}
-			else if ( map == null || !map.CanSpawnMobile( p.X, p.Y, p.Z ) )
+			else if ( map == null || !map.CanSpawnMobile( p.X, p.Y, p.Z ) && !(Scroll is JumpPotion) )
 			{
 				Caster.SendLocalizedMessage( 501942 ); // That location is blocked.
 			}

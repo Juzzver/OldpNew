@@ -1919,6 +1919,10 @@
     <Compile Include="Items\Skill Items\Magical\Potions\Heal Potions\GreaterHealPotion.cs" />
     <Compile Include="Items\Skill Items\Magical\Potions\Heal Potions\HealPotion.cs" />
     <Compile Include="Items\Skill Items\Magical\Potions\Heal Potions\LesserHealPotion.cs" />
+    <Compile Include="Items\Skill Items\Magical\Potions\JumpPotion.cs" />
+    <Compile Include="Items\Skill Items\Magical\Potions\RevealPotion.cs" />
+    <Compile Include="Items\Skill Items\Magical\Potions\MassPoisonPotion.cs" />
+    <Compile Include="Items\Skill Items\Magical\Potions\MagicReflectionPotion.cs" />
     <Compile Include="Items\Skill Items\Magical\Potions\ParalyzePotion.cs" />
     <Compile Include="Items\Skill Items\Magical\Potions\InvisibilityPotion.cs" />
     <Compile Include="Items\Skill Items\Magical\Potions\Mana Potions\BaseManaPotion.cs" />
