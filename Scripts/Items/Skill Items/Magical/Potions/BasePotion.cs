@@ -36,6 +36,7 @@ namespace Server.Items
 		Invisibility,
 		Parasitic,
 		Darkglow,
+		Mana
 	}
 
 	public abstract class BasePotion : Item, ICraftable, ICommodity

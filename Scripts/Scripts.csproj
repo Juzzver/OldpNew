@@ -1913,6 +1913,11 @@
     <Compile Include="Items\Skill Items\Magical\Potions\Heal Potions\HealPotion.cs" />
     <Compile Include="Items\Skill Items\Magical\Potions\Heal Potions\LesserHealPotion.cs" />
     <Compile Include="Items\Skill Items\Magical\Potions\InvisibilityPotion.cs" />
+    <Compile Include="Items\Skill Items\Magical\Potions\Mana Potions\BaseManaPotion.cs" />
+    <Compile Include="Items\Skill Items\Magical\Potions\Mana Potions\TotalManaPotion.cs" />
+    <Compile Include="Items\Skill Items\Magical\Potions\Mana Potions\GreaterManaPotion.cs" />
+    <Compile Include="Items\Skill Items\Magical\Potions\Mana Potions\LesserManaPotion.cs" />
+    <Compile Include="Items\Skill Items\Magical\Potions\Mana Potions\ManaPotion.cs" />
     <Compile Include="Items\Skill Items\Magical\Potions\NightSight.cs" />
     <Compile Include="Items\Skill Items\Magical\Potions\ParasiticPotion.cs" />
     <Compile Include="Items\Skill Items\Magical\Potions\Poison Potions\BasePoisonPotion.cs" />
