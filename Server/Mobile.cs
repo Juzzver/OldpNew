@@ -7538,7 +7538,7 @@ namespace Server
 		/// Gets or sets the current hit point of the Mobile. This value ranges from 0 to <see cref="HitsMax" />, inclusive. When set to the value of <see cref="HitsMax" />, the <see cref="AggressorInfo.CanReportMurder">CanReportMurder</see> flag of all aggressors is reset to false, and the list of damage entries is cleared.
 		/// </summary>
 		[CommandProperty( AccessLevel.GameMaster )]
-		public int Hits
+		public virtual int Hits
 		{
 			get
 			{

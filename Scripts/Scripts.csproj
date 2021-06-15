@@ -1935,7 +1935,11 @@
     <Compile Include="Items\Skill Items\Magical\Potions\Refresh Potions\BaseRefreshPotion.cs" />
     <Compile Include="Items\Skill Items\Magical\Potions\Refresh Potions\RefreshPotion.cs" />
     <Compile Include="Items\Skill Items\Magical\Potions\Refresh Potions\TotalRefreshPotion.cs" />
-    <Compile Include="Items\Skill Items\Magical\Potions\Restoration Potions\GreaterHealPotion.cs" />
+    <Compile Include="Items\Skill Items\Magical\Potions\Restoration Potions\HeroRestorationPotion.cs" />
+    <Compile Include="Items\Skill Items\Magical\Potions\Restoration Potions\AncientRestorationPotion.cs" />
+    <Compile Include="Items\Skill Items\Magical\Potions\Restoration Potions\TotalRestorationPotion.cs" />
+    <Compile Include="Items\Skill Items\Magical\Potions\Restoration Potions\RestorationPotion.cs" />
+    <Compile Include="Items\Skill Items\Magical\Potions\Restoration Potions\BaseRestorationPotion.cs" />
     <Compile Include="Items\Skill Items\Magical\Potions\Strength Potions\BaseStrengthPotion.cs" />
     <Compile Include="Items\Skill Items\Magical\Potions\Strength Potions\GreaterStrengthPotion.cs" />
     <Compile Include="Items\Skill Items\Magical\Potions\Strength Potions\StrengthPotion.cs" />

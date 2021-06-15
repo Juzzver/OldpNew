@@ -1450,6 +1450,39 @@ namespace Server.Mobiles
 				rating += ar.ArmorRatingScaled;
 		}
 
+		[CommandProperty(AccessLevel.GameMaster)]
+		public int RestorationBonus { get; set; }
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public override int Hits
+		{
+			get { return base.Hits + RestorationBonus; }
+			set
+			{
+				if ( RestorationBonus > 0)
+				{
+
+					if (value < Hits)
+					{
+						int consumeHits = Hits - value;
+						RestorationBonus -= consumeHits;						
+
+						if( RestorationBonus < 0)
+						{							
+							base.Hits += RestorationBonus; // decrease base Hits
+							RestorationBonus = 0;		   // reset negative bonus
+						}
+						else
+							this.Delta(MobileDelta.Hits);
+					}
+				}
+				else
+				{
+					base.Hits = value;
+				}
+			}
+		}
+
 		#region [Stats]Max
 		[CommandProperty( AccessLevel.GameMaster )]
 		public override int HitsMax
