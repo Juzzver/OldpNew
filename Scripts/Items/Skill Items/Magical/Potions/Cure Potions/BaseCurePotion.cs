@@ -1,5 +1,6 @@
 using System;
 using Server;
+using Server.Network;
 using Server.Spells;
 
 namespace Server.Items
@@ -90,20 +91,32 @@ namespace Server.Items
 			}
 			else if ( from.Poisoned )
 			{
-				DoCure( from );
+				if (from.BeginAction(typeof(BaseCurePotion)))
+				{
+					DoCure(from);
 
-				BasePotion.PlayDrinkEffect( from );
+					BasePotion.PlayDrinkEffect(from);
 
-				from.FixedParticles( 0x373A, 10, 15, 5012, EffectLayer.Waist );
-				from.PlaySound( 0x1E0 );
+					from.FixedParticles(0x373A, 10, 15, 5012, EffectLayer.Waist);
+					from.PlaySound(0x1E0);
 
-				if ( !Engines.ConPVP.DuelContext.IsFreeConsume( from ) )
-					this.Consume();
+					if (!Engines.ConPVP.DuelContext.IsFreeConsume(from))
+						this.Consume();
+
+					Timer.DelayCall(TimeSpan.FromSeconds(Delay), new TimerStateCallback(ReleaseCureLock), from);
+				}
+				else
+					from.LocalOverheadMessage(MessageType.Regular, 0x22, true, $"You must wait {Delay} seconds before using another cure potion");
 			}
 			else
 			{
 				from.SendLocalizedMessage( 1042000 ); // You are not poisoned.
 			}
+		}
+
+		private static void ReleaseCureLock(object state)
+		{
+			((Mobile)state).EndAction(typeof(BaseCurePotion));
 		}
 	}
 }

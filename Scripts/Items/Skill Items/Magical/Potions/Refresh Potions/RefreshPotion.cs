@@ -6,6 +6,7 @@ namespace Server.Items
 	public class RefreshPotion : BaseRefreshPotion
 	{
 		public override double Refresh{ get{ return 0.25; } }
+		public override double Delay { get { return 8.0; } }
 
 		[Constructable]
 		public RefreshPotion() : base( PotionEffect.Refresh )

@@ -40,6 +40,8 @@ namespace Server.Items
 
 	public abstract class BasePotion : Item, ICraftable, ICommodity
 	{
+		public  virtual double Delay { get; }
+
 		private PotionEffect m_PotionEffect;
 
 		public PotionEffect PotionEffect

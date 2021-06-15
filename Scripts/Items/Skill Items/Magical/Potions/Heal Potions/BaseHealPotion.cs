@@ -8,7 +8,6 @@ namespace Server.Items
 	{
 		public abstract int MinHeal { get; }
 		public abstract int MaxHeal { get; }
-		public abstract double Delay { get; }
 
 		public BaseHealPotion( PotionEffect effect ) : base( 0xF0C, effect )
 		{
@@ -63,7 +62,8 @@ namespace Server.Items
 					}
 					else
 					{
-						from.LocalOverheadMessage( MessageType.Regular, 0x22, 500235 ); // You must wait 10 seconds before using another healing potion.
+						//from.LocalOverheadMessage( MessageType.Regular, 0x22, 500235 ); // You must wait 10 seconds before using another healing potion.
+						from.LocalOverheadMessage(MessageType.Regular, 0x22, true, $"You must wait {Delay} seconds before using another healing potion");
 					}
 				}
 			}

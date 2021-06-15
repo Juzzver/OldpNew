@@ -5,6 +5,8 @@ namespace Server.Items
 {
 	public class LesserCurePotion : BaseCurePotion
 	{
+		public override double Delay { get { return 6.0; } }
+
 		private static CureLevelInfo[] m_OldLevelInfo = new CureLevelInfo[]
 			{
 				new CureLevelInfo( Poison.Lesser,  0.75 ), // 75% chance to cure lesser poison

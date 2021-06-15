@@ -1,49 +1,64 @@
 using System;
 using Server;
+using Server.Network;
 
 namespace Server.Items
 {
 	public abstract class BaseRefreshPotion : BasePotion
 	{
-		public abstract double Refresh{ get; }
+		public abstract double Refresh { get; }
 
-		public BaseRefreshPotion( PotionEffect effect ) : base( 0xF0B, effect )
+		public BaseRefreshPotion(PotionEffect effect) : base(0xF0B, effect)
 		{
 		}
 
-		public BaseRefreshPotion( Serial serial ) : base( serial )
+		public BaseRefreshPotion(Serial serial) : base(serial)
 		{
 		}
 
-		public override void Serialize( GenericWriter writer )
+		public override void Serialize(GenericWriter writer)
 		{
-			base.Serialize( writer );
+			base.Serialize(writer);
 
-			writer.Write( (int) 0 ); // version
+			writer.Write((int)0); // version
 		}
 
-		public override void Deserialize( GenericReader reader )
+		public override void Deserialize(GenericReader reader)
 		{
-			base.Deserialize( reader );
+			base.Deserialize(reader);
 
 			int version = reader.ReadInt();
 		}
 
-		public override void Drink( Mobile from )
+		public override void Drink(Mobile from)
 		{
-			if ( from.Stam < from.StamMax )
+
+
+			if (from.Stam < from.StamMax)
 			{
-				from.Stam += Scale( from, (int)(Refresh * from.StamMax) );
+				if (from.BeginAction(typeof(BaseRefreshPotion)))
+				{
+					from.Stam += Scale(from, (int)(Refresh * from.StamMax));
 
-				BasePotion.PlayDrinkEffect( from );
+					BasePotion.PlayDrinkEffect(from);
 
-				if ( !Engines.ConPVP.DuelContext.IsFreeConsume( from ) )
-					this.Consume();
+					if (!Engines.ConPVP.DuelContext.IsFreeConsume(from))
+						this.Consume();
+
+					Timer.DelayCall(TimeSpan.FromSeconds(Delay), new TimerStateCallback(ReleasePoisonLock), from);
+				}
+				else
+					from.LocalOverheadMessage(MessageType.Regular, 0x22, true, $"You must wait {Delay} seconds before using another refresh potion");
 			}
 			else
 			{
-				from.SendMessage( "You decide against drinking this potion, as you are already at full stamina." );
+				from.SendMessage("You decide against drinking this potion, as you are already at full stamina.");
 			}
+		}
+
+		private static void ReleasePoisonLock(object state)
+		{
+			((Mobile)state).EndAction(typeof(BaseRefreshPotion));
 		}
 	}
 }

@@ -135,6 +135,7 @@
     <Compile Include="Context Menus\OpenBankEntry.cs" />
     <Compile Include="Context Menus\TeachEntry.cs" />
     <Compile Include="Custom\BagOfArmor.cs" />
+    <Compile Include="Custom\Custom Bows\WillowBow.cs" />
     <Compile Include="Custom\Custom Bows\DemonHunter.cs" />
     <Compile Include="Custom\Custom Bows\DragonSlayer.cs" />
     <Compile Include="Custom\Custom Bows\BowOfTrueSight.cs" />

@@ -1,5 +1,6 @@
 using System;
 using Server;
+using Server.Network;
 
 namespace Server.Items
 {
@@ -37,14 +38,26 @@ namespace Server.Items
 			from.ApplyPoison( from, Poison );
 		}
 
-		public override void Drink( Mobile from )
+		public override void Drink(Mobile from)
 		{
-			DoPoison( from );
+			if (from.BeginAction(typeof(BasePoisonPotion)))
+			{
+				DoPoison(from);
 
-			BasePotion.PlayDrinkEffect( from );
+				BasePotion.PlayDrinkEffect(from);
 
-			if ( !Engines.ConPVP.DuelContext.IsFreeConsume( from ) )
-				this.Consume();
+				if (!Engines.ConPVP.DuelContext.IsFreeConsume(from))
+					this.Consume();
+
+				Timer.DelayCall(TimeSpan.FromSeconds(Delay), new TimerStateCallback(ReleasePoisonLock), from);
+			}
+			else
+				from.LocalOverheadMessage(MessageType.Regular, 0x22, true, $"You must wait {Delay} seconds before using another poison potion");
+		}
+
+		private static void ReleasePoisonLock(object state)
+		{
+			((Mobile)state).EndAction(typeof(BasePoisonPotion));
 		}
 	}
 }
