@@ -37,7 +37,8 @@ namespace Server.Items
 		Parasitic,
 		Darkglow,
 		Mana,
-		Restoration
+		Restoration,
+		Paralyze
 	}
 
 	public abstract class BasePotion : Item, ICraftable, ICommodity

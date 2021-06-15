@@ -3,6 +3,7 @@ using Server.Mobiles;
 using Server.Targeting;
 using Server.Network;
 using Server.Spells.Chivalry;
+using Server.Items;
 
 namespace Server.Spells.Fifth
 {
@@ -76,6 +77,9 @@ namespace Server.Spells.Fifth
 					( (PlagueBeastLord) m ).OnParalyzed( Caster );
 					duration = 120;
 				}
+
+				if (this.Scroll is ParalyzePotion)
+					duration = 12 - (GetResistSkill(m) / 10);
 
 				m.Paralyze( TimeSpan.FromSeconds( duration ) );
 
