@@ -134,6 +134,8 @@
     <Compile Include="Context Menus\EjectPlayer.cs" />
     <Compile Include="Context Menus\OpenBankEntry.cs" />
     <Compile Include="Context Menus\TeachEntry.cs" />
+    <Compile Include="Custom\Alchemy Potions\NewbieRepairElixir.cs" />
+    <Compile Include="Custom\Alchemy Potions\RepairElixir.cs" />
     <Compile Include="Custom\BagOfArmor.cs" />
     <Compile Include="Custom\Custom Bows\WillowBow.cs" />
     <Compile Include="Custom\Custom Bows\DemonHunter.cs" />
