@@ -23,7 +23,6 @@ namespace Server.Items
 		
 		public override void Drink( Mobile from )
 		{
-
 			var mobiles = from.GetMobilesInRange(7);
 			List<Mobile> targets = new List<Mobile>();
 

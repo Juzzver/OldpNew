@@ -23,13 +23,10 @@ namespace Server.Items
 		public override void Drink( Mobile from )
 		{
 			from.Spell = new TeleportSpell(from, this);
-			(from.Spell as TeleportSpell).State = Spells.SpellState.Sequencing;
-			from.Target = new TeleportSpell.InternalTarget(from.Spell as TeleportSpell);
+			from.Target = new TeleportSpell.InternalTarget(from.Spell as TeleportSpell);			
 
 			if (from.Combatant != null)
 				(from.Spell as TeleportSpell).Target(from.Combatant);
-
-			Consume();
 
 			PlayDrinkEffect( from );
 		}

@@ -23,11 +23,8 @@ namespace Server.Items
 		
 		public override void Drink( Mobile from )
 		{
-
 			DoPoison(from);
-
 			Consume();
-
 			PlayDrinkEffect( from );
 		}
 
@@ -51,9 +48,6 @@ namespace Server.Items
 					m.PlaySound(0x1FB);
 
 					m.ApplyPoison(from, Poison.Greater);
-
-				//	HarmfulSpell(m);
-				//	m.harmfu
 				}
 			}
 		}

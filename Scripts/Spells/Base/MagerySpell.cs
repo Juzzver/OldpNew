@@ -25,6 +25,21 @@ namespace Server.Spells
 			return false;
 		}
 
+		public override bool CheckSequence()
+		{
+			if (Scroll is BasePotion)
+			{
+				BasePotion potion = Scroll as BasePotion;
+
+				if (potion.IsAccessibleToCast(Caster))
+					return true;
+				else
+					return false;
+			}
+
+			return base.CheckSequence();
+		}
+
 		private const double ChanceOffset = 20.0, ChanceLength = 100.0 / 7.0;
 
 		public override void GetCastSkills( out double min, out double max )

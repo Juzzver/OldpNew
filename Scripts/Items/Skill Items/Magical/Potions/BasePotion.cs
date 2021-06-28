@@ -176,6 +176,30 @@ namespace Server.Items
 
 		public abstract void Drink( Mobile from );
 
+		public bool IsAccessibleToCast(Mobile caster)
+		{
+			if (caster.Deleted || !caster.Alive /*|| caster.Spell != this*/ /*|| State != SpellState.Sequencing*/)
+			{
+				caster.SendMessage("You can't use that potion.");
+				return false;
+			}
+			else if (this != null && (Amount <= 0 || Deleted /*|| this.RootParent != caster || this.Parent != caster)*/))
+			{
+				caster.SendMessage("You can't use that potion.");
+				return false;
+			}
+			else if (!caster.InRange(this.GetWorldLocation(), 1))
+			{
+				caster.SendMessage("You are too far away from the potion.");
+				return false;
+			}
+			else
+			{
+				this.Consume();
+				return true;
+			}
+		}
+
 		public static void PlayDrinkEffect( Mobile m )
 		{
 			m.RevealingAction();

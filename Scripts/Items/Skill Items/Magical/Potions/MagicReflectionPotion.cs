@@ -21,14 +21,10 @@ namespace Server.Items
 		
 		public override void Drink( Mobile from )
 		{
-
 			MagicReflectSpell.EndReflect(from);
 
 			from.Spell = new MagicReflectSpell(from, this);
-			(from.Spell as MagicReflectSpell).State = Spells.SpellState.Sequencing;
 			(from.Spell as MagicReflectSpell).OnCast();
-
-			Consume();
 
 			PlayDrinkEffect( from );
 		}

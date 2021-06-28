@@ -22,10 +22,7 @@ namespace Server.Items
 		public override void Drink( Mobile from )
 		{
 			from.Spell = new ParalyzeSpell(from, this);
-			(from.Spell as ParalyzeSpell).State = Spells.SpellState.Sequencing;
 			from.Target = new ParalyzeSpell.InternalTarget(from.Spell as ParalyzeSpell);
-
-			Consume();
 
 			PlayDrinkEffect( from );
 		}
