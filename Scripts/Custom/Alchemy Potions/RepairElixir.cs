@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Server.Custom.Alchemy_Potions
+namespace Server.Items
 {
 	public class RepairElixir : Item
 	{

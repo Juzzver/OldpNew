@@ -99,15 +99,17 @@ namespace Server.Engines.Craft
 			int index = -1;
 
 			// Refresh Potion
-			index = AddCraft( typeof( RefreshPotion ), 1044530, 1044538, -25, 25.0, typeof( BlackPearl ), 1044353, 1, 1044361 );
+			index = AddCraft(typeof(LesserRefreshPotion), 1044530, 1044538, -25, 25.0, typeof(BlackPearl), 1044353, 3, 1044361);
+			AddRes(index, typeof(EmptyJar), 1044529, 1, 500315);
+			index = AddCraft( typeof( RefreshPotion ), 1044530, 1044538, 50, 100.0, typeof( BlackPearl ), 1044353, 6, 1044361 );
 			AddRes( index, typeof ( Bottle ), 1044529, 1, 500315 );
-			index = AddCraft( typeof( TotalRefreshPotion ), 1044530, 1044539, 25.0, 75.0, typeof( BlackPearl ), 1044353, 5, 1044361 );
-			AddRes( index, typeof ( Bottle ), 1044529, 1, 500315 );
+			index = AddCraft( typeof( TotalRefreshPotion ), 1044530, 1044539, 50, 130.0, typeof( BlackPearl ), 1044353, 15, 1044361 );
+			AddRes( index, typeof ( SmallRedFlask), 1044529, 1, 500315 );
 
 			// Agility Potion
-			index = AddCraft( typeof( AgilityPotion ), 1044531, 1044540, 15.0, 65.0, typeof( Bloodmoss ), 1044354, 1, 1044362 );
+			index = AddCraft( typeof( AgilityPotion ), 1044531, 1044540, 40.0, 80.0, typeof( Bloodmoss ), 1044354, 3, 1044362 );
 			AddRes( index, typeof ( Bottle ), 1044529, 1, 500315 );
-			index = AddCraft( typeof( GreaterAgilityPotion ), 1044531, 1044541, 35.0, 85.0, typeof( Bloodmoss ), 1044354, 3, 1044362 );
+			index = AddCraft( typeof( GreaterAgilityPotion ), 1044531, 1044541, 45.0, 100.0, typeof( Bloodmoss ), 1044354, 6, 1044362 );
 			AddRes( index, typeof ( Bottle ), 1044529, 1, 500315 );
 
 			// Nightsight Potion
@@ -115,44 +117,44 @@ namespace Server.Engines.Craft
 			AddRes( index, typeof ( Bottle ), 1044529, 1, 500315 );
 
 			// Heal Potion
-			index = AddCraft( typeof( LesserHealPotion ), 1044533, 1044543, -25.0, 25.0, typeof( Ginseng ), 1044356, 1, 1044364 );
-			AddRes( index, typeof ( Bottle ), 1044529, 1, 500315 );
-			index = AddCraft( typeof( HealPotion ), 1044533, 1044544, 15.0, 65.0, typeof( Ginseng ), 1044356, 3, 1044364 );
-			AddRes( index, typeof ( Bottle ), 1044529, 1, 500315 );
-			index = AddCraft( typeof( GreaterHealPotion ), 1044533, 1044545, 55.0, 105.0, typeof( Ginseng ), 1044356, 7, 1044364 );
-			AddRes( index, typeof ( Bottle ), 1044529, 1, 500315 );
+			index = AddCraft( typeof( LesserHealPotion ), 1044533, 1044543, 20, 50.0, typeof( Ginseng ), 1044356, 5, 1044364 );
+			AddRes( index, typeof ( EmptyJar ), 1044529, 1, 500315 );
+			index = AddCraft( typeof( HealPotion ), 1044533, 1044544, 50.0, 85.0, typeof( Ginseng ), 1044356, 11, 1044364 );
+			AddRes( index, typeof ( SmallEmptyFlask ), 1044529, 1, 500315 );
+			index = AddCraft( typeof( GreaterHealPotion ), 1044533, 1044545, 60, 110.0, typeof( Ginseng ), 1044356, 25, 1044364 );
+			AddRes( index, typeof ( SmallEmptyFlask ), 1044529, 2, 500315 );
 
 			// Strength Potion
-			index = AddCraft( typeof( StrengthPotion ), 1044534, 1044546, 25.0, 75.0, typeof( MandrakeRoot ), 1044357, 2, 1044365 );
+			index = AddCraft( typeof( StrengthPotion ), 1044534, 1044546, 40.0, 80.0, typeof( MandrakeRoot ), 1044357, 3, 1044365 );
 			AddRes( index, typeof ( Bottle ), 1044529, 1, 500315 );
-			index = AddCraft( typeof( GreaterStrengthPotion ), 1044534, 1044547, 45.0, 95.0, typeof( MandrakeRoot ), 1044357, 5, 1044365 );
+			index = AddCraft( typeof( GreaterStrengthPotion ), 1044534, 1044547, 50.0, 100.0, typeof( MandrakeRoot ), 1044357, 7, 1044365 );
 			AddRes( index, typeof ( Bottle ), 1044529, 1, 500315 );
 
 			// Poison Potion
-			index = AddCraft( typeof( LesserPoisonPotion ), 1044535, 1044548, -5.0, 45.0, typeof( Nightshade ), 1044358, 1, 1044366 );
+			index = AddCraft( typeof( LesserPoisonPotion ), 1044535, 1044548, 40.0, 100.0, typeof( Nightshade ), 1044358, 3, 1044366 );
+			AddRes( index, typeof ( EmptyJar), 1044529, 1, 500315 );
+			index = AddCraft( typeof( PoisonPotion ), 1044535, 1044549, 60.0, 110.0, typeof( Nightshade ), 1044358, 9, 1044366 );
 			AddRes( index, typeof ( Bottle ), 1044529, 1, 500315 );
-			index = AddCraft( typeof( PoisonPotion ), 1044535, 1044549, 15.0, 65.0, typeof( Nightshade ), 1044358, 2, 1044366 );
-			AddRes( index, typeof ( Bottle ), 1044529, 1, 500315 );
-			index = AddCraft( typeof( GreaterPoisonPotion ), 1044535, 1044550, 55.0, 105.0, typeof( Nightshade ), 1044358, 4, 1044366 );
-			AddRes( index, typeof ( Bottle ), 1044529, 1, 500315 );
-			index = AddCraft( typeof( DeadlyPoisonPotion ), 1044535, 1044551, 90.0, 140.0, typeof( Nightshade ), 1044358, 8, 1044366 );
-			AddRes( index, typeof ( Bottle ), 1044529, 1, 500315 );
+			index = AddCraft( typeof( GreaterPoisonPotion ), 1044535, 1044550, 80.0, 130.0, typeof( Nightshade ), 1044358, 18, 1044366 );
+			AddRes( index, typeof ( SmallEmptyFlask ), 1044529, 4, 500315 );
+			index = AddCraft( typeof( DeadlyPoisonPotion ), 1044535, 1044551, 90.0, 140.0, typeof( Nightshade ), 1044358, 30, 1044366 );
+			AddRes( index, typeof (SmallEmptyFlask), 1044529, 1, 500315 );
 
 			// Cure Potion
-			index = AddCraft( typeof( LesserCurePotion ), 1044536, 1044552, -10.0, 40.0, typeof( Garlic ), 1044355, 1, 1044363 );
+			index = AddCraft( typeof( LesserCurePotion ), 1044536, 1044552, 20.0, 50.0, typeof( Garlic ), 1044355, 3, 1044363 );
+			AddRes( index, typeof ( EmptyJar), 1044529, 1, 500315 );
+			index = AddCraft( typeof( CurePotion ), 1044536, 1044553, 25.0, 75.0, typeof( Garlic ), 1044355, 6, 1044363 );
 			AddRes( index, typeof ( Bottle ), 1044529, 1, 500315 );
-			index = AddCraft( typeof( CurePotion ), 1044536, 1044553, 25.0, 75.0, typeof( Garlic ), 1044355, 3, 1044363 );
-			AddRes( index, typeof ( Bottle ), 1044529, 1, 500315 );
-			index = AddCraft( typeof( GreaterCurePotion ), 1044536, 1044554, 65.0, 115.0, typeof( Garlic ), 1044355, 6, 1044363 );
-			AddRes( index, typeof ( Bottle ), 1044529, 1, 500315 );
+			index = AddCraft( typeof( GreaterCurePotion ), 1044536, 1044554, 50.0, 115.0, typeof( Garlic ), 1044355, 9, 1044363 );
+			AddRes( index, typeof ( SmallEmptyFlask ), 1044529, 1, 500315 );
 
 			// Explosion Potion
 			index = AddCraft( typeof( LesserExplosionPotion ), 1044537, 1044555, 5.0, 55.0, typeof( SulfurousAsh ), 1044359, 3, 1044367 );
 			AddRes( index, typeof ( Bottle ), 1044529, 1, 500315 );
-			index = AddCraft( typeof( ExplosionPotion ), 1044537, 1044556, 35.0, 85.0, typeof( SulfurousAsh ), 1044359, 5, 1044367 );
-			AddRes( index, typeof ( Bottle ), 1044529, 1, 500315 );
-			index = AddCraft( typeof( GreaterExplosionPotion ), 1044537, 1044557, 65.0, 115.0, typeof( SulfurousAsh ), 1044359, 10, 1044367 );
-			AddRes( index, typeof ( Bottle ), 1044529, 1, 500315 );
+			index = AddCraft( typeof( ExplosionPotion ), 1044537, 1044556, 35.0, 85.0, typeof( SulfurousAsh ), 1044359, 7, 1044367 );
+			AddRes( index, typeof ( SmallEmptyFlask ), 1044529, 3, 500315 );
+			index = AddCraft( typeof( GreaterExplosionPotion ), 1044537, 1044557, 65.0, 115.0, typeof( SulfurousAsh ), 1044359, 18, 1044367 );
+			AddRes( index, typeof (SmallEmptyFlask), 1044529, 2, 500315 );
 
 			if( Core.SE )
 			{
@@ -175,6 +177,141 @@ namespace Server.Engines.Craft
 				AddRes( index, typeof(Bottle), 1044529, 1, 500315 );
 				SetNeededExpansion(index, Expansion.SE);
 			}
+
+			#region Custom Oldp Potions
+			index = AddCraft(typeof(InvisibilityPotion), "Magical", 1074860, 65.0, 115.0, typeof(SmallEmptyFlask), 1044529, 1, 500315);
+			AddRes(index, typeof(EyeOfNewt), 1023975, 8, "You do not have enough eyes of newt to make that.");
+
+			// Mana Potion
+			index = AddCraft(typeof(LesserManaPotion), "Magical", "Lesser Mana Refresh", 60.0, 120.0, typeof(EyeOfNewt), "eyes of newt", 7, "You do not have enough eyes of newt to make that.");
+			AddRes(index, typeof(SmallEmptyFlask), 1044529, 1, 500315);
+			index = AddCraft(typeof(ManaPotion), "Magical", "Mana Refresh", 70.0, 120.0, typeof(EyeOfNewt), "eyes of newt", 12, "You do not have enough eyes of newt to make that.");
+			AddRes(index, typeof(SmallEmptyFlask), 1044529, 1, 500315);
+			index = AddCraft(typeof(GreaterManaPotion), "Magical", "Greater Mana Refresh", 75.0, 120.0, typeof(EyeOfNewt), "eyes of newt", 15, "You do not have enough eyes of newt to make that.");
+			AddRes(index, typeof(SmallEmptyFlask), 1044529, 1, 500315);
+			index = AddCraft(typeof(TotalManaPotion), "Magical", "Total Mana Refresh", 85.0, 120.0, typeof(EyeOfNewt), "eyes of newt", 20, "You do not have enough eyes of newt to make that.");
+			AddRes(index, typeof(MandrakeRoot), 1044357, 10, 1044365);
+			AddRes(index, typeof(SulfurousAsh), 1044359, 10, 1044367);
+			AddRes(index, typeof(SmallEmptyFlask), 1044529, 1, 500315);
+
+			// Shrink Potion
+			index = AddCraft(typeof(Xanthos.ShrinkSystem.ShrinkPotion), "Magical", "Shrink", 60.0, 120.0, typeof(ExecutionersCap), "executioners cap", 4, "You do not have enough executioners cap to make that.");
+			AddRes(index, typeof(GhostBone), "Ghost Bone", 5, "You do not have enough ghost bones to make that.");
+			AddRes(index, typeof(Gold), "Gold", 1000, "You do not have enough gold to make that.");
+			AddRes(index, typeof(SmallEmptyFlask), 1044529, 1, 500315);
+
+			// Restoration
+			index = AddCraft(typeof(RestorationPotion), "Magical", "Restoration", 83.0, 120.0, typeof(Ginseng), 1044356, 40, 1044364);
+			AddRes(index, typeof(SulfurousAsh), 1044359, 10, 1044367);
+			AddRes(index, typeof(SilverIngot), "Silver Ingot", 5, "You do not have enough silver ingots to make that.");
+			AddRes(index, typeof(Gold), "Gold", 1000, "You do not have enough gold to make that.");
+			AddRes(index, typeof(SmallEmptyFlask), 1044529, 4, 500315);
+
+			index = AddCraft(typeof(TotalRestorationPotion), "Magical", "Total Restoration", 95.0, 150.0, typeof(Ginseng), 1044356, 100, 1044364);
+			AddRes(index, typeof(SulfurousAsh), 1044359, 30, 1044367);
+			AddRes(index, typeof(SilverIngot), "Silver Ingot", 10, "You do not have enough silver ingots to make that.");
+			AddRes(index, typeof(Gold), "Gold", 2000, "You do not have enough gold to make that.");
+			AddRes(index, typeof(SmallEmptyFlask), 1044529, 4, 500315);
+
+			index = AddCraft(typeof(AncientRestorationPotion), "Magical", "Ancient Restoration", 120.0, 170.0, typeof(DragonBone), "Dragon Bone", 5, "You do not have enough dragon bones to make that.");
+			AddRes(index, typeof(DragonWing), "Dragon Wing", 5, "You do not have enough dragon wings to make that.");
+			AddRes(index, typeof(DragonHeart), "Dragon Heart", 5, "You do not have enough dragon bones to make that.");
+			AddRes(index, typeof(BalronBone), "Balron Bone", 5, "You do not have enough balron bones to make that.");
+			AddRes(index, typeof(Gold), "Gold", 5000, "You do not have enough gold to make that.");
+			AddRes(index, typeof(SmallEmptySilverFlask), 1044529, 4, 500315);
+
+			index = AddCraft(typeof(HeroRestorationPotion), "Magical", "Hero Restoration", 140.0, 200.0, typeof(HythlothKeeperBone), "Hytloth Keeper Bone", 5, "You do not have enough Hythloth Keeper bones to make that.");
+			AddRes(index, typeof(DestardKeeperBone), "Destard Keeper Bone", 5, "You do not have enough Destard Keeper bones to make that.");
+			AddRes(index, typeof(CovetousKeeperBone), "Covetous Keeper Bone", 5, "You do not have enough Covetous Keeper bones to make that.");
+			AddRes(index, typeof(IceKeeperBone), "Ice Keeper Bone", 5, "You do not have enough Ice Keeper bones to make that.");
+			AddRes(index, typeof(ShameKeeperBone), "Shame Keeper Bone", 5, "You do not have enough Shame Keeper bones to make that.");
+			AddRes(index, typeof(Gold), "Gold", 20000, "You do not have enough gold to make that.");
+			AddRes(index, typeof(SmallEmptyGoldFlask), 1044529, 4, 500315);
+
+			//Spelleable potions
+			// todo make 5 potions for JumpPotion
+			// ToDo change resources
+			index = AddCraft(typeof(JumpPotion), "Magical", "Jump Potion", 180.0, 220.0, typeof(DragonsBlood), "Dragon Blood", 6, "You do not have enough dragon blood to make that.");
+			AddRes(index, typeof(BronzeIngot), "Bronze Ingot", 10, "You do not have enough bronze ingots to make that.");
+			AddRes(index, typeof(GoldIngot), "Gold Ingot", 10, "You do not have enough gold ingots to make that.");
+			AddRes(index, typeof(Ruby), "Ruby", 1, "You do not have enough rubies to make that.");
+			AddRes(index, typeof(Gold), "Gold", 2000, "You do not have enough gold to make that.");
+			AddRes(index, typeof(SmallEmptyFlask), 1044529, 3, 500315);
+
+			index = AddCraft(typeof(MassPoisonPotion), "Magical", "Mass Poison Potion", 100.0, 150.0, typeof(Nightshade), 1044358, 100, 1044366);
+			AddRes(index, typeof(BronzeIngot), "Bronze Ingot", 10, "You do not have enough bronze ingots to make that.");
+			AddRes(index, typeof(Diamond), "Diamond", 1, "You do not have enough diamonds to make that.");
+			AddRes(index, typeof(Gold), "Gold", 2000, "You do not have enough gold to make that.");
+			AddRes(index, typeof(SmallEmptyFlask), 1044529, 4, 500315);
+
+			index = AddCraft(typeof(ParalyzePotion), "Magical", "Paralyze Potion", 100.0, 150.0, typeof(DragonBone), "Dragon Bone", 6, "You do not have enough dragon bones to make that.");
+			AddRes(index, typeof(BronzeIngot), "Bronze Ingot", 10, "You do not have enough bronze ingots to make that.");
+			AddRes(index, typeof(GoldIngot), "Gold Ingot", 10, "You do not have enough gold ingots to make that.");
+			AddRes(index, typeof(Emerald), "Emerald", 1, "You do not have enough emeralds to make that.");
+			AddRes(index, typeof(Gold), "Gold", 2000, "You do not have enough gold to make that.");
+			AddRes(index, typeof(SmallEmptyFlask), 1044529, 3, 500315);
+
+			// ToDo change resources
+			index = AddCraft(typeof(RevealPotion), "Magical", "Reveal Potion", 180.0, 220.0, typeof(DragonsBlood), "Dragon Blood", 6, "You do not have enough dragon blood to make that.");
+			AddRes(index, typeof(BronzeIngot), "Bronze Ingot", 10, "You do not have enough bronze ingots to make that.");
+			AddRes(index, typeof(GoldIngot), "Gold Ingot", 10, "You do not have enough gold ingots to make that.");
+			AddRes(index, typeof(Ruby), "Ruby", 1, "You do not have enough rubies to make that.");
+			AddRes(index, typeof(Gold), "Gold", 2000, "You do not have enough gold to make that.");
+			AddRes(index, typeof(SmallEmptyFlask), 1044529, 3, 500315);
+
+			index = AddCraft(typeof(MagicReflectionPotion), "Magical", "Magic Reflect Potion", 100.0, 150.0, typeof(DragonsBlood), "Dragon Blood", 6, "You do not have enough dragon blood to make that.");
+			AddRes(index, typeof(BronzeIngot), "Bronze Ingot", 10, "You do not have enough bronze ingots to make that.");
+			AddRes(index, typeof(GoldIngot), "Gold Ingot", 10, "You do not have enough gold ingots to make that.");
+			AddRes(index, typeof(Ruby), "Ruby", 1, "You do not have enough rubies to make that.");
+			AddRes(index, typeof(Gold), "Gold", 2000, "You do not have enough gold to make that.");
+			AddRes(index, typeof(SmallEmptyFlask), 1044529, 3, 500315);
+
+
+			index = AddCraft(typeof(RepairElixir), "Magical", "Repair Elixir", 140.0, 180.0, typeof(DragonsBlood), "Dragon Blood", 6, "You do not have enough dragon blood to make that.");
+			AddRes(index, typeof(BronzeIngot), "Bonus Point", 1, "You do not have enough Bonus points to make that.");
+			AddRes(index, typeof(BronzeIngot), "Quest Point", 1, "You do not have enough Quest points to make that.");
+			AddRes(index, typeof(BronzeIngot), "Event Point", 1, "You do not have enough Event points to make that.");
+			AddRes(index, typeof(BronzeIngot), "Tournament Point", 1, "You do not have enough Tournament points to make that.");
+			AddRes(index, typeof(Gold), "Gold", 500000, "You do not have enough gold to make that.");
+			AddRes(index, typeof(BronzeIngot), "Elfian Elixir [+10]", 10, "You do not have enough Elfian Elixir to make that.");
+			AddRes(index, typeof(SmallEmptyGoldFlask), 1044529, 1, 500315);
+
+
+			index = AddCraft(typeof(NewbieRepairElixir), "Magical", "Repair Elixir", 160.0, 200.0, typeof(DragonsBlood), "Dragon Blood", 6, "You do not have enough dragon blood to make that.");
+			AddRes(index, typeof(BronzeIngot), "Bonus Point", 1, "You do not have enough Bonus points to make that.");
+			AddRes(index, typeof(BronzeIngot), "Quest Point", 1, "You do not have enough Quest points to make that.");
+			AddRes(index, typeof(BronzeIngot), "Event Point", 1, "You do not have enough Event points to make that.");
+			AddRes(index, typeof(BronzeIngot), "Tournament Point", 1, "You do not have enough Tournament points to make that.");
+			AddRes(index, typeof(Gold), "Gold", 500000, "You do not have enough gold to make that.");
+			AddRes(index, typeof(BronzeIngot), "Elfian Elixir [+10]", 10, "You do not have enough Elfian Elixir to make that.");
+			AddRes(index, typeof(SmallEmptyGoldFlask), 1044529, 1, 500315);
+
+
+			//ToDo x10 craft
+			index = AddCraft(typeof(SmallBloodPotion), "Magical", "Small Blood Potion", 200.0, 250.0, typeof(DragonsBlood), "Dragon Blood", 1, "You do not have enough dragon blood to make that.");
+			AddRes(index, typeof(DaemonBlood), "Daemon Blood", 1, "You do not have enough daemon blood to make that.");
+			AddRes(index, typeof(TitansBlood), "Titans Blood", 1, "You do not have enough titans blood to make that.");
+			AddRes(index, typeof(Gold), "Gold", 50000, "You do not have enough gold to make that.");
+			AddRes(index, typeof(SmallEmptySilverFlask), 1044529, 1, 500315);
+
+			index = AddCraft(typeof(BigBloodPotion), "Magical", "Small Blood Potion", 200.0, 250.0, typeof(SmallBloodPotion), "Small Blood Potion", 5, "You do not have enough small blood potions to make that.");
+			AddRes(index, typeof(Gold), "Gold", 10000, "You do not have enough gold to make that.");
+			AddRes(index, typeof(SmallEmptySilverFlask), 1044529, 1, 500315);
+
+			// Berserkers Potion
+			index = AddCraft(typeof(BerserkerPotion), "Magical", "Berserkers Potion", 200.0, 250.0, typeof(HythlothKeeperBone), "Hytloth Keeper Bone", 5, "You do not have enough Hythloth Keeper bones to make that.");
+			AddRes(index, typeof(DestardKeeperBone), "Destard Keeper Bone", 1, "You do not have enough Destard Keeper bones to make that.");
+			AddRes(index, typeof(CovetousKeeperBone), "Covetous Keeper Bone", 1, "You do not have enough Covetous Keeper bones to make that.");
+			AddRes(index, typeof(IceKeeperBone), "Ice Keeper Bone", 1, "You do not have enough Ice Keeper bones to make that.");
+			AddRes(index, typeof(ShameKeeperBone), "Shame Keeper Bone", 1, "You do not have enough Shame Keeper bones to make that.");
+
+			AddRes(index, typeof(BronzeIngot), "RP Point", 1, "You do not have enough RP points to make that.");
+			AddRes(index, typeof(BronzeIngot), "Tournament Point", 1, "You do not have enough Tournament points to make that.");
+			AddRes(index, typeof(Gold), "Gold", 500000, "You do not have enough gold to make that.");
+			AddRes(index, typeof(BronzeIngot), "Elfian Elixir [+10]", 10, "You do not have enough Elfian Elixir to make that.");
+			AddRes(index, typeof(SmallEmptyGoldFlask), 1044529, 1, 500315);
+
+			#endregion
 		}
 	}
 }

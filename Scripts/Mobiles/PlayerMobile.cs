@@ -2733,7 +2733,15 @@ namespace Server.Mobiles
 				//		}
 				//	}
 				//}
-			}			
+			}
+
+			//if (BaseBerserkerPotion.IsUnderEffect(this))
+			//{
+			//	amount = (int)(amount * BaseBerserkerPotion.DamageAbsorbBonus);
+
+			//	if (amount < 1)
+			//		amount = 1;
+			//}
 
 			int disruptThreshold;
 
@@ -3335,6 +3343,14 @@ namespace Server.Mobiles
 		{
 			if ( Spells.Necromancy.EvilOmenSpell.TryEndEffect( this ) )
 				amount = (int)(amount * 1.25);
+
+			if (BaseBerserkerPotion.IsUnderEffect(this))
+			{
+				amount = (int)(amount * BaseBerserkerPotion.DamageAbsorbBonus);
+
+				if (amount < 1)
+					amount = 1;
+			}
 
 			Mobile oath = Spells.Necromancy.BloodOathSpell.GetBloodOath( from );
 

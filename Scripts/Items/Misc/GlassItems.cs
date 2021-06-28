@@ -455,7 +455,64 @@ namespace Server.Items
 
 			int version = reader.ReadInt(); 
 		} 
-	} 
+	}
+
+	public class SmallEmptySilverFlask : SmallEmptyFlask
+	{
+		[Constructable]
+		public SmallEmptySilverFlask()
+		{
+			Name = "Small Empty Silver Flask";
+			Weight = 1.0;
+			Movable = true;
+		}
+
+		public SmallEmptySilverFlask(Serial serial) : base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version 
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+	}
+	public class SmallEmptyGoldFlask : SmallEmptyFlask
+	{
+		[Constructable]
+		public SmallEmptyGoldFlask()
+		{
+			Name = "Small Empty Gold Flask";
+			Weight = 1.0;
+			Movable = true;
+		}
+
+		public SmallEmptyGoldFlask(Serial serial) : base(serial)
+		{
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version 
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
+
+			int version = reader.ReadInt();
+		}
+	}
 
 	public class YellowBeaker : Item 
 	{ 

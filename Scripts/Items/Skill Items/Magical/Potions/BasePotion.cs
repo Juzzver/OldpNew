@@ -42,7 +42,9 @@ namespace Server.Items
 		MagicReflect,
 		MassPoison,
 		Reveal,
-		Jump
+		Jump,
+		Blood,
+		Berserker
 	}
 
 	public abstract class BasePotion : Item, ICraftable, ICommodity
